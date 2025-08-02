@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -201,22 +201,54 @@ export default function Courses() {
   };
 
   const [isInCall, setIsInCall] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [isVideoOn, setIsVideoOn] = useState(true);
-  const [currentinstructor, setcurrentinstructor] = useState("");
-  const [currentStudent, setcurrentStudent] = useState("");
-
-  const startCall = (instructorName) => {
-    setIsInCall(true);
-    setcurrentinstructor(instructorName);
-  };
-
-  const endCall = () => {
-    setIsInCall(false);
-    setcurrentinstructor(null);
-    setIsMuted(false);
-    setIsVideoOn(true);
-  };
+   const [isMuted, setIsMuted] = useState(false);
+   const [isVideoOn, setIsVideoOn] = useState(true);
+   const [currentinstructor, setcurrentinstructor] = useState("");
+   const [secondsLeft, setSecondsLeft] = useState(65);
+ 
+   const startCall = (instructorName) => {
+     setIsInCall(true);
+     setcurrentinstructor(instructorName);
+     setSecondsLeft(5);
+   };
+ 
+   const endCall = () => {
+     setIsInCall(false);
+     setcurrentinstructor(null);
+     setIsMuted(false);
+     setIsVideoOn(true);
+   };
+   useEffect(() => {
+   if (!isInCall) return;
+ 
+   const interval = setInterval(() => {
+     setSecondsLeft((prev) => {
+       if (prev === 0) {
+         clearInterval(interval);
+         setTimeout(() => {
+           endCall();
+         }, 2000);
+         return 0;
+       }
+       return prev - 1;
+     });
+   }, 1000);
+ 
+   return () => clearInterval(interval);
+ }, [isInCall]);
+ 
+ 
+ 
+   // Format seconds into MM:SS
+   const formatTime = (totalSeconds) => {
+     const minutes = Math.floor(totalSeconds / 60);
+     const seconds = totalSeconds % 60;
+ 
+     return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+       2,
+       "0"
+     )}`;
+   };
 
   return (
     <>
@@ -230,7 +262,10 @@ export default function Courses() {
                 <Avatar className="">
                   <AvatarImage src="/placeholder.svg" className="h-32 rounded-full" />
                 </Avatar>
-                <p className="text-gray-300">Connected • 05:23</p>
+                <p className="text-gray-300 font-bold text-xl">
+                  Connected • {formatTime(secondsLeft)}
+                </p>
+                {secondsLeft == 0 && <p>This Session has ended</p>}
               </div>
             </div>
 
@@ -247,12 +282,12 @@ export default function Courses() {
             </div>
 
             {/* Call controls */}
-            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-              <div className="flex items-center gap-4 bg-black/50 backdrop-blur-sm rounded-full p-4">
+           <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+              <div className="flex items-center gap-4 bg-black/50 backdrop-blur-sm rounded-full p-1 md:p-4">
                 <Button
                   variant={isMuted ? "destructive" : "secondary"}
-                  size="lg"
-                  className="rounded-full h-12 w-12"
+                  size="sm"
+                  className="rounded-full md:size-12"
                   onClick={() => setIsMuted(!isMuted)}
                 >
                   {isMuted ? (
@@ -264,8 +299,8 @@ export default function Courses() {
 
                 <Button
                   variant={isVideoOn ? "secondary" : "destructive"}
-                  size="lg"
-                  className="rounded-full h-12 w-12"
+                  size="sm"
+                  className="rounded-full md:size-12"
                   onClick={() => setIsVideoOn(!isVideoOn)}
                 >
                   {isVideoOn ? (
@@ -277,8 +312,8 @@ export default function Courses() {
 
                 <Button
                   variant="destructive"
-                  size="lg"
-                  className="rounded-full h-12 w-12"
+                  size="sm"
+                  className="rounded-full md:size-12"
                   onClick={endCall}
                 >
                   <PhoneOff className="h-6 w-6" />
@@ -286,16 +321,16 @@ export default function Courses() {
 
                 <Button
                   variant="secondary"
-                  size="lg"
-                  className="rounded-full h-12 w-12"
+                  size="sm"
+                  className="rounded-full md:size-12"
                 >
                   <MessageSquare className="h-6 w-6" />
                 </Button>
 
                 <Button
                   variant="secondary"
-                  size="lg"
-                  className="rounded-full h-12 w-12"
+                  size="sm"
+                  className="rounded-full md:size-12"
                 >
                   <Settings className="h-6 w-6" />
                 </Button>

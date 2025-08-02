@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,7 +30,10 @@ import {
   Link,
   Phone,
   Cast,
+  VideoOff,
+  PhoneOff,
 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
 export default function LiveSessions() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -182,405 +185,561 @@ export default function LiveSessions() {
         return status;
     }
   };
+  const [isInCall, setIsInCall] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isVideoOn, setIsVideoOn] = useState(true);
+  const [currentinstructor, setcurrentinstructor] = useState("");
+  const [secondsLeft, setSecondsLeft] = useState(0);
+
+  const startCall = (instructorName) => {
+    setIsInCall(true);
+    setcurrentinstructor(instructorName);
+    setSecondsLeft(5);
+  };
+
+  const endCall = () => {
+    setIsInCall(false);
+    setcurrentinstructor(null);
+    setIsMuted(false);
+    setIsVideoOn(true);
+  };
+  useEffect(() => {
+    if (!isInCall) return;
+
+    const interval = setInterval(() => {
+      setSecondsLeft((prev) => {
+        if (prev === 0) {
+          clearInterval(interval);
+          setTimeout(() => {
+            endCall();
+          }, 2000);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isInCall]);
+
+  // Format seconds into MM:SS
+  const formatTime = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
+  };
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold">Live Sessions</h1>
-            <p className="text-muted-foreground text-lg">
-              Join interactive learning sessions with expert instructors
-            </p>
-          </div>
-          <Button className="bg-gradient-learning">
-            <Calendar className="w-4 h-4 mr-2" />
-            Schedule Session
-          </Button>
-        </div>
+    <>
+      {isInCall ? (
+       <div className="h-[89vh] bg-black flex flex-col">
+          {/* Video Call Interface */}
+          <div className="flex-1 relative">
+            {/* Main video area */}
+            <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
+              <div className="text-center flex flex-col items-center justify-center gap-2 text-white">
+                <Avatar className="">
+                  <AvatarImage src="/placeholder.svg" className="h-32 rounded-full" />
+                </Avatar>
+                <p className="text-gray-300 font-bold text-xl">
+                  Connected • {formatTime(secondsLeft)}
+                </p>
+                {secondsLeft == 0 && <p>This Session has ended</p>}
+              </div>
+            </div>
 
-        {/* Search and Filter */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search sessions, instructors, or topics..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <Button variant="outline">
-            <Filter className="w-4 h-4 mr-2" />
-            Filters
-          </Button>
-        </div>
-      </div>
-
-      {/* Live Now Section */}
-      {liveSessions.length > 0 && (
-        <div className="space-y-4 w-full max-w-7xl mx-auto px-4">
-  <div className="flex items-center gap-3">
-    <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-    <h2 className="text-2xl font-bold">Live Now</h2>
-  </div>
-
-  {/* Cards Grid */}
-  <div className="space-y-6">
-    {liveSessions.map((session) => (
-      <Card
-        key={session.id}
-        className="glass-card p-4 sm:p-5 md:p-6 border-red-500/20 hover-lift w-full"
-      >
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
-                  <div className="flex items-center flex-wrap gap-3">
-                    <Badge
-                      className={`${getStatusColor(
-                        session.status
-                      )} animate-pulse`}
-                    >
-                      <div className="w-2 h-2 bg-white rounded-full mr-1"></div>
-                      {getStatusText(session.status)}
-                    </Badge>
-                    <Badge variant="outline">{session.courseTitle}</Badge>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    <MoreVertical className="w-4 h-4" />
-                  </Button>
+            {/* Self video (picture-in-picture) */}
+           <div className="absolute top-4 right-4 w-48 h-32 bg-gray-800 rounded-lg overflow-hidden">
+              <div className="w-full h-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
+                <div className="text-white flex items-center justify-center flex-col gap-2">
+                  <Avatar className="">
+                    <AvatarImage src="/placeholder.svg" alt="Dr. Smith" className="h-16 rounded-full" />
+                  </Avatar>
+                  <p className="text-sm">{currentinstructor}</p>
                 </div>
+              </div>
+            </div>
 
-                {/* Main Content */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {/* Left (Details) */}
-                  <div className="lg:col-span-2 space-y-4">
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-semibold mb-2">
-                        {session.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm sm:text-base">
-                        {session.description}
-                      </p>
+            {/* Call controls */}
+           <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+              <div className="flex items-center gap-4 bg-black/50 backdrop-blur-sm rounded-full p-1 md:p-4">
+                <Button
+                  variant={isMuted ? "destructive" : "secondary"}
+                  size="sm"
+                  className="rounded-full md:size-12"
+                  onClick={() => setIsMuted(!isMuted)}
+                >
+                  {isMuted ? (
+                    <MicOff className="h-6 w-6" />
+                  ) : (
+                    <Mic className="h-6 w-6" />
+                  )}
+                </Button>
+
+                <Button
+                  variant={isVideoOn ? "secondary" : "destructive"}
+                  size="sm"
+                  className="rounded-full md:size-12"
+                  onClick={() => setIsVideoOn(!isVideoOn)}
+                >
+                  {isVideoOn ? (
+                    <Video className="h-6 w-6" />
+                  ) : (
+                    <VideoOff className="h-6 w-6" />
+                  )}
+                </Button>
+
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  className="rounded-full md:size-12"
+                  onClick={endCall}
+                >
+                  <PhoneOff className="h-6 w-6" />
+                </Button>
+
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="rounded-full md:size-12"
+                >
+                  <MessageSquare className="h-6 w-6" />
+                </Button>
+
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="rounded-full md:size-12"
+                >
+                  <Settings className="h-6 w-6" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-8">
+          {/* Header */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-4xl font-bold">Live Sessions</h1>
+                <p className="text-muted-foreground text-lg">
+                  Join interactive learning sessions with expert instructors
+                </p>
+              </div>
+              <Button className="bg-gradient-learning">
+                <Calendar className="w-4 h-4 mr-2" />
+                Schedule Session
+              </Button>
+            </div>
+
+            {/* Search and Filter */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Search sessions, instructors, or topics..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <Button variant="outline">
+                <Filter className="w-4 h-4 mr-2" />
+                Filters
+              </Button>
+            </div>
+          </div>
+
+          {/* Live Now Section */}
+          {liveSessions.length > 0 && (
+            <div className="space-y-4 w-full max-w-7xl mx-auto px-4">
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                <h2 className="text-2xl font-bold">Live Now</h2>
+              </div>
+
+              {/* Cards Grid */}
+              <div className="space-y-6">
+                {liveSessions.map((session) => (
+                  <Card
+                    key={session.id}
+                    className="glass-card p-4 sm:p-5 md:p-6 border-red-500/20 hover-lift w-full"
+                  >
+                    {/* Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
+                      <div className="flex items-center flex-wrap gap-3">
+                        <Badge
+                          className={`${getStatusColor(
+                            session.status
+                          )} animate-pulse`}
+                        >
+                          <div className="w-2 h-2 bg-white rounded-full mr-1"></div>
+                          {getStatusText(session.status)}
+                        </Badge>
+                        <Badge variant="outline">{session.courseTitle}</Badge>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        <MoreVertical className="w-4 h-4" />
+                      </Button>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-gradient-learning rounded-full flex items-center justify-center text-white text-xs font-medium">
-                          {session.instructorAvatar}
+                    {/* Main Content */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      {/* Left (Details) */}
+                      <div className="lg:col-span-2 space-y-4">
+                        <div>
+                          <h3 className="text-lg sm:text-xl font-semibold mb-2">
+                            {session.title}
+                          </h3>
+                          <p className="text-muted-foreground text-sm sm:text-base">
+                            {session.description}
+                          </p>
                         </div>
-                        <span>{session.instructor}</span>
+
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 bg-gradient-learning rounded-full flex items-center justify-center text-white text-xs font-medium">
+                              {session.instructorAvatar}
+                            </div>
+                            <span>{session.instructor}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Clock className="w-4 h-4" />
+                            <span>{session.duration}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Users className="w-4 h-4" />
+                            <span>
+                              {session.participants}/{session.maxParticipants}{" "}
+                              participants
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4" />
-                        <span>{session.duration}</span>
+
+                      {/* Right (Controls + Join) */}
+                      <div className="space-y-4">
+                        {/* Session Controls */}
+                        <div className="glass-card p-4 space-y-3">
+                          <h4 className="font-medium text-sm sm:text-base">
+                            Session Controls
+                          </h4>
+                          <div className="grid grid-cols-2 gap-2">
+                            <Button size="sm" variant="outline">
+                              <Mic className="w-4 h-4" />
+                            </Button>
+                            <Button size="sm" variant="outline">
+                              <Camera className="w-4 h-4" />
+                            </Button>
+                            <Button size="sm" variant="outline">
+                              <Monitor className="w-4 h-4" />
+                            </Button>
+                            <Button size="sm" variant="outline">
+                              <MessageSquare className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Meeting Links */}
+                        <div className="glass-card p-4 space-y-3">
+                          <h4 className="font-medium text-sm sm:text-base">
+                            Join via Platform
+                          </h4>
+                          <div className="space-y-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="w-full justify-start"
+                              onClick={() =>
+                                window.open(session.meetingLinks.zoom, "_blank")
+                              }
+                            >
+                              <Video className="w-4 h-4 mr-2" />
+                              Zoom
+                              <ExternalLink className="w-3 h-3 ml-auto" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="w-full justify-start"
+                              onClick={() =>
+                                window.open(session.meetingLinks.meet, "_blank")
+                              }
+                            >
+                              <Cast className="w-4 h-4 mr-2" />
+                              Google Meet
+                              <ExternalLink className="w-3 h-3 ml-auto" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="w-full justify-start"
+                              onClick={() =>
+                                window.open(
+                                  session.meetingLinks.teams,
+                                  "_blank"
+                                )
+                              }
+                            >
+                              <Phone className="w-4 h-4 mr-2" />
+                              Teams
+                              <ExternalLink className="w-3 h-3 ml-auto" />
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Join Session Button */}
+                        <Button onClick={() => startCall(session.instructor)} className="w-full bg-red-500 hover:bg-red-600">
+                          <Video className="w-4 h-4 mr-2" />
+                          Join Live Session
+                        </Button>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Users className="w-4 h-4" />
-                        <span>
-                          {session.participants}/{session.maxParticipants}{" "}
-                          participants
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Upcoming Sessions */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold">Upcoming Sessions</h2>
+
+            <div className="grid gap-6 sm:grid-cols-1">
+              {upcomingSessions.map((session) => (
+                <Card
+                  key={session.id}
+                  className="glass-card p-4 sm:p-5 md:p-6 hover-lift"
+                >
+                  {/* Header: Badges and Buttons */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge className={getStatusColor(session.status)}>
+                        {getStatusText(session.status)}
+                      </Badge>
+                      <Badge variant="outline">{session.courseTitle}</Badge>
+                      <Badge variant="secondary">{session.difficulty}</Badge>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {session.isRecorded && (
+                        <Badge variant="outline" className="text-xs">
+                          <Video className="w-3 h-3 mr-1" />
+                          Recorded
+                        </Badge>
+                      )}
+                      {session.hasHandouts && (
+                        <Badge variant="outline" className="text-xs">
+                          <Download className="w-3 h-3 mr-1" />
+                          Handouts
+                        </Badge>
+                      )}
+                      <Button variant="outline" size="sm">
+                        <Bell className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Main Content Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    {/* Left Content */}
+                    <div className="md:col-span-3 space-y-4">
+                      <div>
+                        <h3 className="text-lg sm:text-xl font-semibold mb-2">
+                          {session.title}
+                        </h3>
+                        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                          {session.description}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        {session.topics.map((topic, index) => (
+                          <Badge
+                            key={index}
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {topic}
+                          </Badge>
+                        ))}
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row flex-wrap gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 bg-gradient-learning rounded-full flex items-center justify-center text-white text-xs font-medium">
+                            {session.instructorAvatar}
+                          </div>
+                          <span>{session.instructor}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          <span>
+                            {session.startTime} - {session.endTime}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          <span>{session.duration}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Users className="w-4 h-4" />
+                          <span>
+                            {session.participants}/{session.maxParticipants}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right Controls */}
+                    <div className="space-y-3">
+                      {/* Participants */}
+                      <div className="text-center">
+                        <p className="text-sm text-muted-foreground">
+                          Participants
+                        </p>
+                        <div className="progress-bar mt-1 bg-muted rounded-full h-2 w-full overflow-hidden">
+                          <div
+                            className="progress-fill bg-primary h-2"
+                            style={{
+                              width: `${
+                                (session.participants /
+                                  session.maxParticipants) *
+                                100
+                              }%`,
+                            }}
+                          ></div>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {session.maxParticipants - session.participants} spots
+                          left
+                        </p>
+                      </div>
+
+                      {/* Quick Join if session starting soon */}
+                      {session.status === "starting-soon" && (
+                        <div className="glass-card p-3 space-y-2">
+                          <p className="text-xs font-medium">Quick Join</p>
+                          <div className="flex gap-1">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="flex-1"
+                              onClick={() =>
+                                window.open(session.meetingLinks.zoom, "_blank")
+                              }
+                            >
+                              <Video className="w-3 h-3" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="flex-1"
+                              onClick={() =>
+                                window.open(session.meetingLinks.meet, "_blank")
+                              }
+                            >
+                              <Cast className="w-3 h-3" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="flex-1"
+                              onClick={() =>
+                                window.open(
+                                  session.meetingLinks.teams,
+                                  "_blank"
+                                )
+                              }
+                            >
+                              <Phone className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Join/Add to Calendar */}
+                      <Button
+                        className="w-full"
+                        variant={
+                          session.status === "starting-soon"
+                            ? "default"
+                            : "outline"
+                        }
+                      >
+                        {session.status === "starting-soon" ? (
+                          <div onClick={() => startCall(session.instructor)} className="flex items-center">
+                            <Video className="w-4 h-4 mr-2" />
+                            Join Session
+                          </div>
+                        ) : (
+                          <>
+                            <Calendar className="w-4 h-4 mr-2" />
+                            Add to Calendar
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Session Recordings */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold">Recent Recordings</h2>
+              <Button variant="outline">View All Recordings</Button>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {recentRecordings.map((recording) => (
+                <Card key={recording.id} className="glass-card p-6 hover-lift">
+                  <div className="space-y-4">
+                    <div className="flex items-start justify-between">
+                      <Badge variant="outline">{recording.courseTitle}</Badge>
+                      <div className="flex items-center gap-1">
+                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-300" />
+                        <span className="text-sm font-medium">
+                          {recording.rating}
                         </span>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Right (Controls + Join) */}
-                  <div className="space-y-4">
-                    {/* Session Controls */}
-                    <div className="glass-card p-4 space-y-3">
-                      <h4 className="font-medium text-sm sm:text-base">
-                        Session Controls
-                      </h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        <Button size="sm" variant="outline">
-                          <Mic className="w-4 h-4" />
-                        </Button>
-                        <Button size="sm" variant="outline">
-                          <Camera className="w-4 h-4" />
-                        </Button>
-                        <Button size="sm" variant="outline">
-                          <Monitor className="w-4 h-4" />
-                        </Button>
-                        <Button size="sm" variant="outline">
-                          <MessageSquare className="w-4 h-4" />
-                        </Button>
+                    <div>
+                      <h3 className="text-lg font-semibold mb-2">
+                        {recording.title}
+                      </h3>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span>by {recording.instructor}</span>
+                        <span>{recording.recordedDate}</span>
+                        <span>{recording.duration}</span>
                       </div>
                     </div>
 
-                    {/* Meeting Links */}
-                    <div className="glass-card p-4 space-y-3">
-                      <h4 className="font-medium text-sm sm:text-base">
-                        Join via Platform
-                      </h4>
-                      <div className="space-y-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="w-full justify-start"
-                          onClick={() =>
-                            window.open(session.meetingLinks.zoom, "_blank")
-                          }
-                        >
-                          <Video className="w-4 h-4 mr-2" />
-                          Zoom
-                          <ExternalLink className="w-3 h-3 ml-auto" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="w-full justify-start"
-                          onClick={() =>
-                            window.open(session.meetingLinks.meet, "_blank")
-                          }
-                        >
-                          <Cast className="w-4 h-4 mr-2" />
-                          Google Meet
-                          <ExternalLink className="w-3 h-3 ml-auto" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="w-full justify-start"
-                          onClick={() =>
-                            window.open(session.meetingLinks.teams, "_blank")
-                          }
-                        >
-                          <Phone className="w-4 h-4 mr-2" />
-                          Teams
-                          <ExternalLink className="w-3 h-3 ml-auto" />
-                        </Button>
+                    <div className="flex items-center justify-between gap-1">
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <Users className="w-4 h-4" />
+                        <span>{recording.views} views</span>
                       </div>
+                      <Button onClick={() => startCall(recording.courseTitle)} className="p-2 gap-0 sm:gap-2 sm:px-4">
+                        <Play className="w-4 h-4 mr-2" />
+                        Watch Recording
+                      </Button>
                     </div>
-
-                    {/* Join Session Button */}
-                    <Button className="w-full bg-red-500 hover:bg-red-600">
-                      <Video className="w-4 h-4 mr-2" />
-                      Join Live Session
-                    </Button>
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       )}
-
-      {/* Upcoming Sessions */}
-      <div className="space-y-4">
-  <h2 className="text-2xl font-bold">Upcoming Sessions</h2>
-
-  <div className="grid gap-6 sm:grid-cols-1">
-    {upcomingSessions.map((session) => (
-      <Card key={session.id} className="glass-card p-4 sm:p-5 md:p-6 hover-lift">
-        {/* Header: Badges and Buttons */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge className={getStatusColor(session.status)}>
-              {getStatusText(session.status)}
-            </Badge>
-            <Badge variant="outline">{session.courseTitle}</Badge>
-            <Badge variant="secondary">{session.difficulty}</Badge>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            {session.isRecorded && (
-              <Badge variant="outline" className="text-xs">
-                <Video className="w-3 h-3 mr-1" />
-                Recorded
-              </Badge>
-            )}
-            {session.hasHandouts && (
-              <Badge variant="outline" className="text-xs">
-                <Download className="w-3 h-3 mr-1" />
-                Handouts
-              </Badge>
-            )}
-            <Button variant="outline" size="sm">
-              <Bell className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* Left Content */}
-          <div className="md:col-span-3 space-y-4">
-            <div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2">
-                {session.title}
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                {session.description}
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {session.topics.map((topic, index) => (
-                <Badge key={index} variant="secondary" className="text-xs">
-                  {topic}
-                </Badge>
-              ))}
-            </div>
-
-            <div className="flex flex-col sm:flex-row flex-wrap gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-learning rounded-full flex items-center justify-center text-white text-xs font-medium">
-                  {session.instructorAvatar}
-                </div>
-                <span>{session.instructor}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Calendar className="w-4 h-4" />
-                <span>
-                  {session.startTime} - {session.endTime}
-                </span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                <span>{session.duration}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Users className="w-4 h-4" />
-                <span>
-                  {session.participants}/{session.maxParticipants}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Controls */}
-          <div className="space-y-3">
-            {/* Participants */}
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground">Participants</p>
-              <div className="progress-bar mt-1 bg-muted rounded-full h-2 w-full overflow-hidden">
-                <div
-                  className="progress-fill bg-primary h-2"
-                  style={{
-                    width: `${
-                      (session.participants / session.maxParticipants) * 100
-                    }%`,
-                  }}
-                ></div>
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                {session.maxParticipants - session.participants} spots left
-              </p>
-            </div>
-
-            {/* Quick Join if session starting soon */}
-            {session.status === "starting-soon" && (
-              <div className="glass-card p-3 space-y-2">
-                <p className="text-xs font-medium">Quick Join</p>
-                <div className="flex gap-1">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() =>
-                      window.open(session.meetingLinks.zoom, "_blank")
-                    }
-                  >
-                    <Video className="w-3 h-3" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() =>
-                      window.open(session.meetingLinks.meet, "_blank")
-                    }
-                  >
-                    <Cast className="w-3 h-3" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() =>
-                      window.open(session.meetingLinks.teams, "_blank")
-                    }
-                  >
-                    <Phone className="w-3 h-3" />
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {/* Join/Add to Calendar */}
-            <Button
-              className="w-full"
-              variant={
-                session.status === "starting-soon" ? "default" : "outline"
-              }
-            >
-              {session.status === "starting-soon" ? (
-                <>
-                  <Video className="w-4 h-4 mr-2" />
-                  Join Session
-                </>
-              ) : (
-                <>
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Add to Calendar
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
-      </Card>
-    ))}
-  </div>
-</div>
-
-
-      {/* Session Recordings */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Recent Recordings</h2>
-          <Button variant="outline">View All Recordings</Button>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {recentRecordings.map((recording) => (
-            <Card key={recording.id} className="glass-card p-6 hover-lift">
-              <div className="space-y-4">
-                <div className="flex items-start justify-between">
-                  <Badge variant="outline">{recording.courseTitle}</Badge>
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-300" />
-                    <span className="text-sm font-medium">
-                      {recording.rating}
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">
-                    {recording.title}
-                  </h3>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <span>by {recording.instructor}</span>
-                    <span>{recording.recordedDate}</span>
-                    <span>{recording.duration}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between gap-1">
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <Users className="w-4 h-4" />
-                    <span>{recording.views} views</span>
-                  </div>
-                  <Button className="p-2 gap-0 sm:gap-2 sm:px-4">
-                    <Play className="w-4 h-4 mr-2" />
-                    Watch Recording
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
