@@ -5,14 +5,6 @@ import { Progress } from "@/components/ui/progress";
 import { Avatar } from "@/components/ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {
-  MessageSquare,
-  Mic,
-  MicOff,
-  PhoneOff,
-  Video,
-  VideoOff,
-} from "lucide-react";
-import {
   BookOpen,
   Clock,
   Target,
@@ -35,9 +27,15 @@ import {
   FileText,
   Download,
   Share2,
+  MessageSquare,
+  Mic,
+  MicOff,
+  PhoneOff,
+  Video,
+  VideoOff,
 } from "lucide-react";
 import heroImage from "@/assets/lms-hero.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
   const recentCourses = [
@@ -142,16 +140,17 @@ export default function Dashboard() {
     { task: "Attend 2 live sessions", progress: 100, completed: 2, total: 2 },
     { task: "Submit assignments", progress: 50, completed: 1, total: 2 },
   ];
-  
 
   const [isInCall, setIsInCall] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(true);
-  const [currentinstructor, setcurrentinstructor] = useState('')
+  const [currentinstructor, setcurrentinstructor] = useState("");
+  const [secondsLeft, setSecondsLeft] = useState(65);
 
   const startCall = (instructorName) => {
     setIsInCall(true);
     setcurrentinstructor(instructorName);
+    setSecondsLeft(5);
   };
 
   const endCall = () => {
@@ -159,6 +158,37 @@ export default function Dashboard() {
     setcurrentinstructor(null);
     setIsMuted(false);
     setIsVideoOn(true);
+  };
+  useEffect(() => {
+  if (!isInCall) return;
+
+  const interval = setInterval(() => {
+    setSecondsLeft((prev) => {
+      if (prev === 0) {
+        clearInterval(interval);
+        setTimeout(() => {
+          endCall();
+        }, 2000);
+        return 0;
+      }
+      return prev - 1;
+    });
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [isInCall]);
+
+
+
+  // Format seconds into MM:SS
+  const formatTime = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
   };
   return (
     <>
@@ -169,37 +199,39 @@ export default function Dashboard() {
             {/* Main video area */}
             <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
               <div className="text-center text-white">
-                <Avatar className="h-32 w-32 mx-auto mb-4">
-                  <AvatarImage src="/placeholder.svg"  />
-                  <AvatarFallback className="text-4xl">
-                    Surajslkf; asldkfj laskdf alksdjf alksdjjf laksdf Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore error ut doloribus? Tempora adipisci repellat ad officia nobis voluptatum. Voluptate!
-                  </AvatarFallback>
+                <Avatar className=" size-24 md:size-32 mx-auto mb-4">
+                  <AvatarImage src="/placeholder.svg" />
                 </Avatar>
                 {/* <h2 className="text-2xl font-semibold">{currentPatient}</h2> */}
-                <p className="text-gray-300">Connected • 05:23</p>
+                <p className="text-gray-300 font-bold text-xl">
+                  Connected • {formatTime(secondsLeft)}
+                </p>
+                {secondsLeft == 0 && <p>This Session has ended</p>}
               </div>
             </div>
 
             {/* Self video (picture-in-picture) */}
-            <div className="absolute top-4 right-4 w-48 h-32 bg-gray-800 rounded-lg overflow-hidden">
-              <div className="w-full h-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
-                <div className="text-white text-center">
-                  <Avatar className="h-16 w-16 mx-auto mb-2">
+            <div className="absolute top-4 right-4 md:w-48 md:h-35  bg-gray-800 rounded-lg overflow-hidden">
+              <div className="w-full h-full bg-gradient-to-br from-blue-500 to-blue-900 flex items-center justify-center">
+                <div className="text-white text-center p-1">
+                  <Avatar className="md:size-16 mx-auto mb-2">
                     <AvatarImage src="/placeholder.svg" alt="Dr. Smith" />
                     <AvatarFallback>DS</AvatarFallback>
                   </Avatar>
-                  <p className="text-sm">{currentinstructor}</p>
+                  <p className=" text-xs px-1 md:text-sm">
+                    {currentinstructor}
+                  </p>
                 </div>
               </div>
             </div>
 
             {/* Call controls */}
             <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-              <div className="flex items-center gap-4 bg-black/50 backdrop-blur-sm rounded-full p-4">
+              <div className="flex items-center gap-4 bg-black/50 backdrop-blur-sm rounded-full p-1 md:p-4">
                 <Button
                   variant={isMuted ? "destructive" : "secondary"}
-                  size="lg"
-                  className="rounded-full h-12 w-12"
+                  size="sm"
+                  className="rounded-full md:size-12"
                   onClick={() => setIsMuted(!isMuted)}
                 >
                   {isMuted ? (
@@ -211,8 +243,8 @@ export default function Dashboard() {
 
                 <Button
                   variant={isVideoOn ? "secondary" : "destructive"}
-                  size="lg"
-                  className="rounded-full h-12 w-12"
+                  size="sm"
+                  className="rounded-full md:size-12"
                   onClick={() => setIsVideoOn(!isVideoOn)}
                 >
                   {isVideoOn ? (
@@ -224,8 +256,8 @@ export default function Dashboard() {
 
                 <Button
                   variant="destructive"
-                  size="lg"
-                  className="rounded-full h-12 w-12"
+                  size="sm"
+                  className="rounded-full md:size-12"
                   onClick={endCall}
                 >
                   <PhoneOff className="h-6 w-6" />
@@ -233,16 +265,16 @@ export default function Dashboard() {
 
                 <Button
                   variant="secondary"
-                  size="lg"
-                  className="rounded-full h-12 w-12"
+                  size="sm"
+                  className="rounded-full md:size-12"
                 >
                   <MessageSquare className="h-6 w-6" />
                 </Button>
 
                 <Button
                   variant="secondary"
-                  size="lg"
-                  className="rounded-full h-12 w-12"
+                  size="sm"
+                  className="rounded-full md:size-12"
                 >
                   <Settings className="h-6 w-6" />
                 </Button>
@@ -497,7 +529,10 @@ export default function Dashboard() {
                             <Target className="w-4 h-4 mr-1" />
                             Goals
                           </Button>
-                          <Button onClick={()=>startCall(course.title)} className="px-2 gap-1">
+                          <Button
+                            onClick={() => startCall(course.title)}
+                            className="px-2 gap-1"
+                          >
                             <Play className="w-4 h-4 mr-1" />
                             Continue
                           </Button>
@@ -561,7 +596,7 @@ export default function Dashboard() {
                           >
                             Live Soon
                           </Badge>
-                          <Button onClick={()=> startCall(session.instructor)}>
+                          <Button onClick={() => startCall(session.instructor)}>
                             <Calendar className="w-4 h-4 mr-2" />
                             Join Session
                           </Button>

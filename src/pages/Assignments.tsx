@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
+import {
   FileText,
   Calendar,
   Clock,
@@ -23,8 +23,7 @@ import {
   Eye,
   Send,
   Paperclip,
-  Star,
-  BarChart3
+  BarChart3,
 } from "lucide-react";
 
 export default function Assignments() {
@@ -46,23 +45,24 @@ export default function Assignments() {
       points: 100,
       earnedPoints: null,
       type: "analysis",
-      description: "Analyze and refactor a complex React component hierarchy, implementing best practices for component composition, state management, and performance optimization.",
+      description:
+        "Analyze and refactor a complex React component hierarchy, implementing best practices for component composition, state management, and performance optimization.",
       requirements: [
         "Identify component responsibilities and boundaries",
         "Implement proper props interface design",
         "Optimize render performance using memoization",
         "Write comprehensive unit tests",
-        "Document architectural decisions"
+        "Document architectural decisions",
       ],
       timeEstimate: "8-12 hours",
       attachments: ["component-starter.zip", "requirements.pdf"],
       aiHints: [
         "Consider using React.memo for expensive components",
         "Look for opportunities to lift state up",
-        "Use custom hooks to separate logic from presentation"
+        "Use custom hooks to separate logic from presentation",
       ],
       feedback: null,
-      submissionFormat: "GitHub repository link + reflection document"
+      submissionFormat: "GitHub repository link + reflection document",
     },
     {
       id: 2,
@@ -76,23 +76,28 @@ export default function Assignments() {
       points: 150,
       earnedPoints: null,
       type: "implementation",
-      description: "Implement and train a neural network model for image classification using TensorFlow, including data preprocessing, model architecture design, and performance evaluation.",
+      description:
+        "Implement and train a neural network model for image classification using TensorFlow, including data preprocessing, model architecture design, and performance evaluation.",
       requirements: [
         "Build CNN architecture from scratch",
         "Implement data augmentation pipeline",
         "Achieve minimum 85% accuracy on test set",
         "Create visualization of training metrics",
-        "Compare with baseline models"
+        "Compare with baseline models",
       ],
       timeEstimate: "15-20 hours",
-      attachments: ["dataset.zip", "baseline_model.py", "evaluation_rubric.pdf"],
+      attachments: [
+        "dataset.zip",
+        "baseline_model.py",
+        "evaluation_rubric.pdf",
+      ],
       aiHints: [
         "Start with a simple architecture and gradually add complexity",
         "Use transfer learning for better initial weights",
-        "Monitor overfitting with validation curves"
+        "Monitor overfitting with validation curves",
       ],
       feedback: "Under review - initial submission looks promising!",
-      submissionFormat: "Jupyter notebook + trained model files"
+      submissionFormat: "Jupyter notebook + trained model files",
     },
     {
       id: 3,
@@ -106,23 +111,25 @@ export default function Assignments() {
       points: 75,
       earnedPoints: 68,
       type: "research",
-      description: "Conduct comprehensive user research for a mobile app redesign, including user interviews, usability testing, and data-driven design recommendations.",
+      description:
+        "Conduct comprehensive user research for a mobile app redesign, including user interviews, usability testing, and data-driven design recommendations.",
       requirements: [
         "Interview at least 5 target users",
         "Conduct usability testing sessions",
         "Create user personas and journey maps",
         "Provide design recommendations with rationale",
-        "Present findings in professional format"
+        "Present findings in professional format",
       ],
       timeEstimate: "12-15 hours",
       attachments: ["interview_template.docx", "usability_checklist.pdf"],
       aiHints: [
         "Use empathy mapping to understand user emotions",
         "Look for patterns across different user segments",
-        "Quantify usability issues with severity ratings"
+        "Quantify usability issues with severity ratings",
       ],
-      feedback: "Excellent research methodology! The user personas are well-developed. Consider adding more quantitative metrics to support your qualitative findings.",
-      submissionFormat: "Research report + presentation slides"
+      feedback:
+        "Excellent research methodology! The user personas are well-developed. Consider adding more quantitative metrics to support your qualitative findings.",
+      submissionFormat: "Research report + presentation slides",
     },
     {
       id: 4,
@@ -136,23 +143,28 @@ export default function Assignments() {
       points: 120,
       earnedPoints: 95,
       type: "design",
-      description: "Design a scalable cloud architecture for a high-traffic e-commerce application, including load balancing, auto-scaling, database design, and disaster recovery.",
+      description:
+        "Design a scalable cloud architecture for a high-traffic e-commerce application, including load balancing, auto-scaling, database design, and disaster recovery.",
       requirements: [
         "Design multi-tier architecture diagram",
         "Calculate cost estimates for different load scenarios",
         "Implement basic infrastructure using Terraform",
         "Document security considerations",
-        "Plan disaster recovery strategy"
+        "Plan disaster recovery strategy",
       ],
       timeEstimate: "10-14 hours",
-      attachments: ["architecture_template.drawio", "aws_pricing_calculator.xlsx"],
+      attachments: [
+        "architecture_template.drawio",
+        "aws_pricing_calculator.xlsx",
+      ],
       aiHints: [
         "Consider using CDN for static content delivery",
         "Implement database read replicas for better performance",
-        "Use containerization for better scalability"
+        "Use containerization for better scalability",
       ],
-      feedback: "Good architectural thinking, but submission was 2 days late. The security considerations section needs more detail about encryption at rest and in transit.",
-      submissionFormat: "Architecture diagram + Terraform code + documentation"
+      feedback:
+        "Good architectural thinking, but submission was 2 days late. The security considerations section needs more detail about encryption at rest and in transit.",
+      submissionFormat: "Architecture diagram + Terraform code + documentation",
     },
     {
       id: 5,
@@ -166,30 +178,33 @@ export default function Assignments() {
       points: 100,
       earnedPoints: null,
       type: "project",
-      description: "Create an interactive dashboard for analyzing e-commerce sales data using Python, Pandas, and Plotly. The dashboard should provide insights for business decision-making.",
+      description:
+        "Create an interactive dashboard for analyzing e-commerce sales data using Python, Pandas, and Plotly. The dashboard should provide insights for business decision-making.",
       requirements: [
         "Clean and preprocess the provided dataset",
         "Create at least 5 different visualization types",
         "Implement interactive filtering and drill-down capabilities",
         "Include statistical analysis and trend identification",
-        "Deploy dashboard using Streamlit or Dash"
+        "Deploy dashboard using Streamlit or Dash",
       ],
       timeEstimate: "12-16 hours",
       attachments: ["sales_data.csv", "dashboard_examples.pdf"],
       aiHints: [
         "Start with exploratory data analysis to understand patterns",
         "Use color and layout strategically for better UX",
-        "Consider adding predictive analytics features"
+        "Consider adding predictive analytics features",
       ],
       feedback: null,
-      submissionFormat: "Deployed dashboard + source code + analysis report"
-    }
+      submissionFormat: "Deployed dashboard + source code + analysis report",
+    },
   ];
 
-  const filteredAssignments = assignments.filter(assignment => {
-    const matchesSearch = assignment.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         assignment.course.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = selectedFilter === "all" || assignment.status === selectedFilter;
+  const filteredAssignments = assignments.filter((assignment) => {
+    const matchesSearch =
+      assignment.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      assignment.course.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter =
+      selectedFilter === "all" || assignment.status === selectedFilter;
     return matchesSearch && matchesFilter;
   });
 
@@ -242,10 +257,26 @@ export default function Assignments() {
 
   const filters = [
     { id: "all", name: "All Assignments", count: assignments.length },
-    { id: "pending", name: "Pending", count: assignments.filter(a => a.status === "pending").length },
-    { id: "submitted", name: "Submitted", count: assignments.filter(a => a.status === "submitted").length },
-    { id: "graded", name: "Graded", count: assignments.filter(a => a.status === "graded").length },
-    { id: "upcoming", name: "Upcoming", count: assignments.filter(a => a.status === "upcoming").length },
+    {
+      id: "pending",
+      name: "Pending",
+      count: assignments.filter((a) => a.status === "pending").length,
+    },
+    {
+      id: "submitted",
+      name: "Submitted",
+      count: assignments.filter((a) => a.status === "submitted").length,
+    },
+    {
+      id: "graded",
+      name: "Graded",
+      count: assignments.filter((a) => a.status === "graded").length,
+    },
+    {
+      id: "upcoming",
+      name: "Upcoming",
+      count: assignments.filter((a) => a.status === "upcoming").length,
+    },
   ];
 
   return (
@@ -254,7 +285,9 @@ export default function Assignments() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className=" text-lg sm:text-3xl md:text-4xl font-bold">Assignments</h1>
+            <h1 className=" text-lg sm:text-3xl md:text-4xl font-bold">
+              Assignments
+            </h1>
             <p className="text-muted-foreground text-sm md:text-lg">
               Track your assignments and get AI-powered assistance
             </p>
@@ -353,184 +386,192 @@ export default function Assignments() {
 
       {/* Assignments List */}
       <div className="space-y-6">
-  {filteredAssignments.map((assignment) => (
-    <Card
-      key={assignment.id}
-      className={`glass-card p-4 sm:p-5 md:p-6 hover-lift border-l-4 ${getPriorityColor(assignment.priority)}`}
-    >
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
-          {/* Left Header */}
-          <div className="space-y-2 flex-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge className={getStatusColor(assignment.status)}>
-                {getStatusIcon(assignment.status)}
-                <span className="ml-1 capitalize">{assignment.status}</span>
-              </Badge>
-              <Badge variant="outline">{assignment.course}</Badge>
-              <Badge variant="secondary" className="text-xs">
-                {assignment.priority} priority
-              </Badge>
-            </div>
-            <h3 className="text-lg sm:text-xl font-semibold">
-              {assignment.title}
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              by {assignment.instructor}
-            </p>
-          </div>
+        {filteredAssignments.map((assignment) => (
+          <Card
+            key={assignment.id}
+            className={`glass-card p-4 sm:p-5 md:p-6 hover-lift border-l-4 ${getPriorityColor(
+              assignment.priority
+            )}`}
+          >
+            <div className="space-y-6">
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+                {/* Left Header */}
+                <div className="space-y-2 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge className={getStatusColor(assignment.status)}>
+                      {getStatusIcon(assignment.status)}
+                      <span className="ml-1 capitalize">
+                        {assignment.status}
+                      </span>
+                    </Badge>
+                    <Badge variant="outline">{assignment.course}</Badge>
+                    <Badge variant="secondary" className="text-xs">
+                      {assignment.priority} priority
+                    </Badge>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-semibold">
+                    {assignment.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    by {assignment.instructor}
+                  </p>
+                </div>
 
-          {/* Points and Due Date */}
-          <div className="flex gap-6 sm:text-right text-sm justify-between sm:justify-end">
-            <div>
-              <p className="text-muted-foreground">Points</p>
-              <p className="font-semibold">
-                {assignment.earnedPoints ? `${assignment.earnedPoints}/` : ""}
-                {assignment.points}
+                {/* Points and Due Date */}
+                <div className="flex gap-6 sm:text-right text-sm justify-between sm:justify-end">
+                  <div>
+                    <p className="text-muted-foreground">Points</p>
+                    <p className="font-semibold">
+                      {assignment.earnedPoints
+                        ? `${assignment.earnedPoints}/`
+                        : ""}
+                      {assignment.points}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Due Date</p>
+                    <p className="font-semibold">{assignment.dueDate}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Description */}
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                {assignment.description}
               </p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">Due Date</p>
-              <p className="font-semibold">{assignment.dueDate}</p>
-            </div>
-          </div>
-        </div>
 
-        {/* Description */}
-        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-          {assignment.description}
-        </p>
+              {/* Requirements */}
+              <div className="space-y-2">
+                <h4 className="font-medium">Requirements:</h4>
+                <ul className="space-y-1">
+                  {assignment.requirements.map((req, index) => (
+                    <li
+                      key={index}
+                      className="text-sm text-muted-foreground flex items-start gap-2"
+                    >
+                      <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></span>
+                      {req}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-        {/* Requirements */}
-        <div className="space-y-2">
-          <h4 className="font-medium">Requirements:</h4>
-          <ul className="space-y-1">
-            {assignment.requirements.map((req, index) => (
-              <li
-                key={index}
-                className="text-sm text-muted-foreground flex items-start gap-2"
-              >
-                <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                {req}
-              </li>
-            ))}
-          </ul>
-        </div>
+              {/* Assignment Details */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div className="space-y-1">
+                  <p className="font-medium">Time Estimate</p>
+                  <p className="text-muted-foreground">
+                    {assignment.timeEstimate}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <p className="font-medium">Submission Format</p>
+                  <p className="text-muted-foreground">
+                    {assignment.submissionFormat}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <p className="font-medium">Type</p>
+                  <Badge variant="outline" className="capitalize">
+                    {assignment.type}
+                  </Badge>
+                </div>
+              </div>
 
-        {/* Assignment Details */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="space-y-1">
-            <p className="font-medium">Time Estimate</p>
-            <p className="text-muted-foreground">{assignment.timeEstimate}</p>
-          </div>
-          <div className="space-y-1">
-            <p className="font-medium">Submission Format</p>
-            <p className="text-muted-foreground">
-              {assignment.submissionFormat}
-            </p>
-          </div>
-          <div className="space-y-1">
-            <p className="font-medium">Type</p>
-            <Badge variant="outline" className="capitalize">
-              {assignment.type}
-            </Badge>
-          </div>
-        </div>
+              {/* Attachments */}
+              {assignment.attachments.length > 0 && (
+                <div className="space-y-2">
+                  <p className="font-medium">Attachments:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {assignment.attachments.map((attachment, index) => (
+                      <Button key={index} variant="outline" size="sm">
+                        <Download className="w-3 h-3 mr-1" />
+                        {attachment}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-        {/* Attachments */}
-        {assignment.attachments.length > 0 && (
-          <div className="space-y-2">
-            <p className="font-medium">Attachments:</p>
-            <div className="flex flex-wrap gap-2">
-              {assignment.attachments.map((attachment, index) => (
-                <Button key={index} variant="outline" size="sm">
-                  <Download className="w-3 h-3 mr-1" />
-                  {attachment}
+              {/* AI Hints */}
+              <div className="glass-card p-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <Brain className="w-4 h-4 text-primary" />
+                  <span className="font-medium">AI Study Hints</span>
+                </div>
+                <ul className="space-y-1">
+                  {assignment.aiHints.map((hint, index) => (
+                    <li
+                      key={index}
+                      className="text-sm text-muted-foreground flex items-start gap-2"
+                    >
+                      <span className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0"></span>
+                      {hint}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Feedback */}
+              {assignment.feedback && (
+                <div className="bg-muted/30 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <MessageSquare className="w-4 h-4" />
+                    <span className="font-medium">Instructor Feedback</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {assignment.feedback}
+                  </p>
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="flex flex-wrap gap-3 pt-2">
+                {assignment.status === "pending" ||
+                assignment.status === "upcoming" ? (
+                  <>
+                    <Button>
+                      <Edit className="w-4 h-4 mr-2" />
+                      Work on Assignment
+                    </Button>
+                    <Button variant="outline">
+                      <Brain className="w-4 h-4 mr-2" />
+                      Get AI Help
+                    </Button>
+                  </>
+                ) : assignment.status === "submitted" ? (
+                  <>
+                    <Button variant="outline">
+                      <Eye className="w-4 h-4 mr-2" />
+                      View Submission
+                    </Button>
+                    <Button variant="outline">
+                      <Edit className="w-4 h-4 mr-2" />
+                      Edit Submission
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button variant="outline">
+                      <Eye className="w-4 h-4 mr-2" />
+                      View Feedback
+                    </Button>
+                    <Button variant="outline">
+                      <Download className="w-4 h-4 mr-2" />
+                      Download Grade Report
+                    </Button>
+                  </>
+                )}
+                <Button variant="outline">
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  Ask Question
                 </Button>
-              ))}
+              </div>
             </div>
-          </div>
-        )}
-
-        {/* AI Hints */}
-        <div className="glass-card p-4 space-y-3">
-          <div className="flex items-center gap-2">
-            <Brain className="w-4 h-4 text-primary" />
-            <span className="font-medium">AI Study Hints</span>
-          </div>
-          <ul className="space-y-1">
-            {assignment.aiHints.map((hint, index) => (
-              <li
-                key={index}
-                className="text-sm text-muted-foreground flex items-start gap-2"
-              >
-                <span className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0"></span>
-                {hint}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Feedback */}
-        {assignment.feedback && (
-          <div className="bg-muted/30 rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <MessageSquare className="w-4 h-4" />
-              <span className="font-medium">Instructor Feedback</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              {assignment.feedback}
-            </p>
-          </div>
-        )}
-
-        {/* Actions */}
-        <div className="flex flex-wrap gap-3 pt-2">
-          {assignment.status === "pending" || assignment.status === "upcoming" ? (
-            <>
-              <Button>
-                <Edit className="w-4 h-4 mr-2" />
-                Work on Assignment
-              </Button>
-              <Button variant="outline">
-                <Brain className="w-4 h-4 mr-2" />
-                Get AI Help
-              </Button>
-            </>
-          ) : assignment.status === "submitted" ? (
-            <>
-              <Button variant="outline">
-                <Eye className="w-4 h-4 mr-2" />
-                View Submission
-              </Button>
-              <Button variant="outline">
-                <Edit className="w-4 h-4 mr-2" />
-                Edit Submission
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button variant="outline">
-                <Eye className="w-4 h-4 mr-2" />
-                View Feedback
-              </Button>
-              <Button variant="outline">
-                <Download className="w-4 h-4 mr-2" />
-                Download Grade Report
-              </Button>
-            </>
-          )}
-          <Button variant="outline">
-            <MessageSquare className="w-4 h-4 mr-2" />
-            Ask Question
-          </Button>
-        </div>
+          </Card>
+        ))}
       </div>
-    </Card>
-  ))}
-</div>
-
 
       {/* AI Assistant Panel */}
       <Card className="glass-card p-6">
@@ -541,16 +582,18 @@ export default function Assignments() {
             </div>
             <div>
               <h3 className="text-lg font-semibold">AI Assignment Assistant</h3>
-              <p className="text-muted-foreground">Get personalized help with your assignments</p>
+              <p className="text-muted-foreground">
+                Get personalized help with your assignments
+              </p>
             </div>
           </div>
-          
+
           <div className="space-y-3">
             <Textarea
               placeholder="Ask me anything about your assignments - I can help with understanding requirements, planning approaches, or reviewing your work..."
               value={aiHelp}
               onChange={(e) => setAiHelp(e.target.value)}
-              className="min-h-[100px]"
+              className="min-h-[120px]"
             />
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
