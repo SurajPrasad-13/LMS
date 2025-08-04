@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { Navigate, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { 
-  BookOpen, 
-  Calendar, 
-  ClipboardList, 
-  Trophy, 
-  Bot, 
+import {
+  BookOpen,
+  Calendar,
+  ClipboardList,
+  Trophy,
+  Bot,
   Video,
   User,
   Bell,
   Search,
   Menu,
-  X
+  X,
 } from "lucide-react";
 
 const navigation = [
@@ -27,6 +27,8 @@ const navigation = [
 
 export default function Layout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setisLoggedIn] = useState(true);
+  const navigte = useNavigate()
 
   return (
     <div className="min-h-screen bg-background ">
@@ -71,18 +73,60 @@ export default function Layout() {
               </Button>
               <Button variant="ghost" size="sm" className="relative">
                 <Bell className="w-4 h-4" />
-                <span className="absolute -top-1 right-1 w-4 h-5 rounded-full text-xs text-red-400">1</span>
+                <span className="absolute -top-1 right-1 w-4 h-5 rounded-full text-xs text-red-400">
+                  1
+                </span>
               </Button>
-              <Button variant="ghost" size="sm">
-                <User className="w-4 h-4" />
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
+
+              <div
+                className="relative"
+                onMouseEnter={(e) => {
+                  e.currentTarget
+                    .querySelector(".dropdown")
+                    .classList.remove("invisible", "opacity-0");
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget
+                    .querySelector(".dropdown")
+                    .classList.add("invisible", "opacity-0");
+                }}
+              >
+                {/* Admin section */}
+                <div className="hidden sm:flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2 cursor-pointer">
+                  <Button variant="ghost" size="sm">
+                    <User className="w-4 h-4" />
+                  </Button>
+                </div>
+
+                {/* Dropdown */}
+                <div className="dropdown invisible opacity-0 transition-all duration-200 absolute right-0 top-full mt-2 bg-white text-black rounded-lg shadow-lg p-4 w-40 z-50">
+                  {isLoggedIn ? (
+                    <button onClick={()=>navigte('/logOut')} className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100">
+                      Logout
+                    </button>
+                  ) : (
+                    <button onClick={()=>navigte('/login')} className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100">
+                      Login
+                    </button>
+                  )}
+
+                  <button className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100">
+                    Profile
+                  </button>
+                </div>
+              </div>
+
+              <Button
+                variant="ghost"
+                size="sm"
                 className="lg:hidden"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
-                {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                {isMobileMenuOpen ? (
+                  <X className="w-4 h-4" />
+                ) : (
+                  <Menu className="w-4 h-4" />
+                )}
               </Button>
             </div>
           </div>

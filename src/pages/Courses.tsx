@@ -209,7 +209,7 @@ export default function Courses() {
    const startCall = (instructorName) => {
      setIsInCall(true);
      setcurrentinstructor(instructorName);
-     setSecondsLeft(5);
+     setSecondsLeft(15);
    };
  
    const endCall = () => {

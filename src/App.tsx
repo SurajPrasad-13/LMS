@@ -12,7 +12,8 @@ import Achievements from "./pages/Achievements";
 import AITutor from "./pages/AITutor";
 import Schedule from "./pages/Schedule";
 import NotFound from "./pages/NotFound";
-import JoinSessionForm from "./pages/JoinSessionForm";
+import Login from "./pages/Login";
+import LogOut from "./pages/LogOut";
 
 
 const queryClient = new QueryClient();
@@ -32,6 +33,8 @@ const App = () => (
             <Route path="achievements" element={<Achievements />} />
             <Route path="ai-tutor" element={<AITutor />} />
             <Route path="schedule" element={<Schedule />} />
+            <Route path="login" element={<Login />} />
+            <Route path="logout" element={<LogOut/>} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

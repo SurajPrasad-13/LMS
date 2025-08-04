@@ -150,7 +150,7 @@ export default function Dashboard() {
   const startCall = (instructorName) => {
     setIsInCall(true);
     setcurrentinstructor(instructorName);
-    setSecondsLeft(5);
+    setSecondsLeft(15);
   };
 
   const endCall = () => {
@@ -530,7 +530,6 @@ export default function Dashboard() {
                             Goals
                           </Button>
                           <Button
-                            onClick={() => startCall(course.title)}
                             className="px-2 gap-1"
                           >
                             <Play className="w-4 h-4 mr-1" />
