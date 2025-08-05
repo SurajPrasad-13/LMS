@@ -455,18 +455,18 @@ export default function Dashboard() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Continue Learning */}
             <div className="lg:col-span-2 space-y-6   ">
-              <div className="flex items-center justify-between w-80 sm:w-[640px] md:w-[760px] lg:w-auto mx-auto">
+              <div className="flex items-center justify-between w-[calc(100%-32px)] sm:w-[640px] md:w-[760px] lg:w-auto mx-auto">
                 <h2 className="text-2xl font-bold">Continue Learning</h2>
                 <Button variant="ghost">
                   View All <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4 m-0">
                 {recentCourses.map((course) => (
                   <Card
                     key={course.id}
-                    className="glass-card w-76 sm:w-[640px] md:w-[760px] lg:w-auto mx-auto  p-4 hover-lift group relative overflow-hidden"
+                    className="glass-card w-[calc(100%-32px)] sm:w-[640px] md:w-[760px] lg:w-auto mx-auto  p-4 hover-lift group relative overflow-hidden"
                   >
                     {/* <div className="absolute top-4 right-4">
                   <Button size="sm" variant="ghost">
@@ -544,7 +544,7 @@ export default function Dashboard() {
 
               {/* Upcoming Live Sessions */}
               <div className="  w-full -ml-2">
-                <div className="flex items-center justify-between mx-auto  my-5 w-78 sm:w-[640px] md:w-[760px] lg:w-auto">
+                <div className="flex items-center justify-between mx-auto  my-5 w-[calc(100%-12px)] sm:w-[640px] md:w-[760px] lg:w-auto ">
                   <h2 className=" texl-lg sm:text-xl md:text-2xl font-bold">
                     Upcoming Live Sessions
                   </h2>
@@ -556,7 +556,7 @@ export default function Dashboard() {
                   {upcomingSessions.map((session) => (
                     <Card
                       key={session.id}
-                      className="glass-card p-2 mx-auto  hover-lift group border-x-4 border-x-primary w-auto sm:w-[640px] md:w-[760px] lg:w-auto"
+                      className="glass-card p-2 mx-auto  hover-lift group border-x-4 border-x-primary w-[calc(100%-12px)] sm:w-[640px] md:w-[760px] lg:w-auto"
                     >
                       <div className="flex flex-col sm:flex-row items-center justify-between">
                         <div className="flex items-center space-x-4">
@@ -610,7 +610,7 @@ export default function Dashboard() {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* AI Tutor Quick Access */}
-              <Card className="glass-card p-6">
+              <Card className="glass-card p-6 w-[calc(100%-32px)]">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 bg-gradient-learning rounded-2xl flex items-center justify-center mx-auto">
                     <Brain className="w-8 h-8 text-white" />
@@ -628,7 +628,7 @@ export default function Dashboard() {
               </Card>
 
               {/* Recent Achievements */}
-              <Card className="glass-card p-6">
+              <Card className="glass-card p-6 w-[calc(100%-32px)]">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold">Recent Achievements</h3>
                   <Button variant="ghost" size="sm">
@@ -667,7 +667,7 @@ export default function Dashboard() {
               </Card>
 
               {/* Live Notifications */}
-              <Card className="glass-card p-6">
+              <Card className="glass-card p-6 w-[calc(100%-32px)]">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold">Live Updates</h3>
                   <Badge variant="outline" className="bg-primary/10">
@@ -703,7 +703,7 @@ export default function Dashboard() {
               </Card>
 
               {/* Quick Stats */}
-              <Card className="glass-card p-6">
+              <Card className="glass-card p-6 w-[calc(100%-32px)]">
                 <h3 className="text-lg font-semibold mb-4">This Week</h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
