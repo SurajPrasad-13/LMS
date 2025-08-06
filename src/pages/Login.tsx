@@ -22,7 +22,7 @@ const Login = () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log(data);
     setIsLoggedIn(true);
-    navigate("/layout");
+    navigate("/dashboard");
   };
   const [showPass, setshowPass] = useState(false)
 

@@ -18,7 +18,7 @@ import { useAuth } from "../Context/AuthContext";
 import Login from "@/pages/Login";
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: BookOpen },
+  { name: "Dashboard", href: "/dashboard", icon: BookOpen },
   { name: "My Courses", href: "/my-courses", icon: BookOpen },
   { name: "Live Sessions", href: "/sessions", icon: Video },
   { name: "Assignments", href: "/assignments", icon: ClipboardList },

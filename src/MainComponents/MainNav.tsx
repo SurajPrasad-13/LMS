@@ -8,7 +8,7 @@ import { useAuth } from "../Context/AuthContext";
 import Login from "../pages/Login";
 const MainNav = () => {
   const navbar = [
-    { href: "/home", title: "Home" },
+    { href: "/", title: "Home" },
     { href: "/about", title: "About" },
     { href: "/courses", title: "Courses" },
     { href: "/classes", title: "Classes" },
@@ -42,7 +42,7 @@ const MainNav = () => {
                   className={({ isActive }) =>
                     ` transition-all duration-200 px-[2px] lg:px-2 text-[15px] lg:text-[17px]  ${
                       isActive
-                        ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 px-4  rounded-xl font-semibold border-none "
+                        ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 md:px-4  rounded-xl font-semibold border-none "
                         : "text-gray-600 hover:text-black hover:-translate-y-[2px] inactive-Link "
                     }`
                   }
@@ -58,10 +58,10 @@ const MainNav = () => {
             <div className="flex items-center ">
               <NavLink
                 className={({ isActive }) =>
-                  ` transition-all duration-200 px-2 lg:px-3.5 py-1.5 text-[15px] lg:text-[17px]   border-2 border-black rounded-lg ${
+                  ` transition-all duration-200 px-2 lg:px-3.5 py-1.5 text-[15px] lg:text-[17px]   border-2 border-[#ffae6c] rounded-lg ${
                     isActive
                       ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 px-4 rounded-lg font-semibold border-none "
-                      : "text-gray-600 hover:text-white hover:bg-black hover:-translate-y-[2px] "
+                      : "text-gray-600 hover:text-white hover:bg-[#ffb845] hover:border-[#ffb845] hover:-translate-y-[2px] "
                   }`
                 }
                 to="/login"
