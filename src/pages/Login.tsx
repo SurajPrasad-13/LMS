@@ -22,17 +22,17 @@ const Login = () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log(data);
     setIsLoggedIn(true);
-    navigate("/");
+    navigate("/layout");
   };
   const [showPass, setshowPass] = useState(false)
 
   return (
     <div className="flex items-center bg-black/70 justify-center h-[100vh]">
-      <div className="py-5 px-7 md:px-10 bg-white backdrop-blur-md  rounded-lg w-[calc(100%-32px)] sm:w-[320px] md:w-[380px] lg:w-[440px]">
-        <h1 className="text-3xl font-bold my-2 md:my-4">Log in</h1>
+      <div className=" py-2 md:py-5 px-4 sm:px-7 md:px-10 bg-white backdrop-blur-md  rounded-lg w-[calc(100%-50px)] sm:w-[320px] md:w-[380px] lg:w-[440px]">
+        <h1 className=" text-xl sm:text-2xl md:text-3xl font-bold my-2 md:my-4">Log in</h1>
         <form action="" className="w-full" onSubmit={handleSubmit(handleLogin)}>
-          <div className="">
-            <label htmlFor="UserName">UserName</label>
+          <div className=" text-sm md:text-[16px]">
+            <label htmlFor="UserName" >UserName</label>
             <div className="  transition-all duration-100 p-2 rounded-md my-2 w-full border border-gray-400   focus:outline-blue-500 flex items-center justify-start gap-2">
               <FaUser className="text-blue-500 text-xl" />
               <input
@@ -55,11 +55,11 @@ const Login = () => {
             </div>
             {errors.username && (
               <p className="text-xs mb-2 text-red-500">
-                {errors.username.message}{" "}
+                {errors.username.message as string}{" "}
               </p>
             )}
           </div>
-          <div>
+          <div className="text-sm md:text-[16px]">
             <label htmlFor="Password">Password</label>
             <div className="transition-all duration-100 p-2 rounded-md my-2 w-full border border-gray-400 focus:outline-blue-500 flex items-center justify-start gap-2">
               <TbPasswordFingerprint className="text-blue-500 text-2xl" />
@@ -85,7 +85,7 @@ const Login = () => {
               </div>
             </div>
             {errors.password && (
-              <p className="text-xs text-red-500"> {errors.password.message}</p>
+              <p className="text-xs text-red-500"> {errors.password.message as string}</p>
             )}
           </div>
           <div className="mt-3 text-center">

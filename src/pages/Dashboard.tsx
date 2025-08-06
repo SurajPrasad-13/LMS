@@ -371,7 +371,7 @@ export default function Dashboard() {
                           </div>
                           <Progress
                             value={goal.progress}
-                            className="h-2 bg-white/20"
+                            className="h-2 bg-white/40"
                           />
                         </div>
                       ))}
@@ -468,12 +468,6 @@ export default function Dashboard() {
                     key={course.id}
                     className="glass-card w-[calc(100%-32px)] sm:w-[640px] md:w-[760px] lg:w-auto mx-auto  p-4 hover-lift group relative overflow-hidden"
                   >
-                    {/* <div className="absolute top-4 right-4">
-                  <Button size="sm" variant="ghost">
-                    <MoreVertical className="w-4 h-4" />
-                  </Button>
-                </div> */}
-
                     <div className="flex items-start justify-between mb-4">
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">

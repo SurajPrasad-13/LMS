@@ -19,14 +19,12 @@ import Login from "@/pages/Login";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: BookOpen },
-  { name: "Contact Us", href: "/contact", icon: BookOpen },
-  { name: "My Courses", href: "/courses", icon: BookOpen },
+  { name: "My Courses", href: "/my-courses", icon: BookOpen },
   { name: "Live Sessions", href: "/sessions", icon: Video },
   { name: "Assignments", href: "/assignments", icon: ClipboardList },
   { name: "Achievements", href: "/achievements", icon: Trophy },
   { name: "AI Tutor", href: "/ai-tutor", icon: Bot },
   { name: "Schedule", href: "/schedule", icon: Calendar },
-  
 ];
 
 export default function Layout() {
@@ -39,14 +37,12 @@ export default function Layout() {
   // };
   const logOut = () => {
     setIsLoggedIn(false);
-    navigate("/logout"); // or "/"
+    // navigate("/logout"); // or "/"
   };
 
   return (
     <>
       {isLoggedIn ? (
-        <Login />
-      ) : (
         <div className="min-h-screen bg-background ">
           {/* Header */}
           <header className="border-b border-border/50 bg-card/50 w-full lg:px-2  backdrop-blur-xl sticky top-0 z-50">
@@ -58,7 +54,7 @@ export default function Layout() {
                     <BookOpen className="size-5 text-white" />
                   </div>
                   <span className="text-lg font-bold bg-gradient-learning bg-clip-text text-transparent">
-                    EduFlow AI
+                    Sudo LMS AI
                   </span>
                 </div>
 
@@ -71,7 +67,7 @@ export default function Layout() {
                       className={({ isActive }) =>
                         `flex items-center space-x-2 px-2 py-2 rounded text-sm  font-medium transition-all duration-200 ${
                           isActive
-                            ? "bg-primary text-primary-foreground shadow-learning"
+                            ? "bg-gradient-learning text-primary-foreground shadow-learning"
                             : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                         }`
                       }
@@ -86,16 +82,16 @@ export default function Layout() {
                 <div className="flex items-center gap-1">
                   <Button
                     size="sm"
-                    className=" sm:flex p-2 bg-transparent text-black"
+                    className=" sm:flex p-2 bg-transparent hover:bg-gradient-learning text-black"
                   >
                     <Search className="w-4 h-4" />
                   </Button>
 
                   <Button
                     size="sm"
-                    className="relative p-2 bg-transparent text-black"
+                    className="relative p-2 bg-transparent hover:bg-gradient-learning text-black"
                   >
-                    <Bell className="w-4 h-4" />
+                    <Bell className="w-4 h-4 " />
                     <span className="absolute -top-1 right-1 w-4 h-5 rounded-full text-xs text-red-400">
                       1
                     </span>
@@ -117,7 +113,7 @@ export default function Layout() {
                     {/* Admin section */}
                     <div className=" sm:flex items-center bg-white/10 rounded-lg py-2 cursor-pointer">
                       <Button
-                        className="p-2 sm:px-3 bg-transparent text-black"
+                        className="p-2 sm:px-3 bg-transparent text-black hover:bg-gradient-learning "
                         size="sm"
                       >
                         <User className="w-4 h-4" />
@@ -194,7 +190,8 @@ export default function Layout() {
             <Outlet />
           </main>
         </div>
-        
+      ) : (
+        <Login />
       )}
     </>
   );
