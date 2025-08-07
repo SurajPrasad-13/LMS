@@ -19,12 +19,12 @@ import Login from "@/pages/Login";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: BookOpen },
-  { name: "My Courses", href: "/my-courses", icon: BookOpen },
-  { name: "Live Sessions", href: "/sessions", icon: Video },
-  { name: "Assignments", href: "/assignments", icon: ClipboardList },
-  { name: "Achievements", href: "/achievements", icon: Trophy },
-  { name: "AI Tutor", href: "/ai-tutor", icon: Bot },
-  { name: "Schedule", href: "/schedule", icon: Calendar },
+  { name: "My Courses", href: "/dashboard/my-courses", icon: BookOpen },
+  { name: "Live Sessions", href: "/dashboard/sessions", icon: Video },
+  { name: "Assignments", href: "/dashboard/assignments", icon: ClipboardList },
+  { name: "Achievements", href: "/dashboard/achievements", icon: Trophy },
+  { name: "AI Tutor", href: "/dashboard/ai-tutor", icon: Bot },
+  { name: "Schedule", href: "/dashboard/schedule", icon: Calendar },
 ];
 
 export default function Layout() {
@@ -32,7 +32,7 @@ export default function Layout() {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   console.log(isLoggedIn);
   const navigate = useNavigate();
-  
+
   const logOut = () => {
     setIsLoggedIn(false);
     navigate("/"); // or "/"
@@ -62,6 +62,7 @@ export default function Layout() {
                     <NavLink
                       key={item.name}
                       to={item.href}
+                      end={item.href === "/dashboard"}
                       className={({ isActive }) =>
                         `flex items-center space-x-2 px-2 py-2 rounded text-sm  font-medium transition-all duration-200 ${
                           isActive
