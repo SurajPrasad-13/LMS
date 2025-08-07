@@ -71,46 +71,6 @@ const MainNav = () => {
             {isOpen ? <RxCross2 /> : <RxHamburgerMenu />}
           </div>
         </div>
-
-        {/* <motion.div
-        initial={{x:50,opacity:0}}
-        animate={{x:0,opacity:1}}
-        transition={{duration:3}}
-          className={` absolute w-30 sm:w-36 right-0 top-12 md:hidden h-[90.5vh] bg-white z-40 transition-all duration-300  ${
-            isOpen ? " flex flex-col items-center  justify-around " : "hidden"
-          } `}
-        >
-          {navbar.map((navigation) => (
-            <NavLink
-              className={({ isActive }) =>
-                ` transition-all duration-200 px-2  ${
-                  isActive
-                    ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 px-4  rounded-xl font-semibold border-none "
-                    : "text-gray-600 hover:text-black hover:-translate-y-[2px] inactive-Link "
-                }`
-              }
-              key={navigation.title}
-              to={navigation.href}
-            >
-              {" "}
-              {navigation.title}{" "}
-            </NavLink>
-          ))}
-          <div className="">
-            <NavLink
-              className={({ isActive }) =>
-                ` transition-all duration-200 ${
-                  isActive
-                    ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 px-4 rounded-xl font-semibold border-none "
-                    : "text-gray-600 hover:text-black hover:-translate-y-[3px] inactive-Link "
-                }`
-              }
-              to="/login"
-            >
-              Login
-            </NavLink>
-          </div>
-        </motion.div> */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -148,7 +108,6 @@ const MainNav = () => {
                     }`
                   }
                 >
-                  {/* <span>Login</span> */}
                   Login
                 </NavLink>
               </div>

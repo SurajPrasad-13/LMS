@@ -32,12 +32,10 @@ export default function Layout() {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   console.log(isLoggedIn);
   const navigate = useNavigate();
-  // const login = () => {
-  //   navigate("/login");
-  // };
+  
   const logOut = () => {
     setIsLoggedIn(false);
-    // navigate("/logout"); // or "/"
+    navigate("/"); // or "/"
   };
 
   return (
