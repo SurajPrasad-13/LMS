@@ -20,8 +20,8 @@ const MainNav = () => {
   const [isOpen, setisOpen] = useState(false);
   return (
     <>
-      <div className="">
-        <div className="bg-white w-full h-full px-6 flex items-center justify-between">
+      <div className="fixed top-0 z-10 w-screen">
+        <div className=" bg-white w-full h-full px-6 flex items-center justify-between">
           <NavLink to="/home">
             <div className="flex items-center justify-center cursor-pointer">
               <img src={logo} alt="Sudo logo" className="h-12 lg:h-16 " />
@@ -78,7 +78,7 @@ const MainNav = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 50, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="absolute w-30 sm:w-36 right-0 top-12 md:hidden h-[89vh] bg-white z-40 flex flex-col items-center justify-around"
+              className="fixed w-30 sm:w-36 right-0 top-12 md:hidden h-[92vh] bg-white z-40 flex flex-col items-center justify-around"
             >
               {navbar.map((navigation) => (
                 <NavLink
@@ -98,7 +98,7 @@ const MainNav = () => {
               ))}
               <div>
                 <NavLink
-                
+                 onClick={()=>setisOpen(!isOpen)}
                   to="/login"
                   className={({ isActive }) =>
                     `transition-all duration-200 ${

@@ -21,16 +21,16 @@ const Footer = () => {
               transforming their careers through personalized learning experiences.
             </p>
             <div className="flex space-x-4">
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/70">
                 <Facebook className="w-5 h-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/70">
                 <Twitter className="w-5 h-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/70">
                 <Linkedin className="w-5 h-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/70">
                 <Instagram className="w-5 h-5" />
               </Button>
             </div>
@@ -93,7 +93,7 @@ const Footer = () => {
               <div className="flex items-center space-x-2">
                 <Input 
                   placeholder="Your email" 
-                  className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
+                  className="bg-white/20 hover:bg-white/30 text-black border-white/30 placeholder:text-white/60"
                 />
                 <Button variant="secondary" size="sm">
                   Subscribe
