@@ -20,7 +20,7 @@ const MainNav = () => {
   const [isOpen, setisOpen] = useState(false);
   return (
     <>
-      <div className="fixed top-0 z-10 w-screen">
+      <div className="fixed top-0 z-20 w-screen">
         <div className=" bg-white w-full h-full px-6 flex items-center justify-between">
           <NavLink to="/home">
             <div className="flex items-center justify-center cursor-pointer">
