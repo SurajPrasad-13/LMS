@@ -124,7 +124,7 @@ const About = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-secondary text-white">
+      <section className="py-24 bg-gradient-learning text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
@@ -134,7 +134,7 @@ const About = () => {
             
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               Transforming Education Through
-              <span className="block text-yellow-400">Artificial Intelligence</span>
+              <span className="block p-3 gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent">Artificial Intelligence</span>
             </h1>
             
             <p className="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">
@@ -208,9 +208,9 @@ const About = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
-              <Card key={index} className="interactive-card text-center border-0 shadow-lg">
+              <Card key={index} className="hover:scale-105 transition-all duration-300 hover:shadow-xl text-center border-0 shadow-lg">
                 <CardHeader>
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-4">
                     <value.icon className="w-8 h-8 text-white" />
                   </div>
                   <CardTitle className="text-xl">{value.title}</CardTitle>
@@ -248,7 +248,7 @@ const About = () => {
               {milestones.map((milestone, index) => (
                 <div key={index} className="flex items-start space-x-6">
                   <div className="flex-shrink-0">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white font-bold text-lg">
+                    <div className="w-20 h-20 rounded-full bg-gradient-learning flex items-center justify-center text-white font-bold text-lg">
                       {milestone.year}
                     </div>
                   </div>
@@ -284,9 +284,9 @@ const About = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {team.map((member, index) => (
-              <Card key={index} className="interactive-card border-0 shadow-lg">
+              <Card key={index} className="hover:scale-105 transition-all duration-300 hover:shadow-xl border-0 shadow-lg">
                 <CardHeader className="text-center">
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-r from-primary to-secondary mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
+                  <div className="w-24 h-24 rounded-full bg-gradient-learning mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
                     {member.name.split(' ').map(n => n[0]).join('')}
                   </div>
                   <CardTitle className="text-lg">{member.name}</CardTitle>
@@ -327,9 +327,9 @@ const About = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {achievements.map((achievement, index) => (
-              <Card key={index} className="interactive-card text-center border-0 shadow-lg">
+              <Card key={index} className="hover:scale-105 transition-all duration-300 hover:shadow-xl text-center border-0 shadow-lg">
                 <CardHeader>
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-4">
                     <achievement.icon className="w-8 h-8 text-white" />
                   </div>
                   <CardTitle className="text-4xl font-bold text-primary mb-2">
@@ -351,7 +351,7 @@ const About = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-secondary text-white">
+      <section className="py-24 bg-gradient-learning text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -364,11 +364,11 @@ const About = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
-                <Shield className="w-5 h-5 mr-2" />
+              <Button size="lg" variant="secondary" className="py-4btn-hero btn-interactive text-lg px-8 py-4 bg-[#f97b1b] hover:bg-white hover:text-[#f97b1b]  border-white border hover:scale-105 hover:-translate-y-1">
+                <Shield className="w-5 h-5 mr-2 " />
                 Start Learning
               </Button>
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
+              <Button size="lg" variant="outline" className="text-[#f97b1b]  border-white hover:bg-[#f97b1b] hover:text-white btn-interactive hover:scale-105 hover:-translate-y-1">
                 <Users className="w-5 h-5 mr-2" />
                 Become an Instructor
               </Button>

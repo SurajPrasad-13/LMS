@@ -122,7 +122,7 @@ const Home = () => {
 
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               Transform Your Career with
-              <span className="block gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent">
+              <span className="block p-3 gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent">
                 AI-Powered Learning
               </span>
             </h1>
