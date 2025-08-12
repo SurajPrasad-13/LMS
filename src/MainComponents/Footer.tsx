@@ -62,11 +62,11 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Categories</h3>
             <div className="space-y-2">
-              <div className="text-white/80">AI & Machine Learning</div>
-              <div className="text-white/80">Web Development</div>
-              <div className="text-white/80">Data Science</div>
-              <div className="text-white/80">Digital Marketing</div>
-              <div className="text-white/80">Business Skills</div>
+              <div className="text-white/80 hover:text-white transition-colors">AI & Machine Learning</div>
+              <div className="text-white/80 hover:text-white transition-colors">Web Development</div>
+              <div className="text-white/80 hover:text-white transition-colors">Data Science</div>
+              <div className="text-white/80 hover:text-white transition-colors">Digital Marketing</div>
+              <div className="text-white/80 hover:text-white transition-colors">Business Skills</div>
             </div>
           </div>
 
@@ -90,7 +90,7 @@ const Footer = () => {
             
             <div className="space-y-2">
               <p className="text-sm text-white/80">Subscribe to our newsletter</p>
-              <div className="flex space-x-2">
+              <div className="flex items-center space-x-2">
                 <Input 
                   placeholder="Your email" 
                   className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
