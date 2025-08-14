@@ -15,7 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { useAuth } from "../Context/AuthContext";
-import Login from "@/pages/Login";
+import Login from "@/MainComponents/Login";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: BookOpen },

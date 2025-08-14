@@ -69,8 +69,8 @@ const Login = () => {
   return (
     <div className="min-h-screen flex px-10">
       {/* Left Side - Login Form */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-background ">
-        <Card className="w-full max-w-md hover:scale-105 transition-all duration-200 hover:shadow-2xl">
+      <div className=" relative flex-1 flex items-center justify-center p-8 bg-background ">
+        <Card className=" absolute top-28 w-full max-w-md hover:scale-105 transition-all duration-200 hover:shadow-2xl">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
             <CardDescription>
@@ -165,7 +165,7 @@ const Login = () => {
                   className={`${
                     isSubmitting
                       ? "bg-white my-3 text-xs "
-                      : "w-full outline-none p-2 rounded-md text-white font-semibold my-3 cursor-pointer flex items-center justify-center "
+                      : "w-full outline-none p-2 rounded-md text-white font-semibold my-3 cursor-pointer flex items-center justify-center hover:scale-100 "
                   } `}
                 >
                   {isSubmitting ? <LoaderOne /> : "Login"}
@@ -189,12 +189,12 @@ const Login = () => {
       {/* Right Side - Benefits */}
       <div className="flex-1 bg-gradient-to-br from-orange-100/50 to-yellow-100/50 p-8 my-12 hidden lg:flex flex-col justify-center">
         <div className="max-w-md mx-auto">
-          <Badge className="mb-6 border bg-white/50 text-black border-gray-300 hover:text-white ">
+          <Badge className="mb-3 border bg-white/50 text-black border-gray-300 hover:text-white ">
             <CheckCircle className="w-4 h-4 mr-2" />
             Trusted by 50,000+ Students
           </Badge>
 
-          <h2 className="text-3xl font-bold mb-6">
+          <h2 className="text-3xl font-bold mb-4">
             Transform Your Career with AI-Enhanced Learning
           </h2>
 
