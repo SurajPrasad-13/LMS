@@ -172,7 +172,7 @@ const Blogs = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-secondary text-white">
+      <section className="py-24 bg-gradient-learning text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
@@ -217,12 +217,12 @@ const Blogs = () => {
         <div className="container mx-auto px-4">
           <Card className="glass-card shadow-2xl max-w-6xl mx-auto overflow-hidden">
             <div className="grid lg:grid-cols-2 gap-0">
-              <div className="aspect-video lg:aspect-auto bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                <BookOpen className="w-24 h-24 text-primary/60" />
+              <div className="aspect-video lg:aspect-auto bg-gradient-to-br from-[#fa862d]/40 to-[#fcbe53]/20 flex items-center justify-center">
+                <BookOpen className="w-24 h-24 text-orange-400/60" />
               </div>
               
               <CardContent className="p-8 flex flex-col justify-center">
-                <Badge className="mb-4 bg-gradient-to-r from-primary to-secondary text-white w-fit">
+                <Badge className="mb-4 bg-gradient-learning text-white w-fit">
                   <TrendingUp className="w-4 h-4 mr-2" />
                   Featured Article
                 </Badge>
@@ -333,13 +333,13 @@ const Blogs = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post) => (
                 <Card key={post.id} className="interactive-card group border-0 shadow-lg overflow-hidden">
-                  <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                    <BookOpen className="w-12 h-12 text-primary group-hover:scale-110 transition-transform" />
+                  <div className="aspect-video bg-gradient-to-br from-[#fa862d]/40 to-[#fcbe53]/20 flex items-center justify-center">
+                    <BookOpen className="w-12 h-12 text-orange-400 group-hover:scale-110 transition-transform" />
                   </div>
                   
                   <CardHeader>
                     <div className="flex items-center justify-between mb-2">
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge className="text-xs bg-orange-100 text-orange-400 hover:text-white">
                         {categories.find(c => c.id === post.category)?.name}
                       </Badge>
                       <div className="flex items-center space-x-3 text-xs text-muted-foreground">
@@ -354,7 +354,7 @@ const Blogs = () => {
                       </div>
                     </div>
                     
-                    <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                    <CardTitle className="text-lg leading-tight group-hover:text-orange-400 transition-colors line-clamp-2">
                       {post.title}
                     </CardTitle>
                     
@@ -428,7 +428,7 @@ const Blogs = () => {
         <div className="container mx-auto px-4">
           <Card className="max-w-4xl mx-auto text-center border-0 shadow-2xl">
             <CardContent className="p-12">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-6">
                 <BookOpen className="w-8 h-8 text-white" />
               </div>
               
@@ -460,7 +460,7 @@ const Blogs = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-secondary text-white">
+      <section className="py-24 bg-gradient-learning text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Want to Contribute?
@@ -471,11 +471,12 @@ const Blogs = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
+            <Button size="lg"  className="text-lg px-8 py-4 bg-[#f97b1b] hover:bg-white hover:text-[#f97b1b]  border-white border hover:scale-105 hover:-translate-y-1">
               <User className="w-5 h-5 mr-2" />
               Become an Author
             </Button>
-            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
+            <Button size="lg" variant="outline" className="text-[#f97b1b] bg-white border-white hover:bg-[#f97b1b] hover:text-white hover:scale-105 hover:-translate-y-1"
+>
               <MessageCircle className="w-5 h-5 mr-2" />
               Submit Article Idea
             </Button>
