@@ -1,15 +1,27 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Calendar, 
-  Clock, 
-  Users, 
-  Video, 
+import {
+  Calendar,
+  Clock,
+  Users,
+  Video,
   MapPin,
   Search,
   BookOpen,
@@ -18,7 +30,7 @@ import {
   Star,
   Play,
   MessageCircle,
-  Globe
+  Globe,
 } from "lucide-react";
 
 const Classes = () => {
@@ -38,10 +50,16 @@ const Classes = () => {
       maxStudents: 50,
       price: 79,
       rating: 4.9,
-      description: "Interactive workshop covering AI basics, machine learning concepts, and practical applications in business.",
-      topics: ["AI Basics", "ML Algorithms", "Business Applications", "Hands-on Practice"],
+      description:
+        "Interactive workshop covering AI basics, machine learning concepts, and practical applications in business.",
+      topics: [
+        "AI Basics",
+        "ML Algorithms",
+        "Business Applications",
+        "Hands-on Practice",
+      ],
       level: "Beginner",
-      language: "English"
+      language: "English",
     },
     {
       id: 2,
@@ -55,10 +73,16 @@ const Classes = () => {
       maxStudents: 40,
       price: 129,
       rating: 4.8,
-      description: "Deep dive into advanced React patterns, performance optimization, and modern development practices.",
-      topics: ["Hooks Patterns", "Performance", "State Management", "Best Practices"],
+      description:
+        "Deep dive into advanced React patterns, performance optimization, and modern development practices.",
+      topics: [
+        "Hooks Patterns",
+        "Performance",
+        "State Management",
+        "Best Practices",
+      ],
       level: "Advanced",
-      language: "English"
+      language: "English",
     },
     {
       id: 3,
@@ -72,11 +96,12 @@ const Classes = () => {
       maxStudents: 35,
       price: 99,
       rating: 4.7,
-      description: "Learn to create compelling data visualizations using Python, Tableau, and modern charting libraries.",
+      description:
+        "Learn to create compelling data visualizations using Python, Tableau, and modern charting libraries.",
       topics: ["Python Viz", "Tableau", "D3.js", "Dashboard Design"],
       level: "Intermediate",
-      language: "English"
-    }
+      language: "English",
+    },
   ];
 
   const onDemandClasses = [
@@ -90,11 +115,12 @@ const Classes = () => {
       students: 15420,
       price: 149,
       rating: 4.9,
-      description: "Comprehensive Python course from basics to advanced topics with 100+ coding exercises and projects.",
+      description:
+        "Comprehensive Python course from basics to advanced topics with 100+ coding exercises and projects.",
       topics: ["Python Basics", "OOP", "Web Development", "Data Science"],
       level: "All Levels",
       language: "English",
-      completion: "Certificate Included"
+      completion: "Certificate Included",
     },
     {
       id: 5,
@@ -106,11 +132,12 @@ const Classes = () => {
       students: 8950,
       price: 99,
       rating: 4.6,
-      description: "Master digital marketing including SEO, social media, content marketing, and analytics.",
+      description:
+        "Master digital marketing including SEO, social media, content marketing, and analytics.",
       topics: ["SEO", "Social Media", "Analytics", "Content Strategy"],
       level: "Beginner",
       language: "English",
-      completion: "Project Portfolio"
+      completion: "Project Portfolio",
     },
     {
       id: 6,
@@ -122,12 +149,18 @@ const Classes = () => {
       students: 6780,
       price: 119,
       rating: 4.8,
-      description: "Learn user research methodologies, usability testing, and data-driven design decisions.",
-      topics: ["User Research", "Usability Testing", "Analytics", "Design Systems"],
+      description:
+        "Learn user research methodologies, usability testing, and data-driven design decisions.",
+      topics: [
+        "User Research",
+        "Usability Testing",
+        "Analytics",
+        "Design Systems",
+      ],
       level: "Intermediate",
       language: "English",
-      completion: "Research Portfolio"
-    }
+      completion: "Research Portfolio",
+    },
   ];
 
   const upcomingEvents = [
@@ -138,7 +171,7 @@ const Classes = () => {
       type: "Conference",
       speakers: ["Dr. Emily Watson", "Prof. James Liu", "Sarah Kim"],
       price: "Free",
-      attendees: 500
+      attendees: 500,
     },
     {
       title: "Web3 Developer Meetup",
@@ -147,7 +180,7 @@ const Classes = () => {
       type: "Networking",
       speakers: ["Alex Rodriguez", "Maria Chen"],
       price: "Free",
-      attendees: 150
+      attendees: 150,
     },
     {
       title: "Data Science Career Fair",
@@ -156,39 +189,44 @@ const Classes = () => {
       type: "Career Event",
       speakers: ["Multiple Industry Leaders"],
       price: "Free",
-      attendees: 300
-    }
+      attendees: 300,
+    },
   ];
 
   const allClasses = [...liveClasses, ...onDemandClasses];
-  
-  const filteredClasses = allClasses.filter(classItem => {
-    const matchesSearch = classItem.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         classItem.instructor.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFormat = selectedFormat === "all" || classItem.format === selectedFormat;
-    
+
+  const filteredClasses = allClasses.filter((classItem) => {
+    const matchesSearch =
+      classItem.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      classItem.instructor.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFormat =
+      selectedFormat === "all" || classItem.format === selectedFormat;
+
     return matchesSearch && matchesFormat;
   });
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-secondary text-white">
+      <section className="py-24 bg-gradient-learning text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
               <Video className="w-4 h-4 mr-2" />
               Live & Interactive Classes
             </Badge>
-            
+
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               Learn with Live
-              <span className="block text-yellow-400">Interactive Classes</span>
+              <span className="block gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent">
+                Interactive Classes
+              </span>
             </h1>
-            
+
             <p className="text-xl md:text-2xl mb-12 opacity-90 leading-relaxed">
-              Join expert-led live sessions, participate in real-time discussions, 
-              and accelerate your learning with interactive workshops and masterclasses.
+              Join expert-led live sessions, participate in real-time
+              discussions, and accelerate your learning with interactive
+              workshops and masterclasses.
             </p>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -222,11 +260,17 @@ const Classes = () => {
                 <Video className="w-4 h-4" />
                 <span>Live Classes</span>
               </TabsTrigger>
-              <TabsTrigger value="on-demand" className="flex items-center space-x-2">
+              <TabsTrigger
+                value="on-demand"
+                className="flex items-center space-x-2"
+              >
                 <Laptop className="w-4 h-4" />
                 <span>On-Demand</span>
               </TabsTrigger>
-              <TabsTrigger value="events" className="flex items-center space-x-2">
+              <TabsTrigger
+                value="events"
+                className="flex items-center space-x-2"
+              >
                 <Calendar className="w-4 h-4" />
                 <span>Events</span>
               </TabsTrigger>
@@ -243,7 +287,7 @@ const Classes = () => {
                   className="pl-10"
                 />
               </div>
-              
+
               <Select value={selectedFormat} onValueChange={setSelectedFormat}>
                 <SelectTrigger className="w-full md:w-48">
                   <SelectValue placeholder="Format" />
@@ -258,32 +302,41 @@ const Classes = () => {
 
             <TabsContent value="live" className="space-y-8">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-4">Upcoming Live Classes</h2>
+                <h2 className="text-3xl font-bold mb-4">
+                  Upcoming Live Classes
+                </h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Join our expert instructors for interactive live sessions. Ask questions, 
-                  participate in discussions, and learn alongside peers from around the world.
+                  Join our expert instructors for interactive live sessions. Ask
+                  questions, participate in discussions, and learn alongside
+                  peers from around the world.
                 </p>
               </div>
 
+              {/* Live class Cards */}
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                 {liveClasses.map((classItem) => (
-                  <Card key={classItem.id} className="interactive-card border-0 shadow-lg">
+                  <Card
+                    key={classItem.id}
+                    className="interactive-card border-0 shadow-lg"
+                  >
                     <CardHeader>
                       <div className="flex items-center justify-between mb-2">
-                        <Badge variant="secondary" className="bg-red-100 text-red-700">
+                        <Badge className="bg-red-100 text-red-700 animate-pulse hover:text-white">
                           <Video className="w-3 h-3 mr-1" />
                           LIVE
                         </Badge>
                         <div className="flex items-center space-x-1">
                           <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                          <span className="text-sm font-medium">{classItem.rating}</span>
+                          <span className="text-sm font-medium">
+                            {classItem.rating}
+                          </span>
                         </div>
                       </div>
-                      
+
                       <CardTitle className="text-lg leading-tight">
                         {classItem.title}
                       </CardTitle>
-                      
+
                       <CardDescription>
                         by {classItem.instructor}
                       </CardDescription>
@@ -296,29 +349,40 @@ const Classes = () => {
 
                       <div className="space-y-2 text-sm">
                         <div className="flex items-center space-x-2">
-                          <Calendar className="w-4 h-4 text-primary" />
-                          <span>{new Date(classItem.date).toLocaleDateString()}</span>
+                          <Calendar className="w-4 h-4 text-orange-400" />
+                          <span>
+                            {new Date(classItem.date).toLocaleDateString()}
+                          </span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Clock className="w-4 h-4 text-primary" />
-                          <span>{classItem.time} ({classItem.duration})</span>
+                          <Clock className="w-4 h-4 text-orange-400" />
+                          <span>
+                            {classItem.time} ({classItem.duration})
+                          </span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Users className="w-4 h-4 text-primary" />
-                          <span>{classItem.students}/{classItem.maxStudents} students</span>
+                          <Users className="w-4 h-4 text-orange-400" />
+                          <span>
+                            {classItem.students}/{classItem.maxStudents}{" "}
+                            students
+                          </span>
                         </div>
                       </div>
 
                       <div className="flex flex-wrap gap-1">
                         {classItem.topics.slice(0, 3).map((topic, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
+                          <Badge
+                            key={index}
+                            variant="outline"
+                            className="text-xs"
+                          >
                             {topic}
                           </Badge>
                         ))}
                       </div>
 
-                      <div className="flex items-center justify-between pt-4 border-t">
-                        <span className="text-2xl font-bold text-primary">
+                      <div className={`flex items-center justify-between pt-4 border-t`}>
+                        <span className="text-2xl font-bold text-orange-400">
                           ${classItem.price}
                         </span>
                         <Button size="sm" className="btn-hero">
@@ -335,30 +399,40 @@ const Classes = () => {
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold mb-4">Self-Paced Learning</h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Learn at your own pace with our comprehensive on-demand courses. 
-                  Access materials anytime, anywhere, and progress through content as your schedule allows.
+                  Learn at your own pace with our comprehensive on-demand
+                  courses. Access materials anytime, anywhere, and progress
+                  through content as your schedule allows.
                 </p>
               </div>
 
+              {/* On Demand Cards */}
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                 {onDemandClasses.map((classItem) => (
-                  <Card key={classItem.id} className="interactive-card border-0 shadow-lg">
+                  <Card
+                    key={classItem.id}
+                    className="interactive-card border-0 shadow-lg"
+                  >
                     <CardHeader>
                       <div className="flex items-center justify-between mb-2">
-                        <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+                        <Badge
+                          variant="secondary"
+                          className="bg-blue-100 text-blue-700"
+                        >
                           <Laptop className="w-3 h-3 mr-1" />
                           ON-DEMAND
                         </Badge>
                         <div className="flex items-center space-x-1">
                           <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                          <span className="text-sm font-medium">{classItem.rating}</span>
+                          <span className="text-sm font-medium">
+                            {classItem.rating}
+                          </span>
                         </div>
                       </div>
-                      
+
                       <CardTitle className="text-lg leading-tight">
                         {classItem.title}
                       </CardTitle>
-                      
+
                       <CardDescription>
                         by {classItem.instructor}
                       </CardDescription>
@@ -371,12 +445,14 @@ const Classes = () => {
 
                       <div className="space-y-2 text-sm">
                         <div className="flex items-center space-x-2">
-                          <Clock className="w-4 h-4 text-primary" />
+                          <Clock className="w-4 h-4 text-orange-400" />
                           <span>{classItem.totalHours} content</span>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Users className="w-4 h-4 text-primary" />
-                          <span>{classItem.students.toLocaleString()} enrolled</span>
+                          <span>
+                            {classItem.students.toLocaleString()} enrolled
+                          </span>
                         </div>
                         <div className="flex items-center space-x-2">
                           <UserCheck className="w-4 h-4 text-primary" />
@@ -386,7 +462,11 @@ const Classes = () => {
 
                       <div className="flex flex-wrap gap-1">
                         {classItem.topics.slice(0, 3).map((topic, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
+                          <Badge
+                            key={index}
+                            variant="outline"
+                            className="text-xs"
+                          >
                             {topic}
                           </Badge>
                         ))}
@@ -410,30 +490,41 @@ const Classes = () => {
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold mb-4">Upcoming Events</h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Join our community events, conferences, and networking sessions. 
-                  Connect with industry experts and fellow learners from around the globe.
+                  Join our community events, conferences, and networking
+                  sessions. Connect with industry experts and fellow learners
+                  from around the globe.
                 </p>
               </div>
 
+              {/* Free Events cards */}
               <div className="space-y-6">
                 {upcomingEvents.map((event, index) => (
-                  <Card key={index} className="interactive-card border-0 shadow-lg">
+                  <Card
+                    key={index}
+                    className="interactive-card border-0 shadow-lg"
+                  >
                     <CardContent className="p-6">
                       <div className="grid md:grid-cols-4 gap-6 items-center">
                         <div className="md:col-span-2">
                           <div className="flex items-center space-x-2 mb-3">
                             <Badge variant="outline">{event.type}</Badge>
                             {event.price === "Free" && (
-                              <Badge className="bg-green-100 text-green-700">FREE</Badge>
+                              <Badge className="bg-green-100 text-green-700">
+                                FREE
+                              </Badge>
                             )}
                           </div>
-                          
-                          <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                          
+
+                          <h3 className="text-xl font-bold mb-2">
+                            {event.title}
+                          </h3>
+
                           <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                             <div className="flex items-center space-x-1">
                               <Calendar className="w-4 h-4" />
-                              <span>{new Date(event.date).toLocaleDateString()}</span>
+                              <span>
+                                {new Date(event.date).toLocaleDateString()}
+                              </span>
                             </div>
                             <div className="flex items-center space-x-1">
                               <Clock className="w-4 h-4" />
@@ -447,10 +538,15 @@ const Classes = () => {
                         </div>
 
                         <div>
-                          <p className="text-sm text-muted-foreground mb-2">Featured Speakers:</p>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Featured Speakers:
+                          </p>
                           <div className="space-y-1">
                             {event.speakers.map((speaker, speakerIndex) => (
-                              <div key={speakerIndex} className="text-sm font-medium">
+                              <div
+                                key={speakerIndex}
+                                className="text-sm font-medium"
+                              >
                                 {speaker}
                               </div>
                             ))}
@@ -458,12 +554,10 @@ const Classes = () => {
                         </div>
 
                         <div className="text-right">
-                          <div className="text-2xl font-bold text-primary mb-3">
+                          <div className="text-2xl font-bold text-green-600 mb-3">
                             {event.price}
                           </div>
-                          <Button className="btn-hero">
-                            Register Now
-                          </Button>
+                          <Button className="btn-hero">Register Now</Button>
                         </div>
                       </div>
                     </CardContent>
@@ -481,7 +575,7 @@ const Classes = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6">Why Choose Our Classes?</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Experience the most engaging and effective way to learn with our 
+              Experience the most engaging and effective way to learn with our
               interactive class formats and cutting-edge learning technology.
             </p>
           </div>
@@ -489,56 +583,60 @@ const Classes = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <Card className="text-center border-0 shadow-lg">
               <CardHeader>
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-4">
                   <MessageCircle className="w-8 h-8 text-white" />
                 </div>
                 <CardTitle>Interactive Learning</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base">
-                  Real-time Q&A, polls, and discussions make learning engaging and collaborative.
+                  Real-time Q&A, polls, and discussions make learning engaging
+                  and collaborative.
                 </CardDescription>
               </CardContent>
             </Card>
 
             <Card className="text-center border-0 shadow-lg">
               <CardHeader>
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-4">
                   <Globe className="w-8 h-8 text-white" />
                 </div>
                 <CardTitle>Global Community</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base">
-                  Connect with learners worldwide and build your professional network.
+                  Connect with learners worldwide and build your professional
+                  network.
                 </CardDescription>
               </CardContent>
             </Card>
 
             <Card className="text-center border-0 shadow-lg">
               <CardHeader>
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-4">
                   <Play className="w-8 h-8 text-white" />
                 </div>
                 <CardTitle>Recorded Sessions</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base">
-                  Access recordings anytime to review concepts and catch up on missed sessions.
+                  Access recordings anytime to review concepts and catch up on
+                  missed sessions.
                 </CardDescription>
               </CardContent>
             </Card>
 
             <Card className="text-center border-0 shadow-lg">
               <CardHeader>
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-4">
                   <UserCheck className="w-8 h-8 text-white" />
                 </div>
                 <CardTitle>Expert Guidance</CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base">
-                  Get direct access to industry experts and personalized feedback on your progress.
+                  Get direct access to industry experts and personalized
+                  feedback on your progress.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -547,22 +645,27 @@ const Classes = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-secondary text-white">
+      <section className="py-24 bg-gradient-learning text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Ready to Join Our Next Class?
           </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-            Don't miss out on our upcoming live sessions. Reserve your spot today 
-            and start learning with expert instructors and fellow students.
+            Don't miss out on our upcoming live sessions. Reserve your spot
+            today and start learning with expert instructors and fellow
+            students.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
               <Calendar className="w-5 h-5 mr-2" />
               View Schedule
             </Button>
-            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-white border-white hover:bg-white hover:text-primary"
+            >
               <Video className="w-5 h-5 mr-2" />
               Book Free Demo
             </Button>
