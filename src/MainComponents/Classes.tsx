@@ -553,7 +553,7 @@ const Classes = () => {
                           </div>
                         </div>
 
-                        <div className="text-right">
+                        <div className="text-right flex items-center justify-between sm:block ">
                           <div className="text-2xl font-bold text-green-600 mb-3">
                             {event.price}
                           </div>
@@ -657,14 +657,14 @@ const Classes = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
-              <Calendar className="w-5 h-5 mr-2" />
+            <Button size="lg" variant="secondary" className="text-lg px-8 py-4 bg-[#f97b1b] hover:bg-white hover:text-[#f97b1b]  border-white border hover:scale-105 hover:-translate-y-1">
+              <Calendar className="w-5 h-5 mr-2 " />
               View Schedule
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="text-white border-white hover:bg-white hover:text-primary"
+              className="text-[#f97b1b]  border-white hover:bg-[#f97b1b] hover:text-white hover:scale-105 hover:-translate-y-1"
             >
               <Video className="w-5 h-5 mr-2" />
               Book Free Demo
