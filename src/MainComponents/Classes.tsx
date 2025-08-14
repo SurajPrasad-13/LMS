@@ -381,7 +381,9 @@ const Classes = () => {
                         ))}
                       </div>
 
-                      <div className={`flex items-center justify-between pt-4 border-t`}>
+                      <div
+                        className={`flex items-center justify-between pt-4 border-t`}
+                      >
                         <span className="text-2xl font-bold text-orange-400">
                           ${classItem.price}
                         </span>
@@ -415,8 +417,8 @@ const Classes = () => {
                     <CardHeader>
                       <div className="flex items-center justify-between mb-2">
                         <Badge
-                          variant="secondary"
-                          className="bg-blue-100 text-blue-700"
+                          // variant="secondary"
+                          className="bg-blue-100 text-blue-700 hover:text-white"
                         >
                           <Laptop className="w-3 h-3 mr-1" />
                           ON-DEMAND
@@ -449,13 +451,13 @@ const Classes = () => {
                           <span>{classItem.totalHours} content</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Users className="w-4 h-4 text-primary" />
+                          <Users className="w-4 h-4 text-orange-400" />
                           <span>
                             {classItem.students.toLocaleString()} enrolled
                           </span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <UserCheck className="w-4 h-4 text-primary" />
+                          <UserCheck className="w-4 h-4 text-orange-400" />
                           <span>{classItem.completion}</span>
                         </div>
                       </div>
@@ -509,7 +511,7 @@ const Classes = () => {
                           <div className="flex items-center space-x-2 mb-3">
                             <Badge variant="outline">{event.type}</Badge>
                             {event.price === "Free" && (
-                              <Badge className="bg-green-100 text-green-700">
+                              <Badge className="bg-green-100 text-green-700 hover:text-white">
                                 FREE
                               </Badge>
                             )}
@@ -657,7 +659,11 @@ const Classes = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-4 bg-[#f97b1b] hover:bg-white hover:text-[#f97b1b]  border-white border hover:scale-105 hover:-translate-y-1">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="text-lg px-8 py-4 bg-[#f97b1b] hover:bg-white hover:text-[#f97b1b]  border-white border hover:scale-105 hover:-translate-y-1"
+            >
               <Calendar className="w-5 h-5 mr-2 " />
               View Schedule
             </Button>

@@ -192,7 +192,7 @@ const Mentors = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-secondary text-white">
+      <section className="py-24 bg-gradient-learning text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
@@ -202,7 +202,7 @@ const Mentors = () => {
             
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               Learn from Industry
-              <span className="block text-yellow-400">Leading Experts</span>
+              <span className="block p-3 gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent">Leading Experts</span>
             </h1>
             
             <p className="text-xl md:text-2xl mb-12 opacity-90 leading-relaxed">
@@ -239,7 +239,7 @@ const Mentors = () => {
             <CardContent className="p-8">
               <div className="grid lg:grid-cols-2 gap-8 items-center">
                 <div>
-                  <Badge className="mb-4 bg-gradient-to-r from-primary to-secondary text-white">
+                  <Badge className="mb-4 bg-gradient-learning text-white">
                     <Award className="w-4 h-4 mr-2" />
                     Featured Mentor
                   </Badge>
@@ -342,16 +342,16 @@ const Mentors = () => {
             {/* Mentors Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {filteredMentors.map((mentor) => (
-                <Card key={mentor.id} className="interactive-card border-0 shadow-lg">
+                <Card key={mentor.id} className="interactive-card border-0 shadow-lg hover:scale-105 transition-all duration-300 hover:shadow-xl">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white text-xl font-bold">
+                        <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center text-white text-xl font-bold">
                           {mentor.name.split(' ').map(n => n[0]).join('')}
                         </div>
                         <div>
                           <CardTitle className="text-lg">{mentor.name}</CardTitle>
-                          <CardDescription className="text-primary font-medium">
+                          <CardDescription className="text-orange-400 font-medium">
                             {mentor.title}
                           </CardDescription>
                           <div className="text-sm text-muted-foreground">
@@ -365,7 +365,7 @@ const Mentors = () => {
                           <span className="font-medium">{mentor.rating}</span>
                           <span className="text-sm text-muted-foreground">({mentor.reviews})</span>
                         </div>
-                        <div className="text-2xl font-bold text-primary">
+                        <div className="text-2xl font-bold text-orange-400">
                           ${mentor.hourlyRate}/hr
                         </div>
                       </div>
@@ -379,7 +379,7 @@ const Mentors = () => {
 
                     <div className="flex flex-wrap gap-1">
                       {mentor.expertise.map((skill, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
+                        <Badge key={index}  className="text-xs hover:text-white bg-green-100 text-green-700">
                           {skill}
                         </Badge>
                       ))}
@@ -471,9 +471,9 @@ const Mentors = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <Card className="text-center border-0 shadow-lg">
+            <Card className="text-center border-0 shadow-lg hover:scale-105 transition-all duration-300 hover:shadow-xl ">
               <CardHeader>
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   1
                 </div>
                 <CardTitle>Find Your Match</CardTitle>
@@ -486,9 +486,9 @@ const Mentors = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center border-0 shadow-lg">
+            <Card className="text-center border-0 shadow-lg hover:scale-105 transition-all duration-300 hover:shadow-xl">
               <CardHeader>
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   2
                 </div>
                 <CardTitle>Schedule & Connect</CardTitle>
@@ -501,9 +501,9 @@ const Mentors = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center border-0 shadow-lg">
+            <Card className="text-center border-0 shadow-lg hover:scale-105 transition-all duration-300 hover:shadow-xl">
               <CardHeader>
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   3
                 </div>
                 <CardTitle>Achieve Your Goals</CardTitle>
@@ -520,7 +520,7 @@ const Mentors = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-secondary text-white">
+      <section className="py-24 bg-gradient-learning text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Ready to Find Your Mentor?
@@ -531,11 +531,11 @@ const Mentors = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
+            <Button size="lg" variant="secondary" className="text-lg px-8 py-4 bg-[#f97b1b] hover:bg-white hover:text-[#f97b1b]  border-white border hover:scale-105 hover:-translate-y-1">
               <Users className="w-5 h-5 mr-2" />
               Get Matched Now
             </Button>
-            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
+            <Button size="lg" variant="outline" className="text-[#f97b1b]  border-white hover:bg-[#f97b1b] hover:text-white hover:scale-105 hover:-translate-y-1">
               <Calendar className="w-5 h-5 mr-2" />
               Free Consultation
             </Button>
