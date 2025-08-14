@@ -182,7 +182,7 @@ const Blogs = () => {
             
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               Insights & Knowledge
-              <span className="block text-yellow-400">From Industry Experts</span>
+              <span className="block gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent p-3">From Industry Experts</span>
             </h1>
             
             <p className="text-xl md:text-2xl mb-12 opacity-90 leading-relaxed">
@@ -332,7 +332,7 @@ const Blogs = () => {
             {/* Articles Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post) => (
-                <Card key={post.id} className="interactive-card group border-0 shadow-lg overflow-hidden">
+                <Card key={post.id} className="hover:scale-105 transition-all duration-300 hover:shadow-xl group border-0 shadow-lg overflow-hidden">
                   <div className="aspect-video bg-gradient-to-br from-[#fa862d]/40 to-[#fcbe53]/20 flex items-center justify-center">
                     <BookOpen className="w-12 h-12 text-orange-400 group-hover:scale-110 transition-transform" />
                   </div>
@@ -426,7 +426,7 @@ const Blogs = () => {
       {/* Newsletter Section */}
       <section className="py-24">
         <div className="container mx-auto px-4">
-          <Card className="max-w-4xl mx-auto text-center border-0 shadow-2xl">
+          <Card className="max-w-4xl mx-auto text-center border-0 shadow-2xl ">
             <CardContent className="p-12">
               <div className="w-16 h-16 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-6">
                 <BookOpen className="w-8 h-8 text-white" />

@@ -153,7 +153,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-secondary text-white">
+      <section className="py-24 bg-gradient-learning text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
@@ -163,7 +163,7 @@ const Contact = () => {
             
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               We're Here to
-              <span className="block text-yellow-400">Help You Succeed</span>
+              <span className="block gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent p-3">Help You Succeed</span>
             </h1>
             
             <p className="text-xl md:text-2xl mb-12 opacity-90 leading-relaxed">
@@ -198,7 +198,7 @@ const Contact = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {contactMethods.map((method, index) => (
-              <Card key={index} className="interactive-card text-center border-0 shadow-lg">
+              <Card key={index} className="hover:scale-105 transition-all duration-300 hover:shadow-xl text-center border-0 shadow-lg">
                 <CardHeader>
                   <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${method.color} flex items-center justify-center mx-auto mb-4`}>
                     <method.icon className="w-8 h-8 text-white" />
@@ -322,7 +322,7 @@ const Contact = () => {
                     </CardHeader>
                     <CardContent className="space-y-3">
                       <div className="flex items-start space-x-3">
-                        <MapPin className="w-5 h-5 text-primary mt-0.5" />
+                        <MapPin className="w-5 h-5 text-orange-400 mt-0.5" />
                         <div>
                           <div className="font-medium">{office.address}</div>
                           <div className="text-sm text-muted-foreground">{office.zipCode}</div>
@@ -330,12 +330,12 @@ const Contact = () => {
                       </div>
                       
                       <div className="flex items-center space-x-3">
-                        <Phone className="w-5 h-5 text-primary" />
+                        <Phone className="w-5 h-5 text-orange-400" />
                         <span>{office.phone}</span>
                       </div>
                       
                       <div className="flex items-center space-x-3">
-                        <Mail className="w-5 h-5 text-primary" />
+                        <Mail className="w-5 h-5 text-orange-400" />
                         <span>{office.email}</span>
                       </div>
                     </CardContent>
@@ -387,9 +387,9 @@ const Contact = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {faqCategories.map((category, index) => (
-              <Card key={index} className="interactive-card border-0 shadow-lg">
+              <Card key={index} className="hover:scale-105 transition-all duration-300 hover:shadow-xl border-0 shadow-lg">
                 <CardHeader className="text-center">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-learning flex items-center justify-center mx-auto mb-4">
                     <category.icon className="w-6 h-6 text-white" />
                   </div>
                   <CardTitle className="text-lg">{category.title}</CardTitle>
@@ -397,7 +397,7 @@ const Contact = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {category.questions.map((question, qIndex) => (
-                      <div key={qIndex} className="text-sm text-muted-foreground hover:text-primary cursor-pointer transition-colors">
+                      <div key={qIndex} className="text-sm text-muted-foreground hover:text-green-600 cursor-pointer transition-colors">
                         • {question}
                       </div>
                     ))}
@@ -413,7 +413,7 @@ const Contact = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-secondary text-white">
+      <section className="py-24 bg-gradient-learning text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -426,11 +426,12 @@ const Contact = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
+              <Button size="lg"  className="text-lg px-8 py-4 bg-[#f97b1b] hover:bg-white hover:text-[#f97b1b]  border-white border hover:scale-105 hover:-translate-y-1">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Start Live Chat
               </Button>
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-primary">
+              <Button size="lg" variant="outline" className="text-[#f97b1b] bg-white border-white hover:bg-[#f97b1b] hover:text-white hover:scale-105 hover:-translate-y-1"
+>
                 <Globe className="w-5 h-5 mr-2" />
                 Visit Help Center
               </Button>
