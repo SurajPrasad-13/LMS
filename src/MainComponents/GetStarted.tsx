@@ -10,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -31,9 +30,9 @@ import {
   Rocket,
   Shield,
   Gift,
-  CheckCircle,
 } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import { LoaderOne } from "@/components/ui/loader";
 
 const GetStarted = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,13 +46,6 @@ const GetStarted = () => {
     agreeToTerms: false,
     subscribeNewsletter: true,
   });
-
-  const handleSignUp = (data) => {
-    // e.preventDefault();
-    // Handle sign up logic here
-
-    console.log("Sign up attempted with:", data);
-  };
 
   const learningGoals = [
     "Advance my career",
@@ -87,12 +79,19 @@ const GetStarted = () => {
     },
   ];
   const {
+    control,
     register,
     handleSubmit,
     reset,
     watch,
     formState: { errors, isSubmitting },
   } = useForm();
+
+  const handleSignUp = async (data) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("Sign up attempted with:", data);
+    reset();
+  };
 
   return (
     <div className="min-h-screen flex pt-10">
@@ -222,7 +221,7 @@ const GetStarted = () => {
                     })}
                     id="lastName"
                     type="text"
-                    placeholder="John"
+                    placeholder="Doe"
                     className="pl-10 cursor-pointer"
                   />
                   {errors.lastName && (
@@ -262,29 +261,31 @@ const GetStarted = () => {
                 )}
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="learningGoal">Learning Goal</Label>
-                <Select
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, learningGoal: value })
-                  }
-                >
-                  <SelectTrigger className="cursor-pointer">
-                    <SelectValue placeholder="What's your main goal?" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {learningGoals.map((goal) => (
-                      <SelectItem
-                        key={goal}
-                        value={goal}
-                        className="cursor-pointer"
-                      >
-                        {goal}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <Controller
+                name="learningGoal"
+                control={control}
+                rules={{
+                  required: { value: true, message: "This Field is Required" },
+                }}
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="cursor-pointer">
+                      <SelectValue placeholder="What's your main goal?" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {learningGoals.map((goal) => (
+                        <SelectItem
+                          key={goal}
+                          value={goal}
+                          className="cursor-pointer"
+                        >
+                          {goal}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
 
               {/* Password */}
               <div className="space-y-2">
@@ -306,7 +307,7 @@ const GetStarted = () => {
                         value:
                           /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$&])[A-Za-z\d@$&]{6,10}$/,
                         message:
-                          "Password must be at least 6 characters long and include uppercase, lowercase, number, and special character",
+                          "Password must be include uppercase, lowercase, number, and special character",
                       },
                     })}
                     type={showPassword ? "text" : "password"}
@@ -403,14 +404,27 @@ const GetStarted = () => {
                 </div>
               </div>
 
-              <Button
-                type="submit"
-                className="w-full hover:scale-100 group "
-                disabled={!formData.agreeToTerms}
-              >
-                Start Free Trial
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-all duration-200" />
-              </Button>
+              <div className="mt-3 text-center bg-white">
+                <Button
+                  type="submit"
+                  disabled={!formData.agreeToTerms}
+                  className={` ${
+                    isSubmitting
+                      ? "my-3 text-xs bg-transparent hover:bg-transparent focus:bg-transparent active:bg-transparent"
+                      : "w-full outline-none p-2 rounded-md text-white font-semibold my-3 cursor-pointer flex items-center justify-center hover:scale-100"
+                  }`}
+                >
+                  {isSubmitting ? (
+                    <LoaderOne />
+                  ) : (
+                    <>
+                      Start Free Trial
+                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-all duration-200" />
+                    </>
+                  )}
+                </Button>
+              </div>
+              
             </form>
 
             {/* Sign Up with Google Or Facebook */}
