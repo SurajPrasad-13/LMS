@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useForm, Controller } from "react-hook-form";
+import { LoaderOne } from "@/components/ui/loader";
 import {
   Card,
   CardContent,
@@ -12,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import { ToastContainer, toast } from "react-toastify";
 import {
   Select,
   SelectContent,
@@ -31,8 +34,6 @@ import {
   Shield,
   Gift,
 } from "lucide-react";
-import { useForm, Controller } from "react-hook-form";
-import { LoaderOne } from "@/components/ui/loader";
 
 const GetStarted = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -87,9 +88,23 @@ const GetStarted = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  const notify = () =>
+    toast.success("🦄 Wow so easy!", {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      // transition: Bounce,
+    });
+
   const handleSignUp = async (data) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log("Sign up attempted with:", data);
+    notify();
     reset();
   };
 
@@ -424,7 +439,6 @@ const GetStarted = () => {
                   )}
                 </Button>
               </div>
-              
             </form>
 
             {/* Sign Up with Google Or Facebook */}
@@ -469,6 +483,19 @@ const GetStarted = () => {
           </CardContent>
         </Card>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        // transition={Slide}
+      />
     </div>
   );
 };
