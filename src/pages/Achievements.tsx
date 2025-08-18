@@ -263,10 +263,10 @@ export default function Achievements() {
               key={category.id}
               variant={selectedCategory === category.id ? "default" : "outline"}
               onClick={() => setSelectedCategory(category.id)}
-              className={selectedCategory === category.id ? "bg-primary" : ""}
+              className={selectedCategory === category.id ? "bg-orange-400" : ""}
             >
               {category.name}
-              <Badge variant="secondary" className="ml-2">
+              <Badge variant="outline" className="ml-2 bg-white">
                 {category.count}
               </Badge>
             </Button>
@@ -291,7 +291,7 @@ export default function Achievements() {
               </div>
               <div className="text-right">
                 <p className="text-sm text-muted-foreground">Total Points</p>
-                <p className="text-2xl font-bold">{userStats.totalPoints.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-orange-400">{userStats.totalPoints.toLocaleString()}</p>
               </div>
             </div>
 
@@ -309,21 +309,21 @@ export default function Achievements() {
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-center gap-1 mb-1">
-                  <Zap className="w-4 h-4 text-accent" />
+                  <Zap className="w-4 h-4 text-orange-400" />
                   <span className="text-lg font-bold">{userStats.streak}</span>
                 </div>
                 <p className="text-xs text-muted-foreground">Day Streak</p>
               </div>
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-center gap-1 mb-1">
-                  <Trophy className="w-4 h-4 text-accent" />
+                  <Trophy className="w-4 h-4 text-orange-400" />
                   <span className="text-lg font-bold">{userStats.totalAchievements}</span>
                 </div>
                 <p className="text-xs text-muted-foreground">Achievements</p>
               </div>
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-center gap-1 mb-1">
-                  <Sparkles className="w-4 h-4 text-accent" />
+                  <Sparkles className="w-4 h-4 text-orange-400" />
                   <span className="text-lg font-bold">{userStats.rareAchievements}</span>
                 </div>
                 <p className="text-xs text-muted-foreground">Rare Unlocks</p>
@@ -423,7 +423,7 @@ export default function Achievements() {
               {/* Footer */}
               <div className="flex items-center justify-between pt-2">
                 <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 text-accent" />
+                  <Star className="w-4 h-4 text-orange-400" />
                   <span className="text-sm font-medium">{achievement.points} XP</span>
                 </div>
                 {achievement.isUnlocked && (
