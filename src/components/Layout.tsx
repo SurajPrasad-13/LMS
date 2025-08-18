@@ -160,16 +160,17 @@ export default function Layout() {
 
             {/* Mobile Menu */}
             {isMobileMenuOpen && (
-              <div className="lg:hidden border-t border-border/50 bg-card/95 backdrop-blur-xl">
+              <div className="lg:hidden border-t border-border/50   backdrop-blur-3xl">
                 <nav className="px-2 py-4 space-y-2">
                   {navigation.map((item) => (
                     <NavLink
                       key={item.name}
                       to={item.href}
+                      end={item.href === "/dashboard"}
                       className={({ isActive }) =>
                         `flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                           isActive
-                            ? "bg-primary text-primary-foreground"
+                            ? "bg-gradient-learning text-primary-foreground"
                             : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                         }`
                       }
