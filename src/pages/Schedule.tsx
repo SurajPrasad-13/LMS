@@ -289,7 +289,7 @@ export default function Schedule() {
                   variant={view === viewType ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setView(viewType as any)}
-                  className="capitalize"
+                  className="capitalize mx-1"
                 >
                   {viewType}
                 </Button>
@@ -337,10 +337,10 @@ export default function Schedule() {
               key={category.id}
               variant={selectedCategory === category.id ? "default" : "outline"}
               onClick={() => setSelectedCategory(category.id)}
-              className={selectedCategory === category.id ? "bg-primary" : ""}
+              className={selectedCategory === category.id ? "bg-orange-400" : ""}
             >
               {category.name}
-              <Badge variant="secondary" className="ml-2">
+              <Badge variant="outline" className="ml-2 bg-white ">
                 {category.count}
               </Badge>
             </Button>
@@ -410,7 +410,7 @@ export default function Schedule() {
                 {filteredEvents.map((event) => (
                   <div
                     key={event.id}
-                    className="flex flex-col sm:flex-row gap-4 p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors"
+                    className="flex flex-col sm:flex-row gap-4 p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-all  hover:-translate-y-2"
                   >
                     <div className="flex-shrink-0">
                       <div
@@ -566,17 +566,17 @@ export default function Schedule() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm">Total Events</span>
-                <Badge>{todayEvents.length}</Badge>
+                <Badge variant="outline" className="bg-orange-400 text-white" >{todayEvents.length}</Badge>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm">Live Sessions</span>
-                <Badge variant="outline">
+                <Badge variant="outline" className="hover:bg-orange-400 hover:text-white">
                   {todayEvents.filter((e) => e.type === "live-session").length}
                 </Badge>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm">Assignments Due</span>
-                <Badge variant="outline">
+                <Badge variant="outline" className="hover:bg-orange-400 hover:text-white">
                   {todayEvents.filter((e) => e.type === "assignment").length}
                 </Badge>
               </div>
