@@ -193,7 +193,7 @@ export default function AITutor() {
             </div>
             <div className="text-center p-3 bg-muted/30 rounded-lg">
               <div className="flex items-center justify-center gap-1">
-                <Star className="w-4 h-4 text-accent fill-accent" />
+                <Star className="w-4 h-4 text-yellow-400 " />
                 <p className="text-lg font-bold">{stats.averageRating}</p>
               </div>
               <p className="text-xs text-muted-foreground">Rating</p>
@@ -270,8 +270,8 @@ export default function AITutor() {
           <h3 className="font-semibold mb-4">Other Tutors</h3>
           <div className="space-y-4">
             <div className="text-center p-4 border-2 border-dashed border-muted-foreground/30 rounded-lg">
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Brain className="w-6 h-6 text-primary" />
+              <div className="w-12 h-12 bg-orange-200/50 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Brain className="w-6 h-6 text-orange-400" />
               </div>
               <p className="text-sm font-medium mb-2">Import Custom Tutor</p>
               <p className="text-xs text-muted-foreground mb-3">Connect with specialized AI tutors or human mentors</p>
@@ -291,10 +291,10 @@ export default function AITutor() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                        tutor.type === 'AI' ? 'bg-primary/20' : 'bg-accent/20'
+                        tutor.type === 'AI' ? 'bg-orange-200/50' : 'bg-accent/20'
                       }`}>
                         {tutor.type === 'AI' ? 
-                          <Brain className="w-4 h-4 text-primary" /> : 
+                          <Brain className="w-4 h-4 text-orange-400" /> : 
                           <span className="text-xs font-bold text-accent-foreground">H</span>
                         }
                       </div>
@@ -328,7 +328,7 @@ export default function AITutor() {
               <div key={topic.id} className="p-3 bg-muted/30 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors">
                 <p className="font-medium text-sm">{topic.title}</p>
                 <div className="flex items-center justify-between mt-1">
-                  <Badge variant="secondary" className="text-xs">{topic.subject}</Badge>
+                  <Badge  className="text-xs bg-white text-black hover:text-white ">{topic.subject}</Badge>
                   <span className="text-xs text-muted-foreground">{topic.timestamp}</span>
                 </div>
               </div>
