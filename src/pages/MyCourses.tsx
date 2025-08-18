@@ -183,7 +183,7 @@ export default function MyCourses() {
       case "completed":
         return <CheckCircle className="w-4 h-4 text-success" />;
       case "in-progress":
-        return <Play className="w-4 h-4 text-primary" />;
+        return <Play className="size-5 text-orange-400" />;
       default:
         return <BookOpen className="w-4 h-4 text-muted-foreground" />;
     }
@@ -196,7 +196,7 @@ export default function MyCourses() {
       case "in-progress":
         return "bg-primary text-primary-foreground";
       default:
-        return "bg-muted text-muted-foreground";
+        return "bg-muted text-muted-foreground hover:text-white";
     }
   };
 
@@ -382,11 +382,11 @@ export default function MyCourses() {
                   }
                   onClick={() => setSelectedCategory(category.id)}
                   className={
-                    selectedCategory === category.id ? "bg-primary" : ""
+                    selectedCategory === category.id ? "bg-orange-400" : ""
                   }
                 >
                   {category.name}
-                  <Badge variant="secondary" className="ml-2">
+                  <Badge variant="outline" className="ml-2  bg-white">
                     {category.count}
                   </Badge>
                 </Button>
@@ -398,8 +398,8 @@ export default function MyCourses() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="glass-card p-6">
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
-                  <BookOpen className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 bg-orange-200/40 rounded-xl flex items-center justify-center">
+                  <BookOpen className="w-6 h-6 text-orange-400" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">3</p>
@@ -435,7 +435,7 @@ export default function MyCourses() {
 
             <Card className="glass-card p-6">
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
                   <TrendingUp className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
@@ -548,7 +548,7 @@ export default function MyCourses() {
                           </span>
                         </div>
                         {course.certificate && (
-                          <Badge className="bg-accent text-accent-foreground">
+                          <Badge className="bg-accent hover:bg-white text-accent-foreground">
                             Certificate Earned
                           </Badge>
                         )}
@@ -572,7 +572,7 @@ export default function MyCourses() {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex gap-1 pt-2">
+                  <div className="flex gap-4 pt-2">
                     {course.status === "in-progress" ? (
                       <Button onClick={()=>startCall(course.instructor)} className="">
                         <Play className="w-4 h-4" />
