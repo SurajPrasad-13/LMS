@@ -404,8 +404,8 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="glass-card p-6 hover-lift">
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
-                  <BookOpen className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 bg-orange-200/50 rounded-xl flex items-center justify-center">
+                  <BookOpen className="w-6 h-6 text-orange-400" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">12</p>
@@ -428,7 +428,7 @@ export default function Dashboard() {
 
             <Card className="glass-card p-6 hover-lift">
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
                   <Award className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
@@ -550,15 +550,15 @@ export default function Dashboard() {
                   {upcomingSessions.map((session) => (
                     <Card
                       key={session.id}
-                      className="glass-card p-2 mx-auto  hover-lift group border-x-4 border-x-primary w-[calc(100%-12px)] sm:w-[640px] md:w-[760px] lg:w-auto"
+                      className="glass-card p-2 mx-auto  hover-lift group border-x-4 border-x-orange-300 w-[calc(100%-12px)] sm:w-[640px] md:w-[760px] lg:w-auto"
                     >
                       <div className="flex flex-col sm:flex-row items-center justify-between">
                         <div className="flex items-center space-x-4">
-                          <div className=" size-10 sm:size-10 md:size-14 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center">
-                            <Users className=" size-4 md:size-6 text-primary" />
+                          <div className=" size-10 sm:size-10 md:size-14 bg-gradient- rounded-xl flex items-center justify-center">
+                            <Users className=" size-4 md:size-6 text-orange-400" />
                           </div>
                           <div className="space-y-2">
-                            <h3 className="font-semibold group-hover:text-primary transition-colors">
+                            <h3 className="font-semibold group-hover:text-orange-400 transition-colors">
                               {session.title}
                             </h3>
 
@@ -861,7 +861,7 @@ export default function Dashboard() {
                         className="h-16 bg-muted/30 rounded flex items-end justify-center"
                       >
                         <div
-                          className="bg-primary rounded-t w-full transition-all duration-300 hover:bg-primary/80"
+                          className="bg-orange-400 rounded-t w-full transition-all duration-300 hover:bg-orange-400/80"
                           style={{ height: `${score}%` }}
                         ></div>
                       </div>
@@ -915,7 +915,7 @@ export default function Dashboard() {
               <h2 className="text-xl font-bold mb-4">Study Tools</h2>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { icon: Brain, label: "AI Flashcards", color: "bg-primary" },
+                  { icon: Brain, label: "AI Flashcards", color: "bg-orange-500" },
                   {
                     icon: Calculator,
                     label: "Calculator",
@@ -1042,8 +1042,8 @@ export default function Dashboard() {
 
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="text-center space-y-3">
-                  <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto">
-                    <Users className="w-8 h-8 text-primary" />
+                  <div className="w-16 h-16 bg-orange-200/50 rounded-full flex items-center justify-center mx-auto">
+                    <Users className="w-8 h-8 text-orange-400" />
                   </div>
                   <h3 className="font-semibold">Study Groups</h3>
                   <p className="text-sm text-muted-foreground">
@@ -1055,7 +1055,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="text-center space-y-3">
-                  <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto">
+                  <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto">
                     <Share2 className="w-8 h-8 text-accent-foreground" />
                   </div>
                   <h3 className="font-semibold">Share Progress</h3>
