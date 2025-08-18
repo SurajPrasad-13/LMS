@@ -165,9 +165,9 @@ export default function LiveSessions() {
       case "live":
         return "bg-red-500 text-white";
       case "starting-soon":
-        return "bg-accent text-accent-foreground";
+        return "bg-accent hover:bg-white text-accent-foreground";
       case "scheduled":
-        return "bg-primary text-primary-foreground";
+        return "bg-orange-400 text-primary-foreground";
       default:
         return "bg-muted text-muted-foreground";
     }
@@ -562,7 +562,7 @@ export default function LiveSessions() {
                         {session.topics.map((topic, index) => (
                           <Badge
                             key={index}
-                            variant="secondary"
+                            variant="outline"
                             className="text-xs"
                           >
                             {topic}
