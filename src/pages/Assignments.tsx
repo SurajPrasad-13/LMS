@@ -219,7 +219,7 @@ export default function Assignments() {
       case "late":
         return "bg-destructive text-destructive-foreground";
       case "upcoming":
-        return "bg-muted text-muted-foreground";
+        return "bg-muted text-muted-foreground hover:text-white";
       default:
         return "bg-muted text-muted-foreground";
     }
@@ -322,10 +322,10 @@ export default function Assignments() {
               key={filter.id}
               variant={selectedFilter === filter.id ? "default" : "outline"}
               onClick={() => setSelectedFilter(filter.id)}
-              className={selectedFilter === filter.id ? "bg-primary" : ""}
+              className={selectedFilter === filter.id ? "bg-orange-400" : ""}
             >
               {filter.name}
-              <Badge variant="secondary" className="ml-2">
+              <Badge variant="outline" className="ml-2 bg-white ">
                 {filter.count}
               </Badge>
             </Button>
@@ -337,7 +337,7 @@ export default function Assignments() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="glass-card p-6">
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-warning/20 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-orange-200/50 rounded-xl flex items-center justify-center">
               <Clock className="w-6 h-6 text-warning" />
             </div>
             <div>
@@ -373,7 +373,7 @@ export default function Assignments() {
 
         <Card className="glass-card p-6">
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
               <BarChart3 className="w-6 h-6 text-accent-foreground" />
             </div>
             <div>
@@ -450,7 +450,7 @@ export default function Assignments() {
                       key={index}
                       className="text-sm text-muted-foreground flex items-start gap-2"
                     >
-                      <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></span>
+                      <span className="w-1.5 h-1.5 bg-orange-400 rounded-full mt-2 flex-shrink-0"></span>
                       {req}
                     </li>
                   ))}
@@ -497,7 +497,7 @@ export default function Assignments() {
               {/* AI Hints */}
               <div className="glass-card p-4 space-y-3">
                 <div className="flex items-center gap-2">
-                  <Brain className="w-4 h-4 text-primary" />
+                  <Brain className="w-4 h-4 text-orange-400" />
                   <span className="font-medium">AI Study Hints</span>
                 </div>
                 <ul className="space-y-1">
