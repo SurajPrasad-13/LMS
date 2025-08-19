@@ -139,7 +139,7 @@ const About = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-learning text-white">
+      <section className="px-4 pt-20 pb-4 bg-gradient-learning text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
@@ -147,7 +147,7 @@ const About = () => {
               About AI Learn
             </Badge>
 
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Transforming Education Through
               <span className="block p-3 gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent">
                 Artificial Intelligence
@@ -164,12 +164,12 @@ const About = () => {
       </section>
 
       {/* Story Section */}
-      <section className="py-24">
+      <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <Badge className="mb-4">
-                <Rocket className="w-4 h-4 mr-2" />
+              <Badge className="mb-4 bg-orange-400">
+                <Rocket className="w-4  h-4 mr-2" />
                 Our Story
               </Badge>
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -216,8 +216,8 @@ const About = () => {
       <section className="py-24 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4">
-              <Heart className="w-4 h-4 mr-2" />
+            <Badge className="mb-4 bg-orange-400">
+              <Heart className="w-4  h-4 mr-2" />
               Our Values
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -257,8 +257,8 @@ const About = () => {
       <section className="py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4">
-              <TrendingUp className="w-4 h-4 mr-2" />
+            <Badge className="mb-4 bg-orange-400">
+              <TrendingUp className="w-4  h-4 mr-2" />
               Our Journey
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -298,8 +298,8 @@ const About = () => {
       <section className="py-24 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4">
-              <Users className="w-4 h-4 mr-2" />
+            <Badge className="mb-4 bg-orange-400">
+              <Users className="w-4  h-4 mr-2" />
               Leadership Team
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -347,7 +347,7 @@ const About = () => {
       <section className="py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4">
+            <Badge className="mb-4 bg-orange-400 ">
               <Award className="w-4 h-4 mr-2" />
               Impact & Results
             </Badge>
