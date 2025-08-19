@@ -402,7 +402,7 @@ export default function Dashboard() {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="glass-card p-6 hover-lift">
+            <Card className="glass-card p-6 hover-lift shadow-md">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-orange-200/50 rounded-xl flex items-center justify-center">
                   <BookOpen className="w-6 h-6 text-orange-400" />
@@ -414,7 +414,7 @@ export default function Dashboard() {
               </div>
             </Card>
 
-            <Card className="glass-card p-6 hover-lift">
+            <Card className="glass-card p-6 hover-lift shadow-md">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-success/20 rounded-xl flex items-center justify-center">
                   <Clock className="w-6 h-6 text-success" />
@@ -426,7 +426,7 @@ export default function Dashboard() {
               </div>
             </Card>
 
-            <Card className="glass-card p-6 hover-lift">
+            <Card className="glass-card p-6 hover-lift shadow-md">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
                   <Award className="w-6 h-6 text-accent-foreground" />
@@ -438,7 +438,7 @@ export default function Dashboard() {
               </div>
             </Card>
 
-            <Card className="glass-card p-6 hover-lift">
+            <Card className="glass-card p-6 hover-lift shadow-md">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-secondary/20 rounded-xl flex items-center justify-center">
                   <TrendingUp className="w-6 h-6 text-secondary" />
@@ -466,7 +466,7 @@ export default function Dashboard() {
                 {recentCourses.map((course) => (
                   <Card
                     key={course.id}
-                    className="glass-card w-[calc(100%-32px)] sm:w-[640px] md:w-[760px] lg:w-auto mx-auto  p-4 hover-lift group relative overflow-hidden"
+                    className="glass-card w-[calc(100%-32px)] sm:w-[640px] md:w-[760px] lg:w-auto mx-auto  p-4 hover-lift group relative overflow-hidden shadow-md"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div className="space-y-2">
@@ -550,7 +550,7 @@ export default function Dashboard() {
                   {upcomingSessions.map((session) => (
                     <Card
                       key={session.id}
-                      className="glass-card p-2 mx-auto  hover-lift group border-x-4 border-x-orange-300 w-[calc(100%-12px)] sm:w-[640px] md:w-[760px] lg:w-auto"
+                      className="glass-card p-2 mx-auto  hover-lift group border-x-4 border-x-orange-300 w-[calc(100%-12px)] sm:w-[640px] md:w-[760px] lg:w-auto shadow-md"
                     >
                       <div className="flex flex-col sm:flex-row items-center justify-between">
                         <div className="flex items-center space-x-4">
@@ -604,7 +604,7 @@ export default function Dashboard() {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* AI Tutor Quick Access */}
-              <Card className="glass-card p-6 w-[calc(100%-32px)]">
+              <Card className="glass-card p-6 w-[calc(100%-32px)] shadow-md">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 bg-gradient-learning rounded-2xl flex items-center justify-center mx-auto">
                     <Brain className="w-8 h-8 text-white" />
@@ -622,7 +622,7 @@ export default function Dashboard() {
               </Card>
 
               {/* Recent Achievements */}
-              <Card className="glass-card p-6 w-[calc(100%-32px)]">
+              <Card className="glass-card p-6 w-[calc(100%-32px)] shadow-md">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold">Recent Achievements</h3>
                   <Button variant="ghost" size="sm">
@@ -661,14 +661,14 @@ export default function Dashboard() {
               </Card>
 
               {/* Live Notifications */}
-              <Card className="glass-card p-6 w-[calc(100%-32px)]">
+              <Card className="glass-card p-6 w-[calc(100%-32px)] shadow-md">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold">Live Updates</h3>
                   <Badge variant="outline" className="bg-primary/10">
                     {notifications.length}
                   </Badge>
                 </div>
-                <div className="space-y-3 max-h-48 overflow-y-auto">
+                <div className="space-y-3 max-h-49 overflow-y-auto">
                   {notifications.map((notification) => (
                     <div
                       key={notification.id}
@@ -697,7 +697,7 @@ export default function Dashboard() {
               </Card>
 
               {/* Quick Stats */}
-              <Card className="glass-card p-6 w-[calc(100%-32px)]">
+              <Card className="glass-card p-6 w-[calc(100%-32px)] shadow-md">
                 <h3 className="text-lg font-semibold mb-4">This Week</h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">

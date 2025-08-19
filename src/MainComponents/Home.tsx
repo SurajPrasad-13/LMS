@@ -99,41 +99,91 @@ const Home = () => {
       rating: 5,
     },
   ];
+  const courses = [
+    {
+      id: 1,
+      title: "Complete AI & Machine Learning Bootcamp",
+      instructor: "Dr. Sarah Chen",
+      category: "ai-ml",
+      level: "beginner",
+      duration: "12 weeks",
+      students: 15420,
+      rating: 4.9,
+      price: 149,
+      image: "/api/placeholder/400/225",
+      description:
+        "Master AI and ML from scratch with hands-on projects using Python, TensorFlow, and real-world datasets.",
+      skills: ["Python", "TensorFlow", "Neural Networks", "Deep Learning"],
+      features: ["24/7 Support", "Certificate", "Lifetime Access", "Projects"],
+    },
+    {
+      id: 2,
+      title: "Advanced React Development Masterclass",
+      instructor: "Alex Rodriguez",
+      category: "web-dev",
+      level: "intermediate",
+      duration: "8 weeks",
+      students: 8950,
+      rating: 4.8,
+      price: 99,
+      image: "/api/placeholder/400/225",
+      description:
+        "Build modern web applications with React, Next.js, and TypeScript. Includes state management and testing.",
+      skills: ["React", "Next.js", "TypeScript", "Redux"],
+      features: ["Live Sessions", "Certificate", "Job Support", "Mentorship"],
+    },
+    {
+      id: 3,
+      title: "UI/UX Design Fundamentals",
+      instructor: "Maria Santos",
+      category: "design",
+      level: "beginner",
+      duration: "6 weeks",
+      students: 12300,
+      rating: 4.7,
+      price: 79,
+      image: "/api/placeholder/400/225",
+      description:
+        "Learn design thinking, user research, wireframing, and prototyping using Figma and Adobe XD.",
+      skills: ["Figma", "Adobe XD", "Prototyping", "User Research"],
+      features: [
+        "Design Tools",
+        "Portfolio Review",
+        "Certificate",
+        "Community",
+      ],
+    },
+  ];
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src={heroImage}
-            alt="AI-powered learning environment"
-            className="w-full h-full object-cover"
-          />
           <div className="absolute inset-0 bg-gradient-learning"></div>
         </div>
 
-        <div className="relative container mx-auto px-4 py-32 text-center text-white">
+        <div className="relative container mx-auto px-4 pt-20 pb-8 text-center text-white">
           <div className="max-w-4xl mx-auto">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
               <Zap className="w-4 h-4 mr-2" />
               AI-Enhanced Learning Platform
             </Badge>
 
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
               Transform Your Career with
               <span className="block p-3 gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent">
                 AI-Powered Learning
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl mb-8 text-white/90 leading-relaxed">
+            <p className="text-lg md:text-xl mb-8 text-white/90 leading-relaxed">
               Join millions of learners worldwide and unlock your potential with
               personalized courses, expert mentorship, and cutting-edge AI
               technology that adapts to your unique learning style.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-9">
               <Link to="/get-started">
                 <Button
                   size="lg"
@@ -170,7 +220,7 @@ const Home = () => {
       <section className="py-24 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4 ">
+            <Badge className="mb-4 bg-orange-500/80 ">
               <Target className="w-4 h-4 mr-2" />
               Why Choose AI Learn
             </Badge>
@@ -212,7 +262,7 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <Badge className="mb-4">
+              <Badge className="mb-4 bg-orange-500/80">
                 <BookOpen className="w-4 h-4 mr-2" />
                 Course Catalog
               </Badge>
@@ -271,7 +321,7 @@ const Home = () => {
       <section className="py-24 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4">
+            <Badge className="mb-4 bg-orange-500/80">
               <Users className="w-4 h-4 mr-2" />
               Student Success Stories
             </Badge>
@@ -312,6 +362,87 @@ const Home = () => {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+      <section>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 container mx-auto px-4 py-5">
+          {courses.map((course) => (
+            <Card
+              key={course.id}
+              className="group border-0 shadow-lg overflow-hidden hover:scale-105 transition-all duration-300 hover:shadow-xl"
+            >
+              <div className="relative">
+                <div className="aspect-video bg-gradient-to-br from-[#fa862d]/40 to-[#fcbe53]/20 flex items-center justify-center">
+                  <Play className="w-12 h-12 text-orange-500 group-hover:scale-110 transition-transform" />
+                </div>
+                <Badge className="absolute top-3 right-3 bg-white/90 text-foreground">
+                  {course.level}
+                </Badge>
+              </div>
+
+              <CardHeader>
+                <div className="flex items-center justify-between mb-2">
+                  <Badge className="text-xs bg-white/20 text-black hover:text-white border border-black">
+                                {course.category}
+                              </Badge>
+                  <div className="flex items-center space-x-1">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-medium">{course.rating}</span>
+                  </div>
+                </div>
+
+                <CardTitle className="text-lg leading-tight group-hover:text-orange-500 transition-colors">
+                  {course.title}
+                </CardTitle>
+
+                <CardDescription className="text-sm">
+                  by {course.instructor}
+                </CardDescription>
+              </CardHeader>
+
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {course.description}
+                </p>
+
+                <div className="flex flex-wrap gap-1">
+                  {course.skills.slice(0, 3).map((skill, index) => (
+                    <Badge key={index} variant="outline" className="text-xs">
+                      {skill}
+                    </Badge>
+                  ))}
+                  {course.skills.length > 3 && (
+                    <Badge variant="outline" className="text-xs">
+                      +{course.skills.length - 3}
+                    </Badge>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+                  <div className="flex items-center space-x-1">
+                    <Clock className="w-4 h-4" />
+                    <span>{course.duration}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Users className="w-4 h-4" />
+                    <span>{course.students.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-4 border-t">
+                  <span className="text-2xl font-bold text-orange-500">
+                    ${course.price}
+                  </span>
+                  <Button
+                    size="sm"
+                    className="btn-hero hover:scale-105 hover:-translate-y-1"
+                  >
+                    Enroll Now
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
 
@@ -410,13 +541,14 @@ const Home = () => {
           </div>
         </div>
       </section>
+      
 
       {/* Achievement & Progress Section */}
       <section className="py-14 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <Badge className="mb-4">
+              <Badge className="mb-4 V bg-orange-500/80">
                 <Award className="w-4 h-4 mr-2" />
                 Track Your Success
               </Badge>
@@ -489,7 +621,7 @@ const Home = () => {
       <section className="py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4">
+            <Badge className="mb-4 bg-orange-500/80">
               <Globe className="w-4 h-4 mr-2" />
               Global Learning Network
             </Badge>
@@ -575,7 +707,7 @@ const Home = () => {
       <section className="py-24 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <Badge className="mb-4">
+            <Badge className="mb-4 bg-orange-500/80">
               <Play className="w-4 h-4 mr-2" />
               Interactive Video Learning
             </Badge>
