@@ -208,7 +208,7 @@ const Classes = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-learning text-white">
+      <section className="pt-20 pb-8  bg-gradient-learning text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
@@ -216,7 +216,7 @@ const Classes = () => {
               Live & Interactive Classes
             </Badge>
 
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Learn with Live
               <span className="block gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent">
                 Interactive Classes
