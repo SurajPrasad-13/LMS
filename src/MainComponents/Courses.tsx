@@ -198,7 +198,7 @@ const Courses = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-learning text-white">
+      <section className="pt-20 pb-4 bg-gradient-learning text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
@@ -206,7 +206,7 @@ const Courses = () => {
               Course Catalog
             </Badge>
 
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Master New Skills with
               <span className="block gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent">Expert-Led Courses</span>
             </h1>
@@ -239,9 +239,9 @@ const Courses = () => {
       </section>
 
       {/* Featured Course */}
-      <section className="py-16 -mt-8 relative z-10">
-        <div className="container mx-auto px-4">
-          <Card className="glass-card shadow-2xl max-w-6xl mx-auto ">
+      <section className="py-16 -mt-8 relative z-10 ">
+        <div className="container mx-auto px-4 ">
+          <Card className="glass-card shadow-xl hover:shadow-2xl hover:-translate-y-1 duration-200 max-w-6xl mx-auto border-t-gray-100 ">
             <CardContent className="p-8">
               <div className="grid lg:grid-cols-2 gap-8 items-center">
                 <div>
