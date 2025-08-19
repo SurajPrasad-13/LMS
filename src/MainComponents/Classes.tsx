@@ -223,7 +223,7 @@ const Classes = () => {
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl mb-12 opacity-90 leading-relaxed">
+            <p className="text-lg md:text-xl mb-12 opacity-90 leading-relaxed">
               Join expert-led live sessions, participate in real-time
               discussions, and accelerate your learning with interactive
               workshops and masterclasses.

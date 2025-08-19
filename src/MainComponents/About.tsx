@@ -154,7 +154,7 @@ const About = () => {
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">
+            <p className="text-lg md:text-xl mb-8 opacity-90 leading-relaxed">
               We're on a mission to democratize quality education by making
               personalized, AI-powered learning accessible to everyone,
               everywhere.

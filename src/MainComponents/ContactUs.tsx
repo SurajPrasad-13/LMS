@@ -171,7 +171,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-learning text-white">
+      <section className="pt-20 pb-8 bg-gradient-learning text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
@@ -179,14 +179,14 @@ const Contact = () => {
               Contact Us
             </Badge>
 
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
               We're Here to
               <span className="block gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent p-3">
                 Help You Succeed
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl mb-12 opacity-90 leading-relaxed">
+            <p className="text-lg md:text-xl mb-12 opacity-90 leading-relaxed">
               Have questions about our courses, need technical support, or want
               to discuss partnership opportunities? Our team is ready to assist
               you.
