@@ -8,11 +8,51 @@ import {
   Twitter,
   Linkedin,
   Instagram,
+  MailCheckIcon,
+  MailOpen,
+  BellRing,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import logo from "../assets/Logo1.png";
+import { Bounce, Flip, Slide, toast, ToastContainer } from "react-toastify";
+import { useState } from "react";
+import { CheckCircle, AlertTriangle } from "lucide-react";
+
+
+
+
 const Footer = () => {
+  const [emailId, setemailId] = useState(null);
+const contextClass = {
+  success: "bg-rose-500",
+  error: "bg-red-600",
+  info: "bg-gray-600",
+  warning: "bg-orange-400",
+  default: "bg-indigo-600",
+  dark: "bg-white-600 font-gray-300",
+};
+
+  const notify = () =>
+    toast.success("Subscribed", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      // theme: "light",
+      transition: Slide,
+      progressClassName: "bg-white",
+      icon: <BellRing className="text-white w-5 h-5" />
+      
+    });
+  const subscribe = (e) => {
+    e.preventDefault();
+    notify();
+    setemailId("");
+  };
   return (
     <footer className="bg-gradient-to-r from-[#fa9537] to-[#fcbe53] text-white">
       <div className="container mx-auto px-4 py-16">
@@ -37,7 +77,10 @@ const Footer = () => {
                 size="icon"
                 className="text-white hover:bg-white/70"
               >
-                <a href="https://www.facebook.com/people/Sudo-Techlabs/61574788298611/" target="_blank">
+                <a
+                  href="https://www.facebook.com/people/Sudo-Techlabs/61574788298611/"
+                  target="_blank"
+                >
                   <Facebook className="w-5 h-5" />
                 </a>
               </Button>
@@ -55,7 +98,10 @@ const Footer = () => {
                 size="icon"
                 className="text-white hover:bg-white/70"
               >
-                <a href="https://www.linkedin.com/company/sudotechlabs/?originalSubdomain=in" target="_blank">
+                <a
+                  href="https://www.linkedin.com/company/sudotechlabs/?originalSubdomain=in"
+                  target="_blank"
+                >
                   <Linkedin className="w-5 h-5" />
                 </a>
               </Button>
@@ -64,8 +110,11 @@ const Footer = () => {
                 size="icon"
                 className="text-white hover:bg-white/70"
               >
-                <a href="https://www.instagram.com/techlabssudo/" target="_blank">
-                <Instagram className="w-5 h-5" />
+                <a
+                  href="https://www.instagram.com/techlabssudo/"
+                  target="_blank"
+                >
+                  <Instagram className="w-5 h-5" />
                 </a>
               </Button>
             </div>
@@ -144,7 +193,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2 text-white/80">
                 <MapPin className="w-4 h-4" />
-                <span>San Francisco, CA</span>
+                <span>Jaipur, Rajasthan</span>
               </div>
             </div>
 
@@ -152,15 +201,21 @@ const Footer = () => {
               <p className="text-sm text-white/80">
                 Subscribe to our newsletter
               </p>
-              <div className="flex items-center space-x-2">
-                <Input
-                  placeholder="Your email"
-                  className="bg-white/20 hover:bg-white/30 text-black border-white/30 placeholder:text-white/60"
-                />
-                <Button variant="secondary" size="sm">
-                  Subscribe
-                </Button>
-              </div>
+              <form action="" onSubmit={subscribe}>
+                <div className="flex items-center space-x-2">
+                  <Input
+                    placeholder="Your email"
+                    type="email"
+                    required
+                    value={emailId}
+                    onChange={(e) => setemailId(e.target.value)}
+                    className="bg-white/20 hover:bg-white/30 text-black border-white/30 placeholder:text-white/60"
+                  />
+                  <Button type="submit" variant="secondary" size="sm">
+                    Subscribe
+                  </Button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -182,6 +237,15 @@ const Footer = () => {
           </div>
         </div>
       </div>
+
+      <ToastContainer
+        toastClassName={(context) =>
+          contextClass[context?.type || "default"] +
+          " relative flex p-4 min-h-12 w-72 rounded-md justify-start item-center overflow-hidden cursor-pointer"
+        }
+        position="bottom-left"
+        autoClose={3000}
+      />
     </footer>
   );
 };

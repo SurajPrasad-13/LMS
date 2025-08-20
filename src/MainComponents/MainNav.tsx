@@ -21,7 +21,7 @@ const MainNav = () => {
   return (
     <>
       <div className="fixed top-0 z-20 w-screen ">
-        <div className="  w-full h-full px-6 flex  items-center justify-between backdrop-blur-lg ">
+        <div className="  w-full h-full  flex  items-center justify-between px-6 md:px-8 lg:px-12  bg-white ">
           <NavLink to="/home">
             <div className="flex items-center justify-center cursor-pointer">
               <img src={logo} alt="Sudo logo" className="h-12 lg:h-16 " />
@@ -32,14 +32,14 @@ const MainNav = () => {
             </div>
           </NavLink>
           <div className="hidden md:flex items-center justify-around md:gap-4">
-            <div className="flex items-center gap-2 lg:gap-4 text-gray-500">
+            <div className="flex items-center gap-2 lg:gap-4 text-gray-500 ">
               {navbar.map((navigation) => (
                 <NavLink
                   className={({ isActive }) =>
-                    ` transition-all duration-200 px-[2px] lg:px-2 text-[15px] lg:text-[17px]  ${
+                    ` transition-all duration-200  text-[15px] lg:text-[17px]  ${
                       isActive
-                        ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 md:px-4  rounded-xl font-semibold border-none "
-                        : "text-gray-600 hover:text-black hover:-translate-y-[2px] inactive-Link "
+                        ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-1 px-6   rounded-sm font-semibold border-none "
+                        : "text-gray-600 hover:text-black hover:-translate-y-[2px] inactive-Link px-2 "
                     }`
                   }
                   key={navigation.title}
@@ -74,11 +74,11 @@ const MainNav = () => {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ x: 50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: 50, opacity: 0 }}
+              initial={{ y: -500, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -500, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed w-30 sm:w-36 right-0 top-12 md:hidden h-[92vh] bg-white z-40 flex flex-col items-center justify-around"
+              className="fixed w-full  right-0 top-12  md:hidden h-[94vh]  bg-white/90 z-40 flex flex-col items-center justify-around"
             >
               {navbar.map((navigation) => (
                 <NavLink
@@ -86,7 +86,7 @@ const MainNav = () => {
                   key={navigation.title}
                   to={navigation.href}
                   className={({ isActive }) =>
-                    `transition-all duration-200 px-2 ${
+                    `transition-all duration-200 px-24 ${
                       isActive
                         ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 px-4 rounded-xl font-semibold border-none"
                         : "text-gray-600 hover:text-black hover:-translate-y-[2px] inactive-Link"

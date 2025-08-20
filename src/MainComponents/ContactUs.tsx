@@ -489,7 +489,7 @@ const Contact = () => {
         // width="600"
         // height="300"
         loading="lazy"
-        className="h-[200px] w-[300px] sm:h-[300px] sm:w-[600px]"
+        className="h-[200px] w-[300px] sm:h-[250px] sm:w-[500px] md:h-[300px] md:w-[600px]"
       ></iframe>
       </section>
 

@@ -21,6 +21,7 @@ import Assignments from "@/pages/Assignments";
 import Achievements from "@/pages/Achievements";
 import AITutor from "@/pages/AITutor";
 import Schedule from "@/pages/Schedule";
+import Page404 from "@/Page404";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
       { path: "contact-us", element: <ContactUs /> },
       { path: "login", element: <Login /> },
       { path: "get-started", element: <GetStarted /> },
+      { path: "*", element: <Page404 /> },
     ],
   },
   {

@@ -21,6 +21,7 @@ import {
   Star,
   Clock,
   CheckCircle,
+  X,
 } from "lucide-react";
 import coursesImage from "@/assets/courses-preview.png";
 import aiTechImage from "@/assets/ai-technology.png";
@@ -29,7 +30,7 @@ import achievementDashboardImage from "@/assets/achievement-dashboard.jpg";
 import globalCommunityImage from "@/assets/global-community.jpg";
 import { useEffect, useState } from "react";
 import Registeration from "./Registration";
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import { Slide, toast, ToastContainer } from "react-toastify";
 
 const Home = () => {
   const features = [
@@ -157,8 +158,8 @@ const Home = () => {
     },
   ];
   const notify = () =>
-    toast.success("🦄 Registration Successfull", {
-      position: "top-center",
+    toast.success("Registration Successfull", {
+      position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -166,16 +167,14 @@ const Home = () => {
       draggable: true,
       progress: undefined,
       theme: "light",
-      transition: Bounce,
+      transition: Slide,
     });
+    
 
   const handleSignUp = async (data) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log("Sign up attempted with:", data);
     notify();
-    // let timer = setTimeout(() => {
-    //   setShowFormModal(false);
-    // }, 2000);
     setShowFormModal(false);
   };
 
@@ -184,7 +183,7 @@ const Home = () => {
   useEffect(() => {
     let timer = setTimeout(() => {
       setShowFormModal(true);
-    }, 10000);
+    }, 5000);
   }, []);
 
   return (
@@ -832,13 +831,13 @@ const Home = () => {
         </div>
       </section>
       {showFormModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full md:w-1/2 max-h-screen overflow-y-auto relative">
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-[calc(100%-3rem)] sm:w-1/2 lg:w-1/3 lg:h-[calc(100%-6.1rem)]   max-h-screen overflow-y-scroll [&::-webkit-scrollbar]:hidden relative">
             <button
               onClick={() => setShowFormModal(false)}
-              className="absolute top-2 right-2 text-gray-600 hover:text-black"
+              className="absolute top-2 right-2 text-gray-400 hover:text-black"
             >
-              ✕
+             <X />
             </button>
             <Registeration onSubmit={handleSignUp} />
           </div>
@@ -854,6 +853,7 @@ const Home = () => {
         pauseOnFocusLoss
         draggable
         theme="light"
+        transition={Slide}
       />
     </div>
   );
