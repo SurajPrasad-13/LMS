@@ -22,12 +22,14 @@ import {
   Clock,
   CheckCircle,
 } from "lucide-react";
-import heroImage from "@/assets/hero-learning.jpg";
 import coursesImage from "@/assets/courses-preview.png";
 import aiTechImage from "@/assets/ai-technology.png";
 import virtualClassroomImage from "@/assets/virtual-classroom.png";
 import achievementDashboardImage from "@/assets/achievement-dashboard.jpg";
 import globalCommunityImage from "@/assets/global-community.jpg";
+import { useEffect, useState } from "react";
+import Registeration from "./Registration";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const Home = () => {
   const features = [
@@ -154,16 +156,46 @@ const Home = () => {
       ],
     },
   ];
+  const notify = () =>
+    toast.success("🦄 Registration Successfull", {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
+
+  const handleSignUp = async (data) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("Sign up attempted with:", data);
+    notify();
+    // let timer = setTimeout(() => {
+    //   setShowFormModal(false);
+    // }, 2000);
+    setShowFormModal(false);
+  };
+
+  const [showFormModal, setShowFormModal] = useState(false);
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      setShowFormModal(true);
+    }, 10000);
+  }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen ">
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden py-8 ">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-learning"></div>
         </div>
 
-        <div className="relative container mx-auto px-4 pt-20 pb-8 text-center text-white">
+        <div className="relative container mx-auto px-4  text-center text-white">
           <div className="max-w-4xl mx-auto">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
               <Zap className="w-4 h-4 mr-2" />
@@ -383,8 +415,8 @@ const Home = () => {
               <CardHeader>
                 <div className="flex items-center justify-between mb-2">
                   <Badge className="text-xs bg-white/20 text-black hover:text-white border border-black">
-                                {course.category}
-                              </Badge>
+                    {course.category}
+                  </Badge>
                   <div className="flex items-center space-x-1">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                     <span className="text-sm font-medium">{course.rating}</span>
@@ -461,7 +493,7 @@ const Home = () => {
         <div className="relative container mx-auto px-4 py-10 sm:py-16 md:py-20">
           {/* Heading */}
           <div className="text-center mb-10 sm:mb-14 md:mb-16">
-            <Badge className="mb-4">
+            <Badge className="mb-4 bg-orange-400">
               <Brain className="w-4 h-4 mr-2" />
               Advanced AI Technology
             </Badge>
@@ -541,7 +573,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-      
 
       {/* Achievement & Progress Section */}
       <section className="py-14 bg-muted/50">
@@ -800,6 +831,30 @@ const Home = () => {
           </div>
         </div>
       </section>
+      {showFormModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full md:w-1/2 max-h-screen overflow-y-auto relative">
+            <button
+              onClick={() => setShowFormModal(false)}
+              className="absolute top-2 right-2 text-gray-600 hover:text-black"
+            >
+              ✕
+            </button>
+            <Registeration onSubmit={handleSignUp} />
+          </div>
+        </div>
+      )}
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme="light"
+      />
     </div>
   );
 };

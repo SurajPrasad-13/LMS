@@ -20,8 +20,8 @@ const MainNav = () => {
   const [isOpen, setisOpen] = useState(false);
   return (
     <>
-      <div className="fixed top-0 z-20 w-screen">
-        <div className=" bg-white w-full h-full px-6 flex items-center justify-between">
+      <div className="fixed top-0 z-20 w-screen ">
+        <div className="  w-full h-full px-6 flex  items-center justify-between backdrop-blur-lg ">
           <NavLink to="/home">
             <div className="flex items-center justify-center cursor-pointer">
               <img src={logo} alt="Sudo logo" className="h-12 lg:h-16 " />

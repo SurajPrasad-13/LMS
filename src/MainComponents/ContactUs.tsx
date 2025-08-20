@@ -171,7 +171,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="pt-20 pb-8 bg-gradient-learning text-white">
+      <section className="py-8 bg-gradient-learning text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-white/20 text-white border-white/30">
@@ -481,14 +481,15 @@ const Contact = () => {
       </section>
       <section className="px-3">
 
-      <div className="text-6xl">
+      <div className="text-4xl md:text-6xl">
         <h1>You can visit.</h1>
       </div>
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2770.3764460240086!2d75.72937887424919!3d26.905346676651508!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db3fe5bb55f51%3A0x28ef04348dea4ee9!2sSudo%20Techlabs!5e1!3m2!1sen!2sin!4v1755588113034!5m2!1sen!2sin"
-        width="600"
-        height="300"
+        // width="600"
+        // height="300"
         loading="lazy"
+        className="h-[200px] w-[300px] sm:h-[300px] sm:w-[600px]"
       ></iframe>
       </section>
 
