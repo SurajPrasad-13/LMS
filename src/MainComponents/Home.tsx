@@ -30,7 +30,7 @@ import achievementDashboardImage from "@/assets/achievement-dashboard.jpg";
 import globalCommunityImage from "@/assets/global-community.jpg";
 import { useEffect, useState } from "react";
 import Registeration from "./Registration";
-import { Slide, toast, ToastContainer } from "react-toastify";
+import { Bounce, Slide, toast, ToastContainer } from "react-toastify";
 
 const Home = () => {
   const features = [
@@ -158,7 +158,7 @@ const Home = () => {
     },
   ];
   const notify = () =>
-    toast.success("Registration Successfull", {
+    toast.success("🦄 Registration Successfull", {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -167,7 +167,7 @@ const Home = () => {
       draggable: true,
       progress: undefined,
       theme: "light",
-      transition: Slide,
+      transition: Bounce,
     });
     
 
@@ -853,7 +853,7 @@ const Home = () => {
         pauseOnFocusLoss
         draggable
         theme="light"
-        transition={Slide}
+        transition={Bounce}
       />
     </div>
   );

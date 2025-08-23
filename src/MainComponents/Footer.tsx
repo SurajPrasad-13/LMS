@@ -42,10 +42,10 @@ const contextClass = {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      // theme: "light",
+      theme: "light",
       transition: Slide,
-      progressClassName: "bg-white",
-      icon: <BellRing className="text-white w-5 h-5" />
+      progressClassName: "bg-black",
+      icon: <BellRing className="text-black w-5 h-5" />
       
     });
   const subscribe = (e) => {
@@ -211,7 +211,7 @@ const contextClass = {
                     onChange={(e) => setemailId(e.target.value)}
                     className="bg-white/20 hover:bg-white/30 text-black border-white/30 placeholder:text-white/60"
                   />
-                  <Button type="submit" variant="secondary" size="sm">
+                  <Button type="submit" onClick={subscribe} variant="secondary" className=" active:ring-inset-2 ring-orange-500 " size="sm">
                     Subscribe
                   </Button>
                 </div>
@@ -238,14 +238,14 @@ const contextClass = {
         </div>
       </div>
 
-      <ToastContainer
+      {/* <ToastContainer
         toastClassName={(context) =>
           contextClass[context?.type || "default"] +
           " relative flex p-4 min-h-12 w-72 rounded-md justify-start item-center overflow-hidden cursor-pointer"
         }
         position="bottom-left"
         autoClose={3000}
-      />
+      /> */}
     </footer>
   );
 };

@@ -22,7 +22,7 @@ const MainNav = () => {
     <>
       <div className="fixed top-0 z-20 w-screen ">
         <div className="  w-full h-full  flex  items-center justify-between px-6 md:px-8 lg:px-12  bg-white ">
-          <NavLink to="/home">
+          <NavLink to="/">
             <div className="flex items-center justify-center cursor-pointer">
               <img src={logo} alt="Sudo logo" className="h-12 lg:h-16 " />
 
