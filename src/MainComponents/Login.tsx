@@ -24,7 +24,9 @@ import {
   Shield,
   CheckCircle,
   Star,
+  UserPen,
 } from "lucide-react";
+import { Slide, toast } from "react-toastify";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,16 +36,32 @@ const Login = () => {
     register,
     formState: { errors, isSubmitting },
   } = useForm();
+
+  // toasify alert
+  const notify = () =>
+    toast.success("Login Successfully", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Slide,
+      icon: <UserPen className="text-green-600 w-5 h-5" />,
+    });
+
   const { setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (data) => {
+    notify();
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log(data);
     setIsLoggedIn(true);
     navigate("/dashboard");
   };
-  const [showPass, setshowPass] = useState(false);
 
   const benefits = [
     {
@@ -67,7 +85,7 @@ const Login = () => {
     <div className="min-h-screen flex px-10">
       {/* Left Side - Login Form */}
       <div className=" relative flex-1 flex items-center justify-center p-8 bg-background ">
-        <Card className=" absolute top-28 w-full max-w-md hover:scale-105 transition-all duration-200 hover:shadow-2xl">
+        <Card className=" absolute sm:top-16 md:top-28 w-full max-w-md hover:scale-105 transition-all duration-200 hover:shadow-2xl">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
             <CardDescription>
