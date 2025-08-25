@@ -21,24 +21,24 @@ const MainNav = () => {
   return (
     <>
       <div className="fixed top-0 z-20 w-screen ">
-        <div className="  w-full h-full  flex  items-center justify-between px-6 md:px-8 lg:px-12  bg-white ">
+        <div className="  w-full h-full  flex  items-center justify-between py-1 sm:py-0 px-4 sm:px-6  md:px-2 lg:px-10 xl:px-14  bg-white ">
           <NavLink to="/">
-            <div className="flex items-center justify-center cursor-pointer">
+            <div className="flex items-center  cursor-pointer">
               <img src={logo} alt="Sudo logo" className="h-12 lg:h-16 " />
 
-              <div className=" text-xl lg:text-2xl font-bold bg-gradient-to-r from-orange-400  to-yellow-400 text-transparent bg-clip-text ">
+              <div className=" text-xl sm:text-[22px] lg:text-2xl font-bold bg-gradient-to-r from-orange-400  to-yellow-400 text-transparent bg-clip-text ">
                 Sudo Lms AI
               </div>
             </div>
           </NavLink>
-          <div className="hidden md:flex items-center justify-around md:gap-4">
-            <div className="flex items-center gap-2 lg:gap-4 text-gray-500 ">
+          <div className="hidden md:flex items-center justify-around md:gap-2 lg:gap-4">
+            <div className="flex items-center  lg:gap-4 text-gray-500 ">
               {navbar.map((navigation) => (
                 <NavLink
                   className={({ isActive }) =>
-                    ` transition-all duration-200  text-[15px] lg:text-[17px]  ${
+                    ` transition-all duration-200  text-[14px] lg:text-[17px]  ${
                       isActive
-                        ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-1 px-6   rounded-sm font-semibold border-none "
+                        ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-1 px-4 lg:px-6   rounded-sm font-semibold border-none "
                         : "text-gray-600 hover:text-black hover:-translate-y-[2px] inactive-Link px-2 "
                     }`
                   }
@@ -54,10 +54,10 @@ const MainNav = () => {
             <div className="flex items-center ">
               <NavLink
                 className={({ isActive }) =>
-                  ` transition-all duration-200 px-2 lg:px-3.5 py-1.5 text-[15px] lg:text-[17px]   border-2 border-[#ffae6c] rounded-lg ${
+                  `transition-all duration-200  text-[14px] lg:text-[17px]   border-2 border-[#ffae6c] rounded-lg ${
                     isActive
-                      ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 px-4 rounded-lg font-semibold border-none "
-                      : "text-gray-600 hover:text-white hover:bg-[#ffb845] hover:border-[#ffb845]  "
+                      ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-1 px-4 lg:px-6 rounded-sm font-semibold border-none "
+                      : "text-gray-600 hover:text-white hover:bg-[#ffb845] hover:border-[#ffb845]  px-3 py-1 "
                   }`
                 }
                 to="/login"
@@ -78,7 +78,7 @@ const MainNav = () => {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -500, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed w-full  right-0 top-12  md:hidden h-[94vh]  bg-white/90 z-40 flex flex-col items-center justify-around"
+              className="fixed w-full  right-0 top-12  md:hidden h-[70vh] pt-4  bg-white/90 z-40 flex flex-col items-center justify-around"
             >
               {navbar.map((navigation) => (
                 <NavLink
@@ -88,7 +88,7 @@ const MainNav = () => {
                   className={({ isActive }) =>
                     `transition-all duration-200 px-24 ${
                       isActive
-                        ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 px-4 rounded-xl font-semibold border-none"
+                        ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 px-10 rounded-xl font-semibold border-none"
                         : "text-gray-600 hover:text-black hover:-translate-y-[2px] inactive-Link"
                     }`
                   }
@@ -101,9 +101,9 @@ const MainNav = () => {
                  onClick={()=>setisOpen(!isOpen)}
                   to="/login"
                   className={({ isActive }) =>
-                    `transition-all duration-200 ${
+                    `transition-all duration-200 px-24 ${
                       isActive
-                        ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 px-4 rounded-xl font-semibold border-none"
+                        ? "text-white bg-gradient-to-br from-[#fa811e] to-[#ffb845] py-2 px-10 rounded-xl font-semibold border-none"
                         : "text-gray-600 hover:text-black hover:-translate-y-[3px] inactive-Link"
                     }`
                   }
