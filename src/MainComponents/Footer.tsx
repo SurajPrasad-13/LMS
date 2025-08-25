@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import {
-  Brain,
   Mail,
   Phone,
   MapPin,
@@ -8,33 +7,19 @@ import {
   Twitter,
   Linkedin,
   Instagram,
-  MailCheckIcon,
-  MailOpen,
   BellRing,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import logo from "../assets/Logo1.png";
-import { Bounce, Flip, Slide, toast, ToastContainer } from "react-toastify";
+import { Slide, toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
-import { CheckCircle, AlertTriangle } from "lucide-react";
-
-
-
 
 const Footer = () => {
   const [emailId, setemailId] = useState(null);
-const contextClass = {
-  success: "bg-rose-500",
-  error: "bg-red-600",
-  info: "bg-gray-600",
-  warning: "bg-orange-400",
-  default: "bg-indigo-600",
-  dark: "bg-white-600 font-gray-300",
-};
 
   const notify = () =>
-    toast.success("Subscribed", {
+    toast.success("Subscribed Successfully", {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -44,9 +29,7 @@ const contextClass = {
       progress: undefined,
       theme: "light",
       transition: Slide,
-      progressClassName: "bg-black",
-      icon: <BellRing className="text-black w-5 h-5" />
-      
+      icon: <BellRing className="text-green-600 w-5 h-5" />,
     });
   const subscribe = (e) => {
     e.preventDefault();
@@ -211,7 +194,12 @@ const contextClass = {
                     onChange={(e) => setemailId(e.target.value)}
                     className="bg-white/20 hover:bg-white/30 text-black border-white/30 placeholder:text-white/60"
                   />
-                  <Button type="submit" onClick={subscribe} variant="secondary" className=" active:ring-inset-2 ring-orange-500 " size="sm">
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    className=" active:ring-inset-2 ring-orange-500 "
+                    size="sm"
+                  >
                     Subscribe
                   </Button>
                 </div>
@@ -237,15 +225,6 @@ const contextClass = {
           </div>
         </div>
       </div>
-
-      {/* <ToastContainer
-        toastClassName={(context) =>
-          contextClass[context?.type || "default"] +
-          " relative flex p-4 min-h-12 w-72 rounded-md justify-start item-center overflow-hidden cursor-pointer"
-        }
-        position="bottom-left"
-        autoClose={3000}
-      /> */}
     </footer>
   );
 };
