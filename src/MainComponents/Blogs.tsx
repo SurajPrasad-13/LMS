@@ -185,7 +185,7 @@ const Blogs = () => {
               <span className="block gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent p-3">From Industry Experts</span>
             </h1>
             
-            <p className="text-lg md:text-xl mb-12 opacity-90 leading-relaxed">
+            <p className="text-lg md:text-xl mb-4 opacity-90 leading-relaxed">
               Stay ahead of the curve with cutting-edge insights, practical tutorials, 
               and career advice from leading professionals in tech and education.
             </p>

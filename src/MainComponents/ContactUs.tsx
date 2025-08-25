@@ -186,7 +186,7 @@ const Contact = () => {
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl mb-12 opacity-90 leading-relaxed">
+            <p className="text-lg md:text-xl mb-4 opacity-90 leading-relaxed">
               Have questions about our courses, need technical support, or want
               to discuss partnership opportunities? Our team is ready to assist
               you.

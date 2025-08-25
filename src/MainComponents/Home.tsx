@@ -199,7 +199,7 @@ const Home = () => {
               technology that adapts to your unique learning style.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-9">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-5">
               <Link to="/get-started">
                 <Button
                   size="lg"

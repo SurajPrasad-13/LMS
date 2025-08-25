@@ -211,7 +211,7 @@ const Courses = () => {
               <span className="block gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent">Expert-Led Courses</span>
             </h1>
 
-            <p className="text-lg md:text-xl mb-12 opacity-90 leading-relaxed">
+            <p className="text-lg md:text-xl mb-4 opacity-90 leading-relaxed">
               Join thousands of students learning in-demand skills with our
               AI-personalized curriculum and industry expert instructors.
             </p>

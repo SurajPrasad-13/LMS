@@ -303,6 +303,7 @@ export default function Assignments() {
           <div className="relative flex-1">
             <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
             <Input
+            id="searchTerm"
               placeholder="Search assignments, courses, or instructors..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

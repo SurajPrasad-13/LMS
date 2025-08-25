@@ -483,6 +483,7 @@ export default function AITutor() {
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1 space-y-3">
             <Textarea
+            id="inputMessage"
               placeholder="Ask me anything about your studies..."
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}

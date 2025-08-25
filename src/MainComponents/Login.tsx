@@ -173,13 +173,13 @@ const Login = () => {
                   </p>
                 )}
               </div>
-              <div className="mt-3 text-center">
+              <div className="mt-3 text-center bg-white">
                 <Button
                   type="submit"
-                  disabled={isSubmitting}
+                  // disabled={isSubmitting}
                   className={`${
                     isSubmitting
-                      ? "bg-white my-3 text-xs "
+                      ? "bg-transparent hover:bg-transparent focus:bg-transparent active:bg-transparent my-3 text-xs "
                       : "w-full outline-none p-2 rounded-md text-white font-semibold my-3 cursor-pointer flex items-center justify-center hover:scale-100 "
                   } `}
                 >

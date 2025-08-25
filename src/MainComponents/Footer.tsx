@@ -188,6 +188,7 @@ const Footer = () => {
                 <div className="flex items-center space-x-2">
                   <Input
                     placeholder="Your email"
+                    id="subscriberEmail"
                     type="email"
                     required
                     value={emailId}

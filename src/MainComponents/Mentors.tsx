@@ -205,7 +205,7 @@ const Mentors = () => {
               <span className="block p-3 gradient-text bg-gradient-to-r from-primary/90 to-secondary bg-clip-text text-transparent">Leading Experts</span>
             </h1>
             
-            <p className="text-lg md:text-xl mb-12 opacity-90 leading-relaxed">
+            <p className="text-lg md:text-xl mb-4 opacity-90 leading-relaxed">
               Get personalized guidance from top professionals at Google, Apple, Netflix, and more. 
               Accelerate your career with 1-on-1 mentorship tailored to your goals.
             </p>
