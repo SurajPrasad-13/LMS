@@ -36,6 +36,7 @@ import {
 } from "lucide-react";
 import heroImage from "@/assets/lms-hero.jpg";
 import { useEffect, useState } from "react";
+import { Bounce, ToastContainer } from "react-toastify";
 
 export default function Dashboard() {
   const recentCourses = [
@@ -1084,6 +1085,18 @@ export default function Dashboard() {
           </Card>
         </div>
       )}
+      <ToastContainer
+              position="top-right"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              theme="light"
+              transition={Bounce}
+            />
     </>
   );
 }

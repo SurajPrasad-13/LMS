@@ -1,4 +1,4 @@
-import { toast, ToastContainer } from "react-toastify";
+import { Slide, toast, ToastContainer } from "react-toastify";
 import {
   Card,
   CardContent,
@@ -7,15 +7,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Brain,
-  Rocket,
-  Shield,
-  Gift,
-} from "lucide-react";
+import { Brain, Rocket, Shield, Gift } from "lucide-react";
 import Registeration from "./Registration";
-
-
 
 const features = [
   {
@@ -40,8 +33,7 @@ const features = [
   },
 ];
 
-
-const GetStarted = ( ) => {
+const GetStarted = () => {
   const notify = () =>
     toast.success("Registration Successfull", {
       position: "top-right",
@@ -52,17 +44,8 @@ const GetStarted = ( ) => {
       draggable: true,
       progress: undefined,
       theme: "light",
-      // transition: Bounce,
+      transition: Slide,
     });
- 
-
-  const handleSignUp = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("Sign up attempted with:", data);
-    notify();
-    // reset();
-  };
-
   return (
     <div className="min-h-screen flex pt-10">
       {/* Left Side - Features */}
@@ -128,8 +111,7 @@ const GetStarted = ( ) => {
           </CardHeader>
 
           <CardContent className="space-y-6">
-            <Registeration onSubmit={handleSignUp} />
-            
+            <Registeration onSuccess={notify} />
           </CardContent>
         </Card>
       </div>
@@ -144,7 +126,6 @@ const GetStarted = ( ) => {
         draggable
         theme="light"
       />
-      
     </div>
   );
 };

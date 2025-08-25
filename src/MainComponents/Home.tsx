@@ -30,161 +30,146 @@ import achievementDashboardImage from "@/assets/achievement-dashboard.jpg";
 import globalCommunityImage from "@/assets/global-community.jpg";
 import { useEffect, useState } from "react";
 import Registeration from "./Registration";
-import { Bounce, Slide, toast, ToastContainer } from "react-toastify";
+import { Slide, toast, ToastContainer } from "react-toastify";
+
+const features = [
+  {
+    icon: Brain,
+    title: "AI-Powered Learning",
+    description:
+      "Personalized learning paths powered by advanced AI algorithms that adapt to your learning style and pace.",
+  },
+  {
+    icon: Users,
+    title: "Expert Mentors",
+    description:
+      "Learn from industry experts and certified professionals with real-world experience.",
+  },
+  {
+    icon: BookOpen,
+    title: "Comprehensive Courses",
+    description:
+      "Access to 10,000+ courses across technology, business, design, and more.",
+  },
+  {
+    icon: Award,
+    title: "Certified Learning",
+    description:
+      "Earn industry-recognized certificates to boost your career prospects.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Progress Tracking",
+    description:
+      "Advanced analytics to track your learning progress and identify improvement areas.",
+  },
+  {
+    icon: Globe,
+    title: "Global Community",
+    description:
+      "Connect with learners worldwide and build your professional network.",
+  },
+];
+const stats = [
+  { number: "50K+", label: "Active Students" },
+  { number: "1000+", label: "Expert Instructors" },
+  { number: "10K+", label: "Course Hours" },
+  { number: "95%", label: "Success Rate" },
+];
+const testimonials = [
+  {
+    name: "Sarah Johnson",
+    role: "Software Developer",
+    content:
+      "AI Learn transformed my career. The personalized learning path helped me master machine learning in just 6 months!",
+    rating: 5,
+  },
+  {
+    name: "Michael Chen",
+    role: "Data Scientist",
+    content:
+      "The mentorship program is exceptional. My mentor guided me through complex projects and helped land my dream job.",
+    rating: 5,
+  },
+  {
+    name: "Emily Rodriguez",
+    role: "UX Designer",
+    content:
+      "The course quality is outstanding. Interactive projects and real-world applications made learning engaging and practical.",
+    rating: 5,
+  },
+];
+const courses = [
+  {
+    id: 1,
+    title: "Complete AI & Machine Learning Bootcamp",
+    instructor: "Dr. Sarah Chen",
+    category: "ai-ml",
+    level: "beginner",
+    duration: "12 weeks",
+    students: 15420,
+    rating: 4.9,
+    price: 149,
+    image: "/api/placeholder/400/225",
+    description:
+      "Master AI and ML from scratch with hands-on projects using Python, TensorFlow, and real-world datasets.",
+    skills: ["Python", "TensorFlow", "Neural Networks", "Deep Learning"],
+    features: ["24/7 Support", "Certificate", "Lifetime Access", "Projects"],
+  },
+  {
+    id: 2,
+    title: "Advanced React Development Masterclass",
+    instructor: "Alex Rodriguez",
+    category: "web-dev",
+    level: "intermediate",
+    duration: "8 weeks",
+    students: 8950,
+    rating: 4.8,
+    price: 99,
+    image: "/api/placeholder/400/225",
+    description:
+      "Build modern web applications with React, Next.js, and TypeScript. Includes state management and testing.",
+    skills: ["React", "Next.js", "TypeScript", "Redux"],
+    features: ["Live Sessions", "Certificate", "Job Support", "Mentorship"],
+  },
+  {
+    id: 3,
+    title: "UI/UX Design Fundamentals",
+    instructor: "Maria Santos",
+    category: "design",
+    level: "beginner",
+    duration: "6 weeks",
+    students: 12300,
+    rating: 4.7,
+    price: 79,
+    image: "/api/placeholder/400/225",
+    description:
+      "Learn design thinking, user research, wireframing, and prototyping using Figma and Adobe XD.",
+    skills: ["Figma", "Adobe XD", "Prototyping", "User Research"],
+    features: ["Design Tools", "Portfolio Review", "Certificate", "Community"],
+  },
+];
 
 const Home = () => {
-  const features = [
-    {
-      icon: Brain,
-      title: "AI-Powered Learning",
-      description:
-        "Personalized learning paths powered by advanced AI algorithms that adapt to your learning style and pace.",
-    },
-    {
-      icon: Users,
-      title: "Expert Mentors",
-      description:
-        "Learn from industry experts and certified professionals with real-world experience.",
-    },
-    {
-      icon: BookOpen,
-      title: "Comprehensive Courses",
-      description:
-        "Access to 10,000+ courses across technology, business, design, and more.",
-    },
-    {
-      icon: Award,
-      title: "Certified Learning",
-      description:
-        "Earn industry-recognized certificates to boost your career prospects.",
-    },
-    {
-      icon: TrendingUp,
-      title: "Progress Tracking",
-      description:
-        "Advanced analytics to track your learning progress and identify improvement areas.",
-    },
-    {
-      icon: Globe,
-      title: "Global Community",
-      description:
-        "Connect with learners worldwide and build your professional network.",
-    },
-  ];
-
-  const stats = [
-    { number: "50K+", label: "Active Students" },
-    { number: "1000+", label: "Expert Instructors" },
-    { number: "10K+", label: "Course Hours" },
-    { number: "95%", label: "Success Rate" },
-  ];
-
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "Software Developer",
-      content:
-        "AI Learn transformed my career. The personalized learning path helped me master machine learning in just 6 months!",
-      rating: 5,
-    },
-    {
-      name: "Michael Chen",
-      role: "Data Scientist",
-      content:
-        "The mentorship program is exceptional. My mentor guided me through complex projects and helped land my dream job.",
-      rating: 5,
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "UX Designer",
-      content:
-        "The course quality is outstanding. Interactive projects and real-world applications made learning engaging and practical.",
-      rating: 5,
-    },
-  ];
-  const courses = [
-    {
-      id: 1,
-      title: "Complete AI & Machine Learning Bootcamp",
-      instructor: "Dr. Sarah Chen",
-      category: "ai-ml",
-      level: "beginner",
-      duration: "12 weeks",
-      students: 15420,
-      rating: 4.9,
-      price: 149,
-      image: "/api/placeholder/400/225",
-      description:
-        "Master AI and ML from scratch with hands-on projects using Python, TensorFlow, and real-world datasets.",
-      skills: ["Python", "TensorFlow", "Neural Networks", "Deep Learning"],
-      features: ["24/7 Support", "Certificate", "Lifetime Access", "Projects"],
-    },
-    {
-      id: 2,
-      title: "Advanced React Development Masterclass",
-      instructor: "Alex Rodriguez",
-      category: "web-dev",
-      level: "intermediate",
-      duration: "8 weeks",
-      students: 8950,
-      rating: 4.8,
-      price: 99,
-      image: "/api/placeholder/400/225",
-      description:
-        "Build modern web applications with React, Next.js, and TypeScript. Includes state management and testing.",
-      skills: ["React", "Next.js", "TypeScript", "Redux"],
-      features: ["Live Sessions", "Certificate", "Job Support", "Mentorship"],
-    },
-    {
-      id: 3,
-      title: "UI/UX Design Fundamentals",
-      instructor: "Maria Santos",
-      category: "design",
-      level: "beginner",
-      duration: "6 weeks",
-      students: 12300,
-      rating: 4.7,
-      price: 79,
-      image: "/api/placeholder/400/225",
-      description:
-        "Learn design thinking, user research, wireframing, and prototyping using Figma and Adobe XD.",
-      skills: ["Figma", "Adobe XD", "Prototyping", "User Research"],
-      features: [
-        "Design Tools",
-        "Portfolio Review",
-        "Certificate",
-        "Community",
-      ],
-    },
-  ];
-  const notify = () =>
-    toast.success("🦄 Registration Successfull", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
-    
-
-  const handleSignUp = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("Sign up attempted with:", data);
-    notify();
-    setShowFormModal(false);
-  };
-
   const [showFormModal, setShowFormModal] = useState(false);
 
   useEffect(() => {
     let timer = setTimeout(() => {
       setShowFormModal(true);
     }, 5000);
+    return () => clearTimeout(timer);
   }, []);
+
+  const notify = () =>
+    toast.success("Registration Successful", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+    });
 
   return (
     <div className="min-h-screen ">
@@ -837,24 +822,17 @@ const Home = () => {
               onClick={() => setShowFormModal(false)}
               className="absolute top-2 right-2 text-gray-400 hover:text-black"
             >
-             <X />
+              <X />
             </button>
-            <Registeration onSubmit={handleSignUp} />
+            <Registeration
+              setShowFormModal={setShowFormModal}
+              showFormModal={showFormModal}
+              onSuccess={notify}
+            />
           </div>
         </div>
       )}
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        theme="light"
-        transition={Bounce}
-      />
+      <ToastContainer transition={Slide} />
     </div>
   );
 };
