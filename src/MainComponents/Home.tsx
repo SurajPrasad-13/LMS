@@ -31,6 +31,7 @@ import globalCommunityImage from "@/assets/global-community.jpg";
 import { useEffect, useState } from "react";
 import Registeration from "./Registration";
 import { Slide, toast, ToastContainer } from "react-toastify";
+import ConnectWithTutor from "./ConnectWithTutor";
 
 const features = [
   {
@@ -817,17 +818,15 @@ const Home = () => {
       </section>
       {showFormModal && (
         <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-[calc(100%-3rem)] sm:w-1/2 lg:w-1/3 lg:h-[calc(100%-6.1rem)]   max-h-screen overflow-y-scroll [&::-webkit-scrollbar]:hidden relative">
+          <div className="bg-gradient-to-br from-orange-200 to-white rounded-lg shadow-lg py-2 px-6 w-[calc(100%-3rem)] sm:w-1/2 md:w-[65vw] lg:w-1/2 max-h-[85vh] overflow-y-scroll [&::-webkit-scrollbar]:hidden relative">
             <button
               onClick={() => setShowFormModal(false)}
               className="absolute top-2 right-2 text-gray-400 hover:text-black"
             >
               <X />
             </button>
-            <Registeration
+            <ConnectWithTutor
               setShowFormModal={setShowFormModal}
-              showFormModal={showFormModal}
-              onSuccess={notify}
             />
           </div>
         </div>

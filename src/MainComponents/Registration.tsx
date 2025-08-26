@@ -17,8 +17,6 @@ import {
 import axios from "axios";
 
 export default function Registeration({
-  setShowFormModal,
-  showFormModal,
   onSuccess,
 }) {
   const {
@@ -67,9 +65,6 @@ export default function Registeration({
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log("registration attempted at form", data);
     reset();
-    if (showFormModal) {
-      setShowFormModal();
-    }
     if (onSuccess) {
       onSuccess();
     }
