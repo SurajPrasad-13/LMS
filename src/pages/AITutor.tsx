@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
+import {
   Brain,
   Send,
   Paperclip,
@@ -28,7 +28,7 @@ import {
   MoreVertical,
   Sparkles,
   Target,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
 
 interface Message {
@@ -49,11 +49,12 @@ export default function AITutor() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      content: "Hello! I'm your AI Learning Assistant. I'm here to help you understand concepts, solve problems, and enhance your learning experience. What would you like to explore today?",
+      content:
+        "Hello! I'm your AI Learning Assistant. I'm here to help you understand concepts, solve problems, and enhance your learning experience. What would you like to explore today?",
       sender: "ai",
       timestamp: new Date(),
-      type: "text"
-    }
+      type: "text",
+    },
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isRecording, setIsRecording] = useState(false);
@@ -80,17 +81,37 @@ export default function AITutor() {
   ];
 
   const recentTopics = [
-    { id: 1, title: "React Hooks Patterns", subject: "Programming", timestamp: "2 hours ago" },
-    { id: 2, title: "Machine Learning Basics", subject: "AI/ML", timestamp: "1 day ago" },
-    { id: 3, title: "Design System Principles", subject: "Design", timestamp: "2 days ago" },
-    { id: 4, title: "Database Normalization", subject: "Programming", timestamp: "3 days ago" },
+    {
+      id: 1,
+      title: "React Hooks Patterns",
+      subject: "Programming",
+      timestamp: "2 hours ago",
+    },
+    {
+      id: 2,
+      title: "Machine Learning Basics",
+      subject: "AI/ML",
+      timestamp: "1 day ago",
+    },
+    {
+      id: 3,
+      title: "Design System Principles",
+      subject: "Design",
+      timestamp: "2 days ago",
+    },
+    {
+      id: 4,
+      title: "Database Normalization",
+      subject: "Programming",
+      timestamp: "3 days ago",
+    },
   ];
 
   const stats = {
     questionsAsked: 156,
     topicsExplored: 42,
     averageRating: 4.8,
-    timesSaved: 28
+    timesSaved: 28,
   };
 
   useEffect(() => {
@@ -105,10 +126,10 @@ export default function AITutor() {
       content: inputMessage,
       sender: "user",
       timestamp: new Date(),
-      type: "text"
+      type: "text",
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
 
     // Simulate AI response
     setTimeout(() => {
@@ -120,10 +141,10 @@ export default function AITutor() {
         type: "text",
         metadata: {
           subject: selectedSubject,
-          difficulty: difficulty
-        }
+          difficulty: difficulty,
+        },
       };
-      setMessages(prev => [...prev, aiResponse]);
+      setMessages((prev) => [...prev, aiResponse]);
     }, 1000);
 
     setInputMessage("");
@@ -147,9 +168,9 @@ export default function AITutor() {
       practice: "Can you create some practice problems for me?",
       summarize: "Can you summarize the key points?",
       "code-review": "Can you review this code and suggest improvements?",
-      quiz: "Can you quiz me on this topic?"
+      quiz: "Can you quiz me on this topic?",
     };
-    
+
     setInputMessage(actionTexts[action as keyof typeof actionTexts] || "");
   };
 
@@ -159,11 +180,13 @@ export default function AITutor() {
   };
 
   const handleFeedback = (messageId: string, helpful: boolean) => {
-    setMessages(prev => prev.map(msg => 
-      msg.id === messageId 
-        ? { ...msg, metadata: { ...msg.metadata, helpful } }
-        : msg
-    ));
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.id === messageId
+          ? { ...msg, metadata: { ...msg.metadata, helpful } }
+          : msg
+      )
+    );
   };
 
   return (
@@ -178,10 +201,12 @@ export default function AITutor() {
             </div>
             <div>
               <h3 className="font-semibold">AI Tutor</h3>
-              <p className="text-sm text-muted-foreground">Your Learning Assistant</p>
+              <p className="text-sm text-muted-foreground">
+                Your Learning Assistant
+              </p>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-3">
             <div className="text-center p-3 bg-muted/30 rounded-lg">
               <p className="text-lg font-bold">{stats.questionsAsked}</p>
@@ -215,7 +240,9 @@ export default function AITutor() {
                 {subjects.map((subject) => (
                   <Button
                     key={subject.id}
-                    variant={selectedSubject === subject.id ? "default" : "outline"}
+                    variant={
+                      selectedSubject === subject.id ? "default" : "outline"
+                    }
                     size="sm"
                     onClick={() => setSelectedSubject(subject.id)}
                     className="justify-start"
@@ -226,9 +253,11 @@ export default function AITutor() {
                 ))}
               </div>
             </div>
-            
+
             <div>
-              <label className="text-sm font-medium mb-2 block">Difficulty Level</label>
+              <label className="text-sm font-medium mb-2 block">
+                Difficulty Level
+              </label>
               <div className="grid grid-cols-3 gap-1">
                 {["beginner", "intermediate", "advanced"].map((level) => (
                   <Button
@@ -274,7 +303,9 @@ export default function AITutor() {
                 <Brain className="w-6 h-6 text-orange-400" />
               </div>
               <p className="text-sm font-medium mb-2">Import Custom Tutor</p>
-              <p className="text-xs text-muted-foreground mb-3">Connect with specialized AI tutors or human mentors</p>
+              <p className="text-xs text-muted-foreground mb-3">
+                Connect with specialized AI tutors or human mentors
+              </p>
               <Button size="sm" className="w-full">
                 <Zap className="w-4 h-4 mr-2" />
                 Import Tutor
@@ -283,24 +314,54 @@ export default function AITutor() {
 
             <div className="space-y-2">
               {[
-                { name: "Math Specialist", type: "AI", specialty: "Calculus & Algebra", rating: 4.9, users: "2.3k" },
-                { name: "Code Mentor", type: "Human", specialty: "Full-Stack Dev", rating: 4.8, users: "856" },
-                { name: "Design Expert", type: "AI", specialty: "UI/UX Design", rating: 4.7, users: "1.4k" },
+                {
+                  name: "Math Specialist",
+                  type: "AI",
+                  specialty: "Calculus & Algebra",
+                  rating: 4.9,
+                  users: "2.3k",
+                },
+                {
+                  name: "Code Mentor",
+                  type: "Human",
+                  specialty: "Full-Stack Dev",
+                  rating: 4.8,
+                  users: "856",
+                },
+                {
+                  name: "Design Expert",
+                  type: "AI",
+                  specialty: "UI/UX Design",
+                  rating: 4.7,
+                  users: "1.4k",
+                },
               ].map((tutor, index) => (
-                <div key={index} className="p-3 bg-muted/20 rounded-lg border hover:bg-muted/30 transition-colors">
+                <div
+                  key={index}
+                  className="p-3 bg-muted/20 rounded-lg border hover:bg-muted/30 transition-colors"
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                        tutor.type === 'AI' ? 'bg-orange-200/50' : 'bg-accent/20'
-                      }`}>
-                        {tutor.type === 'AI' ? 
-                          <Brain className="w-4 h-4 text-orange-400" /> : 
-                          <span className="text-xs font-bold text-accent-foreground">H</span>
-                        }
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                          tutor.type === "AI"
+                            ? "bg-orange-200/50"
+                            : "bg-accent/20"
+                        }`}
+                      >
+                        {tutor.type === "AI" ? (
+                          <Brain className="w-4 h-4 text-orange-400" />
+                        ) : (
+                          <span className="text-xs font-bold text-accent-foreground">
+                            H
+                          </span>
+                        )}
                       </div>
                       <div>
                         <p className="font-medium text-xs">{tutor.name}</p>
-                        <p className="text-xs text-muted-foreground">{tutor.specialty}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {tutor.specialty}
+                        </p>
                       </div>
                     </div>
                     <div className="text-right">
@@ -308,10 +369,16 @@ export default function AITutor() {
                         <Star className="w-3 h-3 fill-current text-yellow-500" />
                         <span className="text-xs">{tutor.rating}</span>
                       </div>
-                      <span className="text-xs text-muted-foreground">{tutor.users} users</span>
+                      <span className="text-xs text-muted-foreground">
+                        {tutor.users} users
+                      </span>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="w-full mt-2 text-xs">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full mt-2 text-xs"
+                  >
                     Connect
                   </Button>
                 </div>
@@ -325,11 +392,18 @@ export default function AITutor() {
           <h3 className="font-semibold mb-4">Recent Topics</h3>
           <div className="space-y-3">
             {recentTopics.map((topic) => (
-              <div key={topic.id} className="p-3 bg-muted/30 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors">
+              <div
+                key={topic.id}
+                className="p-3 bg-muted/30 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
+              >
                 <p className="font-medium text-sm">{topic.title}</p>
                 <div className="flex items-center justify-between mt-1">
-                  <Badge  className="text-xs bg-white text-black hover:text-white ">{topic.subject}</Badge>
-                  <span className="text-xs text-muted-foreground">{topic.timestamp}</span>
+                  <Badge className="text-xs bg-white text-black hover:text-white ">
+                    {topic.subject}
+                  </Badge>
+                  <span className="text-xs text-muted-foreground">
+                    {topic.timestamp}
+                  </span>
                 </div>
               </div>
             ))}
@@ -341,15 +415,16 @@ export default function AITutor() {
       <div className="flex-1 flex flex-col">
         <Card className="glass-card flex-1 flex flex-col">
           {/* Chat Header */}
-                <div className="p-4 border-b border-border/50 flex items-center justify-between flex-wrap gap-2">
-
+          <div className="p-4 border-b border-border/50 flex items-center justify-between flex-wrap gap-2">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-gradient-learning rounded-full flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <div>
                 <h2 className="font-semibold">AI Learning Assistant</h2>
-                <p className="text-sm text-muted-foreground">Always ready to help you learn</p>
+                <p className="text-sm text-muted-foreground">
+                  Always ready to help you learn
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -363,20 +438,25 @@ export default function AITutor() {
           </div>
 
           {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
-
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex gap-3 ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                className={`flex gap-3 ${
+                  message.sender === "user" ? "justify-end" : "justify-start"
+                }`}
               >
                 {message.sender === "ai" && (
                   <div className="w-8 h-8 bg-gradient-learning rounded-full flex items-center justify-center flex-shrink-0">
                     <Brain className="w-4 h-4 text-white" />
                   </div>
                 )}
-                
-                <div className={`max-w-[80%] ${message.sender === "user" ? "order-2" : ""}`}>
+
+                <div
+                  className={`max-w-[80%] ${
+                    message.sender === "user" ? "order-2" : ""
+                  }`}
+                >
                   <div
                     className={`p-3 rounded-lg ${
                       message.sender === "user"
@@ -385,17 +465,27 @@ export default function AITutor() {
                     }`}
                   >
                     <div className="prose prose-sm max-w-none">
-                      {message.content.split('\n').map((line, index) => (
-                        <p key={index} className={message.sender === "user" ? "text-primary-foreground" : "text-foreground"}>
+                      {message.content.split("\n").map((line, index) => (
+                        <p
+                          key={index}
+                          className={
+                            message.sender === "user"
+                              ? "text-primary-foreground"
+                              : "text-foreground"
+                          }
+                        >
                           {line}
                         </p>
                       ))}
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-2 mt-2">
                     <span className="text-xs text-muted-foreground">
-                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {message.timestamp.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </span>
                     {message.sender === "ai" && (
                       <div className="flex items-center gap-1">
@@ -403,7 +493,11 @@ export default function AITutor() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleFeedback(message.id, true)}
-                          className={`p-1 h-6 ${message.metadata?.helpful === true ? "text-success" : ""}`}
+                          className={`p-1 h-6 ${
+                            message.metadata?.helpful === true
+                              ? "text-success"
+                              : ""
+                          }`}
                         >
                           <ThumbsUp className="w-3 h-3" />
                         </Button>
@@ -411,7 +505,11 @@ export default function AITutor() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleFeedback(message.id, false)}
-                          className={`p-1 h-6 ${message.metadata?.helpful === false ? "text-destructive" : ""}`}
+                          className={`p-1 h-6 ${
+                            message.metadata?.helpful === false
+                              ? "text-destructive"
+                              : ""
+                          }`}
                         >
                           <ThumbsDown className="w-3 h-3" />
                         </Button>
@@ -425,7 +523,9 @@ export default function AITutor() {
 
                 {message.sender === "user" && (
                   <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0 order-3">
-                    <span className="text-primary-foreground text-sm font-medium">U</span>
+                    <span className="text-primary-foreground text-sm font-medium">
+                      U
+                    </span>
                   </div>
                 )}
               </div>
@@ -480,51 +580,57 @@ export default function AITutor() {
           </div> */}
 
           <div className="p-4 border-t border-border/50">
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="flex-1 space-y-3">
-            <Textarea
-            id="inputMessage"
-              placeholder="Ask me anything about your studies..."
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSendMessage();
-                }
-              }}
-              className="min-h-[60px] resize-none"
-            />
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex-1 space-y-3">
+                <Textarea
+                  id="inputMessage"
+                  placeholder="Ask me anything about your studies..."
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                  className="min-h-[60px] resize-none"
+                />
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm">
-                  <Paperclip className="w-4 h-4" />
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Image className="w-4 h-4" />
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Code className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant={isRecording ? "destructive" : "outline"}
-                  size="sm"
-                  onClick={handleVoiceToggle}
-                >
-                  {isRecording ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                </Button>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm">
+                      <Paperclip className="w-4 h-4" />
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Image className="w-4 h-4" />
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Code className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant={isRecording ? "destructive" : "outline"}
+                      size="sm"
+                      onClick={handleVoiceToggle}
+                    >
+                      {isRecording ? (
+                        <MicOff className="w-4 h-4" />
+                      ) : (
+                        <Mic className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </div>
+
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={!inputMessage.trim()}
+                  >
+                    <Send className="w-4 h-4 mr-2" />
+                    Send
+                  </Button>
+                </div>
               </div>
-
-              <Button onClick={handleSendMessage} disabled={!inputMessage.trim()}>
-                <Send className="w-4 h-4 mr-2" />
-                Send
-              </Button>
             </div>
           </div>
-        </div>
-      </div>
-
         </Card>
       </div>
     </div>
