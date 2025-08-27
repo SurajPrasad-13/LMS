@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { LoaderOne } from "@/components/ui/loader";
 
-export default function ConnectWithTutor({ setShowFormModal }) {
+export default function ConnectWithTutor({ setShowFormModal,onSuccess }) {
   const {
     register,
     reset,
@@ -16,6 +16,7 @@ export default function ConnectWithTutor({ setShowFormModal }) {
     console.log("form data submitted with", data);
     reset();
     setShowFormModal(false);
+    onSuccess()
   };
 
   return (

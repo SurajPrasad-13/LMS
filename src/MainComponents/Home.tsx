@@ -827,6 +827,7 @@ const Home = () => {
             </button>
             <ConnectWithTutor
               setShowFormModal={setShowFormModal}
+              onSuccess={notify} 
             />
           </div>
         </div>

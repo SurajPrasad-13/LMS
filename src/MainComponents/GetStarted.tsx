@@ -111,7 +111,7 @@ const GetStarted = () => {
           </CardHeader>
 
           <CardContent className="space-y-6">
-            <Registeration onSuccess={notify} />
+            <Registeration onSuccess={notify}/>
           </CardContent>
         </Card>
       </div>

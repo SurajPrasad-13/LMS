@@ -16,9 +16,7 @@ import {
 } from "@/components/ui/select";
 import axios from "axios";
 
-export default function Registeration({
-  onSuccess,
-}) {
+export default function Registeration({ onSuccess }) {
   const {
     register,
     handleSubmit,
@@ -68,7 +66,6 @@ export default function Registeration({
     if (onSuccess) {
       onSuccess();
     }
-    console.log(onSuccess);
   };
 
   return (
