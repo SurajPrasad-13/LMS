@@ -32,6 +32,7 @@ import { useEffect, useState } from "react";
 import Registeration from "./Registration";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import ConnectWithTutor from "./ConnectWithTutor";
+import { AnimatePresence, motion } from "motion/react";
 
 const features = [
   {
@@ -816,22 +817,33 @@ const Home = () => {
           </div>
         </div>
       </section>
-      {showFormModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-          <div className="bg-gradient-to-br from-orange-200 to-white rounded-lg shadow-lg py-2 px-6 w-[calc(100%-3rem)] sm:w-1/2 md:w-[65vw] lg:w-1/2 max-h-[85vh] overflow-y-scroll [&::-webkit-scrollbar]:hidden relative">
-            <button
-              onClick={() => setShowFormModal(false)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-black"
-            >
-              <X />
-            </button>
-            <ConnectWithTutor
-              setShowFormModal={setShowFormModal}
-              onSuccess={notify} 
-            />
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {showFormModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+          >
+            <motion.div initial={{opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ y: -500, opacity: 0 }}
+              transition={{ duration: 0.6 }} className="bg-gradient-to-br from-orange-200 to-white rounded-lg shadow-lg py-2 px-6 w-[calc(100%-3rem)] sm:w-1/2 md:w-[65vw] lg:w-1/2 max-h-[85vh] overflow-y-scroll [&::-webkit-scrollbar]:hidden relative">
+              <button
+                onClick={() => setShowFormModal(false)}
+                className="absolute top-2 right-2 text-gray-400 hover:text-black"
+              >
+                <X />
+              </button>
+              <ConnectWithTutor
+                setShowFormModal={setShowFormModal}
+                onSuccess={notify}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <ToastContainer transition={Slide} />
     </div>
   );
