@@ -40,7 +40,7 @@ type FormData = {
 export default function AssignmentsForm() {
   const location = useLocation()
   const {courseId,coursetitle} = location.state  || {}; 
-  console.log(courseId,coursetitle)
+  // console.log(courseId,coursetitle)
   const {
     register,
     handleSubmit,
@@ -201,6 +201,7 @@ export default function AssignmentsForm() {
             {...register("title", { required: "Title is required" })}
             placeholder="Assignment Title"
             className=" "
+            readOnly
           />
           {errors.title && (
             <p className="text-red-500 text-sm">
