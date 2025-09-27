@@ -57,7 +57,7 @@ function CourseForm() {
         `${import.meta.env.VITE_API_BACKEND_URL}/api/courses/courses/`,
         {
           method: "POST",
-          body: formData, // no JSON.stringify here
+          body: formData,
         }
       );
 
