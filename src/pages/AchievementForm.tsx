@@ -78,9 +78,13 @@ const navigate = useNavigate()
           body: formData,
         }
       );
+      console.log(response)
 
-      if (!response.ok) throw new Error("Failed to create Assignment");
       const result = await response.json();
+      if (!response.ok){
+        console.error("Failed to Add Achievement: ",result)
+        return
+      }
       console.log("API Response:", result);
       toast.success("Achievement Added Successfully", {
         icon: <FilePlus2 className="text-green-600"
@@ -150,14 +154,11 @@ const navigate = useNavigate()
                   </SelectTrigger>
                   <SelectContent>
                     {[
-                      "exploration",
+                      "milestone",
                       "speed",
-                      "consistency",
-                      "skill",
-                      "ai",
-                      "community",
-                      "dedication",
                       "performance",
+                      "consistency",
+                      "community"
                     ].map((category) => (
                       <SelectItem key={category} value={category}>
                         {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -201,7 +202,7 @@ const navigate = useNavigate()
           <div>
             <label className="block font-medium mb-1">User</label>
             <Input
-              {...register("user", { required: true })}
+              {...register("user")}
               placeholder="User ID"
             />
             {errors.user && (
