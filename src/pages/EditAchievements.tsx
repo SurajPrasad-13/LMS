@@ -90,33 +90,48 @@ const EditAchievements = () => {
 
   const updateAchievement = async (data) => {
     try {
+      // console.log(url)
       const formData = new FormData();
 
       // Append text fields
       formData.append("title", data.title);
-      formData.append("description", data.description);
-      formData.append("status", data.status);
+    formData.append("description", data.description);
+    formData.append("category", data.category);
+    formData.append("user", data.user);
+    formData.append("earned_on", data.earned_on || "");
+    formData.append("unlocked_date", data.unlocked_date || "");
+    formData.append("points", data.points.toString());
+    formData.append("progress", data.progress.toString());
+    formData.append("rarity", data.rarity);
+    formData.append("is_unlocked", data.is_unlocked);
+    formData.append("requirement", data.requirement);
 
       // Append file (if selected)
-      if (data.attachment && data.attachment.length > 0) {
-        formData.append("attachment", data.attachment[0]); // only first file
-      }
+     if (data.icon && data.icon.length > 0) {
+      formData.append("icon", data.icon[0]); // match backend field name
+    }
 
-      const response = await fetch(url, {
-        method: "PUT",
-        body: formData, // No JSON.stringify
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Update failed:", errorData);
-        return;
+      const response = await fetch(
+      `${import.meta.env.VITE_API_BACKEND_URL}/api/achievements/achievements/${id}/`,
+      {
+        method: "PATCH", // ✅ Use PATCH for partial update
+        body: formData,
+        // headers: { Authorization: `Bearer ${token}` }, // add if required
       }
+    );
+      console.log(response)
+
+      const result = await response.json();
+
+    if (!response.ok) {
+      console.error("Update failed:", result);
+      return;
+    }
       toast.success("Achievement Updated successfully", {
         icon: <SquarePen className="text-green-600" />,
-        className:"text-green-600" // your custom icon here
+        className: "text-green-600", // your custom icon here
       });
-      const result = await response.json();
+      // const result = await response.json();
       console.log("Updated Achievement:", result);
       navigate("/dashboard/achievements");
     } catch (error) {
@@ -182,14 +197,11 @@ const EditAchievements = () => {
                   </SelectTrigger>
                   <SelectContent>
                     {[
-                      "exploration",
+                      "milestone",
                       "speed",
-                      "consistency",
-                      "skill",
-                      "ai",
-                      "community",
-                      "dedication",
                       "performance",
+                      "consistency",
+                      "community",
                     ].map((category) => (
                       <SelectItem key={category} value={category}>
                         {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -233,7 +245,7 @@ const EditAchievements = () => {
           <div>
             <label className="block font-medium mb-1">User</label>
             <Input
-              {...register("user", { required: true })}
+              {...register("user")}
               placeholder="User ID"
             />
             {errors.user && (
