@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Bounce, Slide, toast, ToastContainer } from "react-toastify";
+import {useAuth} from '../Context/AuthContext'
 
 function CourseForm() {
   const {
@@ -22,6 +23,7 @@ function CourseForm() {
   } = useForm();
 
   const navigate = useNavigate();
+  const {user} = useAuth()
 
   // Add course
   const addCourse = async (data) => {
@@ -48,22 +50,25 @@ function CourseForm() {
         formData.append("skills", JSON.stringify([]));
       }
 
-      // Append file if present
-      if (data.thumbnail && data.thumbnail[0]) {
-        formData.append("thumbnail", data.thumbnail[0]);
-      }
+      // // Append file if present
+      // if (data.thumbnail && data.thumbnail[0]) {
+      //   formData.append("thumbnail", data.thumbnail[0]);
+      // }
 
       let response = await fetch(
         `${import.meta.env.VITE_API_BACKEND_URL}/api/courses/courses/`,
         {
           method: "POST",
           body: formData,
+          headers: {
+          Authorization: `Bearer ${user?.access}`, // 🔑 attach access
+        },
         }
       );
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Registration failed:", errorData);
+        console.error("failed to add Course: ", errorData);
         return;
       }
       toast.success("Course Added Successfully");
@@ -81,14 +86,14 @@ function CourseForm() {
     <div className="max-w-2xl mx-auto p-6 bg-gradient-to-br from-orange-200/80 to-white rounded-2xl shadow-md">
       <h2 className="text-2xl font-bold mb-4">AddCourse</h2>
       <form onSubmit={handleSubmit(addCourse)} className="space-y-4">
-        {/* Title, Instructor */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Title */}
+        <div className="grid grid-cols-1  gap-4">
           {/* title */}
           <div>
             <label className="block font-medium">Title</label>
-            <input
+            <Input
               {...register("title", { required: "Title is required" })}
-              className="w-full p-2 borar rounded"
+              className="w-full p-2  "
             />
             {errors.title && (
               <p className="text-red-500 text-sm">
@@ -97,46 +102,9 @@ function CourseForm() {
             )}
           </div>
 
-          {/* Instructor */}
-          <div>
-            <label className="block font-medium">Instructor</label>
-            <Input
-              {...register("instructor", {
-                required: "Instructor name is required",
-              })}
-              className="w-full p-2 border rounded"
-            />
-            {errors.instructor && (
-              <p className="text-red-500 text-sm">
-                {errors.instructor.message as string}
-              </p>
-            )}
-          </div>
         </div>
 
-        {/* Category, Thumbnail */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Category */}
-          <div>
-            <label className="block font-medium">Category</label>
-            <Input
-              {...register("category", { required: true })}
-              className="w-full p-2 border rounded"
-            />
-          </div>
-
-          {/* Thumbnail */}
-          <div>
-            <label className="block font-medium">Thumbnail</label>
-            <Input
-              type="file"
-              {...register("thumbnail")}
-              className="w-full p-2 border rounded"
-            />
-          </div>
-        </div>
-
-        {/* Skills */}
+{/* Skills */}
         <div>
           <label className="block font-medium">Skills</label>
           <Controller
@@ -153,17 +121,55 @@ function CourseForm() {
                   const processed = arr.map((s) => s.trim()).filter(Boolean);
                   field.onChange([...processed, last]);
                 }}
-                className="flex-1 p-2 border rounded"
+                className="flex-1 p-2 border "
               />
             )}
           />
         </div>
+        {/* Category, Instructor */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Instructor */}
+          <div>
+            <label className="block font-medium">Instructor</label>
+            <Input
+              {...register("instructor", {
+                required: "Instructor name is required",
+              })}
+              className="w-full p-2 border "
+            />
+            {errors.instructor && (
+              <p className="text-red-500 text-sm">
+                {errors.instructor.message as string}
+              </p>
+            )}
+          </div>
+          {/* Category */}
+          <div>
+            <label className="block font-medium">Category</label>
+            <Input
+              {...register("category", { required: true })}
+              className="w-full p-2 border "
+            />
+          </div>
+
+          {/* Thumbnail */}
+          {/* <div>
+            <label className="block font-medium">Thumbnail</label>
+            <Input
+              type="file"
+              {...register("thumbnail")}
+              className="w-full p-2 border "
+            />
+          </div> */}
+        </div>
+
+        
         {/* Description */}
         <div>
           <label className="block text-sm font-medium mb-1">Description</label>
           <Textarea
             {...register("description", { required: true })}
-            className="w-full border rounded-md px-3 py-2 h-16"
+            className="w-full border -md px-3 py-2 h-16"
           />
         </div>
 
@@ -246,7 +252,7 @@ function CourseForm() {
             <label className="block font-medium">Next Lesson</label>
             <Input
               {...register("next_lesson")}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border "
             />
           </div>
           <div>
@@ -254,7 +260,7 @@ function CourseForm() {
             <Input
               type="number"
               {...register("completed_lesson", { min: 0 })}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border "
             />
           </div>
           <div>
@@ -262,7 +268,7 @@ function CourseForm() {
             <Input
               type="number"
               {...register("total_lessons", { min: 0 })}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border "
             />
           </div>
         </div>
@@ -272,7 +278,7 @@ function CourseForm() {
             <label className="block font-medium">Price</label>
             <Input
               {...register("price", { required: true })}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border "
               placeholder="Course Price "
             />
           </div>
@@ -295,7 +301,7 @@ function CourseForm() {
             className={`${
               isSubmitting
                 ? "bg-transparent hover:bg-transparent focus:bg-transparent active:bg-transparent my-3 text-xs "
-                : " outline-none p-2 px-16 rounded-md text-white font-semibold my-3 cursor-pointer flex items-center justify-center hover:scale-100 text-lg "
+                : " outline-none p-2 px-16 -md text-white font-semibold my-3 cursor-pointer flex items-center justify-center hover:scale-100 text-lg "
             } `}
           >
             {isSubmitting ? <LoaderOne /> : "Submit"}
