@@ -36,117 +36,48 @@ import {
 } from "lucide-react";
 import heroImage from "@/assets/lms-hero.jpg";
 import { useEffect, useState } from "react";
-import { Bounce, ToastContainer } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import Notification from "@/components/ui/Notification";
+import { useAuth } from "../Context/AuthContext";
+
+const weeklyGoals = [
+  { task: "Complete 3 lessons", progress: 66, completed: 2, total: 3 },
+  { task: "Attend 2 live sessions", progress: 100, completed: 2, total: 2 },
+  { task: "Submit assignments", progress: 50, completed: 1, total: 2 },
+];
 
 export default function Dashboard() {
-  const recentCourses = [
-    {
-      id: 1,
-      title: "Advanced React Development",
-      progress: 75,
-      nextLesson: "React Hooks Patterns",
-      time: "2h 30m",
-      category: "Development",
-      difficulty: "Advanced",
-    },
-    {
-      id: 2,
-      title: "Machine Learning Fundamentals",
-      progress: 45,
-      nextLesson: "Neural Networks",
-      time: "1h 45m",
-      category: "AI/ML",
-      difficulty: "Intermediate",
-    },
-    {
-      id: 3,
-      title: "UI/UX Design Principles",
-      progress: 90,
-      nextLesson: "Design Systems",
-      time: "45m",
-      category: "Design",
-      difficulty: "Beginner",
-    },
-  ];
-
-  const upcomingSessions = [
-    {
-      id: 1,
-      title: "JavaScript Advanced Concepts",
-      instructor: "Dr. Sarah Chen",
-      time: "Today, 2:00 PM",
-      participants: 24,
-      rating: 4.9,
-    },
-    {
-      id: 2,
-      title: "AI Ethics Discussion",
-      instructor: "Prof. Michael Torres",
-      time: "Tomorrow, 10:00 AM",
-      participants: 18,
-      rating: 4.8,
-    },
-  ];
-
-  const achievements = [
-    {
-      id: 1,
-      title: "Fast Learner",
-      description: "Completed 5 courses this month",
-      icon: "🚀",
-      points: 150,
-      date: "2 days ago",
-    },
-    {
-      id: 2,
-      title: "Quiz Master",
-      description: "100% score on 10 quizzes",
-      icon: "🎯",
-      points: 200,
-      date: "1 week ago",
-    },
-    {
-      id: 3,
-      title: "Discussion Leader",
-      description: "Most helpful in forums",
-      icon: "💬",
-      points: 100,
-      date: "3 days ago",
-    },
-  ];
-
-  const notifications = [
-    {
-      id: 1,
-      type: "assignment",
-      message: "New assignment posted in React Development",
-      time: "5 min ago",
-    },
-    {
-      id: 2,
-      type: "achievement",
-      message: "You earned the 'Fast Learner' badge",
-      time: "2 hours ago",
-    },
-    {
-      id: 3,
-      type: "session",
-      message: "Live session starts in 30 minutes",
-      time: "30 min",
-    },
-  ];
-
-  const weeklyGoals = [
-    { task: "Complete 3 lessons", progress: 66, completed: 2, total: 3 },
-    { task: "Attend 2 live sessions", progress: 100, completed: 2, total: 2 },
-    { task: "Submit assignments", progress: 50, completed: 1, total: 2 },
-  ];
-
   const [isInCall, setIsInCall] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(true);
   const [currentinstructor, setcurrentinstructor] = useState("");
   const [secondsLeft, setSecondsLeft] = useState(65);
+
+  const { user } = useAuth();
+  // console.log("user Data: ", user);
+  const {
+    data: notifications = [], // rename + default value
+  } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => {
+      const response = await fetch(
+        "http://localhost:8000/api/lms/notifications/",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`, // 🔑 attach token
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    },
+  });
+  // console.log("Notifications: ", notifications);
 
   const startCall = (instructorName) => {
     setIsInCall(true);
@@ -161,36 +92,284 @@ export default function Dashboard() {
     setIsVideoOn(true);
   };
   useEffect(() => {
-  if (!isInCall) return;
+    if (!isInCall) return;
 
-  const interval = setInterval(() => {
-    setSecondsLeft((prev) => {
-      if (prev === 0) {
-        clearInterval(interval);
-        setTimeout(() => {
-          endCall();
-        }, 2000);
-        return 0;
-      }
-      return prev - 1;
-    });
-  }, 1000);
+    const interval = setInterval(() => {
+      setSecondsLeft((prev) => {
+        if (prev === 0) {
+          clearInterval(interval);
+          setTimeout(() => {
+            endCall();
+          }, 2000);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
-  return () => clearInterval(interval);
-}, [isInCall]);
-
-
+    return () => clearInterval(interval);
+  }, [isInCall]);
 
   // Format seconds into MM:SS
   const formatTime = (totalSeconds) => {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-
     return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
       2,
       "0"
     )}`;
   };
+
+  const formatApiTime = (dateString: string) => {
+    return new Date(dateString).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+  function formatUTCTo12HourTime(isoString) {
+    const date = new Date(isoString);
+
+    let hours = date.getUTCHours(); // UTC hours
+    let minutes = date.getUTCMinutes(); // UTC minutes
+
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12; // 0 ko 12 me convert
+    const formattedHours = String(hours).padStart(2, "0");
+    const formattedMinutes = String(minutes).padStart(2, "0");
+
+    return `${formattedHours}:${formattedMinutes} ${ampm}`;
+  }
+
+  const formatApiDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString([], {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  const navigate = useNavigate();
+
+  const [recentCourses, setrecentCourses] = useState<any[]>([]);
+  // Get Courses Data
+  const coursesApiData = async () => {
+    try {
+      let response = await fetch("http://127.0.0.1:8000/api/courses/courses/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.access}`,
+        },
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        console.error(`Failed to fetch courses: ${result}`);
+        setrecentCourses([]);
+      } else {
+        setrecentCourses(Array.isArray(result) ? result : []);
+        console.log("courses result: ", result);
+      }
+    } catch (error) {
+      console.error("Error fetching recent courses:", error);
+      setrecentCourses([]);
+    }
+  };
+
+  const [upcomingSessions, setupcomingSessions] = useState<any[]>([]);
+
+  const sessionApiData = async () => {
+    try {
+      let response = await fetch(
+        "http://127.0.0.1:8000/api/sessions/sessions/",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: user?.access ? `Bearer ${user?.access}` : "",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+      let result = await response.json();
+      console.log("Session Data", result);
+      setupcomingSessions(result);
+    } catch (error) {
+      console.error("Failed to fetch session data:", error);
+      // Optionally, notify the user or handle the error further
+    }
+  };
+
+  const icons = {
+    "Perfect Score": "🎯",
+    "Knowledge Seeker": "📚",
+    "Speed Demon": "💨",
+    "Community Helper": "🤝",
+    "AI Collaborator": "🤖",
+    "Code Warrior": "⚔️",
+    "Consistency Master": "🔥",
+    "Night Owl": "🦉",
+    "Quick Learner": "⚡",
+    "First Steps": "🚀",
+  };
+
+  const [achievements, setachievements] = useState<any[]>([]);
+  // get Achievements Data
+  const achievementApiData = async () => {
+    try {
+      let response = await fetch(
+        `${
+          import.meta.env.VITE_API_BACKEND_URL
+        }/api/achievements/achievements/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`, // 🔑 attach token
+          },
+        }
+      );
+      const result = await response.json();
+      if (!response.ok) {
+        console.error(`Failed to fetch achievements: ${result}`);
+        setachievements([]);
+      } else {
+        setachievements(result);
+        // console.log(response);
+      }
+    } catch (err) {
+      console.error("Error fetching achievements:", err);
+      setachievements([]);
+    }
+  };
+
+  const recentAchievements = achievements.filter((a) => a.is_unlocked);
+  // Learning Streak ( GET )
+  const [lrnStreak, setLrnStreak] = useState<any[]>([]);
+  const learningStreak = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BACKEND_URL}/api/courses/streak/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`,
+          },
+        }
+      );
+      const result = await response.json();
+      if (!response.ok) {
+        console.error("Failed to Fetch Streak", result);
+      }
+      setLrnStreak(result);
+      console.log("Learning streak", result);
+    } catch (error) {
+      console.error("Error in Fetching Streak", error);
+    }
+  };
+  const [avgLearnTime, setAvgLearnTime] = useState<{
+    average_learning_time: string;
+  }>({
+    average_learning_time: "2h 0m", // default value
+  });
+
+  const [totalLearnTime, setTotalLearnTime] = useState<{
+    total_meeting_time: string;
+  }>({ total_meeting_time: "0h 0m" });
+
+  // Average Learning Time ( GET )
+  const avgLearnTimeApiData = async () => {
+    try {
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_API_BACKEND_URL
+        }/api/courses/average-learning-time/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`,
+          },
+        }
+      );
+      const result = await res.json();
+      if (!res.ok) {
+        console.error("Failed to Fetch Average Learning Time", result);
+      }
+      setAvgLearnTime(result);
+      console.log("Average Learing Hours", result);
+    } catch (err) {
+      console.error("Error in Average Learning time", err);
+    }
+  };
+
+  // Total Learning Time ( GET )
+  const ttlLearnTimeApiData = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BACKEND_URL}/api/courses/total-hours/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`,
+          },
+        }
+      );
+      const result = await res.json();
+      if (!res.ok) {
+        console.error("Failed to Fetch Total Learning Time", result);
+      }
+      setTotalLearnTime(result);
+      console.log("Total Learing Hours", result);
+    } catch (err) {
+      console.error("Error in Total Learning time", err);
+    }
+  };
+
+  // Assignment Avg Score ( GET )
+  const [avgScore, setavgScore] = useState(String);
+  const AssignmentAvgScore = async () => {
+    try {
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_API_BACKEND_URL
+        }/api/assignments/average-score/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`, // 🔑 attach token
+          },
+        }
+      );
+
+      const result = await res.json();
+      if (!res.ok) {
+        console.error("Failed to fetch assignment Avg score: ", result);
+      }
+      console.log(result);
+      setavgScore(result);
+    } catch (err) {
+      console.error("Error in Assignment Avg Score: ", err);
+    }
+  };
+
+  useEffect(() => {
+    // refetch() // it is for notifications
+    coursesApiData();
+    sessionApiData();
+    achievementApiData();
+    learningStreak();
+    avgLearnTimeApiData();
+    ttlLearnTimeApiData();
+    AssignmentAvgScore();
+  }, []);
+
   return (
     <>
       {isInCall ? (
@@ -286,7 +465,7 @@ export default function Dashboard() {
       ) : (
         <div className="space-y-8 px-2 animate-fade-in">
           {/* Hero Section with Quick Actions */}
-          <div className=" mx-auto relative overflow-hidden rounded-3xl bg-gradient-learning p-8 md:p-12 shadow-2xl">
+          <div className=" mx-auto relative overflow-hidden rounded-3xl bg-gradient-learning p-8 md:px-12 shadow-2xl">
             <div className="absolute inset-0 opacity-15">
               <img
                 src={heroImage}
@@ -297,52 +476,55 @@ export default function Dashboard() {
             <div className="relative z-10">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-6">
-                  <div className="flex items-center gap-4 mb-4">
+                  <div className="flex items-center gap-4 sm:mb-4">
                     <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
                       <Trophy className="w-6 h-6 text-white" />
                     </div>
                     <div>
                       <h1 className="text-4xl md:text-6xl font-bold text-white animate-slide-in-right">
-                        Welcome back, Alex!
+                        Welcome back, {user && user.username}
                       </h1>
                       <div className="flex items-center gap-2 mt-2">
                         <Zap className="w-5 h-5 text-yellow-300" />
                         <span className="text-white/90 font-medium">
-                          Learning Streak: 12 days
+                          Learning Streak: {lrnStreak.current_streak} days
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-xl text-white/90 leading-relaxed">
+                  <p className="sm:text-xl text-white/90 leading-relaxed">
                     You're making excellent progress! Complete 2 more lessons to
                     reach your weekly goal.
                   </p>
 
                   {/* Quick Action Buttons */}
-                  <div className="flex flex-wrap gap-4 pt-4">
+                  <div className="flex flex-wrap gap-4 sm:pt-4">
                     <Button
+                      onClick={() => {
+                        navigate("my-courses");
+                      }}
                       size="lg"
                       variant="outline"
-                      className="bg-white text-primary hover:bg-white/10 backdrop-blur-sm hover-lift transition-all duration-200"
+                      className="bg-white text-primary hover:bg-white/10 backdrop-blur-sm hover-lift transition-all duration-200 px-4"
                     >
-                      <Play className="w-5 h-5 mr-2" />
+                      <Play className="w-5 h-5" />
                       Continue Learning
                     </Button>
                     <Button
                       size="lg"
                       variant="outline"
-                      className="bg-white text-primary hover:bg-white/10 backdrop-blur-sm hover-lift transition-all duration-200"
+                      className="bg-white text-primary hover:bg-white/10 backdrop-blur-sm hover-lift transition-all duration-200 px-4"
                     >
-                      <Brain className="w-5 h-5 mr-2" />
+                      <Brain className="w-5 h-5" />
                       Ask AI Tutor
                     </Button>
                     <Button
                       size="lg"
                       variant="outline"
-                      className="bg-white text-primary hover:bg-white/10 backdrop-blur-sm hover-lift transition-all duration-200"
+                      className="bg-white text-primary hover:bg-white/10 backdrop-blur-sm hover-lift transition-all duration-200 px-4"
                     >
-                      <Bell className="w-5 h-5 mr-2" />
+                      <Bell className="w-5 h-5" />
                       Notifications ({notifications.length})
                     </Button>
                   </div>
@@ -409,7 +591,10 @@ export default function Dashboard() {
                   <BookOpen className="w-6 h-6 text-orange-400" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">12</p>
+                  <p className="text-2xl font-bold">
+                    {" "}
+                    {recentCourses && recentCourses.length}{" "}
+                  </p>
                   <p className="text-muted-foreground">Courses Enrolled</p>
                 </div>
               </div>
@@ -421,7 +606,9 @@ export default function Dashboard() {
                   <Clock className="w-6 h-6 text-success" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">45h</p>
+                  <p className="text-2xl font-bold">
+                    {totalLearnTime.total_meeting_time}{" "}
+                  </p>
                   <p className="text-muted-foreground">Learning Time</p>
                 </div>
               </div>
@@ -433,7 +620,10 @@ export default function Dashboard() {
                   <Award className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">28</p>
+                  <p className="text-2xl font-bold">
+                    {" "}
+                    {recentAchievements && recentAchievements.length}{" "}
+                  </p>
                   <p className="text-muted-foreground">Achievements</p>
                 </div>
               </div>
@@ -445,7 +635,10 @@ export default function Dashboard() {
                   <TrendingUp className="w-6 h-6 text-secondary" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">94%</p>
+                  <p className="text-2xl font-bold">
+                    {" "}
+                    {avgScore.average_score}{" "}
+                  </p>
                   <p className="text-muted-foreground">Average Score</p>
                 </div>
               </div>
@@ -464,82 +657,82 @@ export default function Dashboard() {
               </div>
 
               <div className="space-y-4 m-0">
-                {recentCourses.map((course) => (
-                  <Card
-                    key={course.id}
-                    className="glass-card w-[calc(100%-32px)] sm:w-[640px] md:w-[760px] lg:w-auto mx-auto  p-4 hover-lift group relative overflow-hidden shadow-md"
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Badge variant="secondary" className="text-xs">
-                            {course.category}
-                          </Badge>
-                          <Badge
-                            variant={
-                              course.difficulty === "Advanced"
-                                ? "destructive"
-                                : course.difficulty === "Intermediate"
-                                ? "default"
-                                : "outline"
-                            }
-                            className="text-xs"
-                          >
-                            {course.difficulty}
+                {recentCourses
+                  .filter((course) => course.status == "in progress")
+                  .map((course) => (
+                    <Card
+                      key={course.id}
+                      className="glass-card w-[calc(100%-6px)] sm:w-[620px] md:w-[725px] lg:w-auto mx-auto  p-4 hover-lift group relative overflow-hidden shadow-md"
+                    >
+                      <div className="mb-4">
+                        <div className="space-y-2 flex flex-wrap items-center justify-between mb-2 sm:mb-0">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="secondary" className="text-xs">
+                              {course.category}
+                            </Badge>
+                            <Badge
+                              variant={
+                                course.level === "Advanced"
+                                  ? "destructive"
+                                  : course.level === "Intermediate"
+                                  ? "default"
+                                  : "outline"
+                              }
+                              className="text-xs"
+                            >
+                              {course.level}
+                            </Badge>
+                          </div>
+                          <Badge variant="outline" className="bg-primary/10">
+                            {course.progress}% Complete
                           </Badge>
                         </div>
                         <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">
                           {course.title}
                         </h3>
                       </div>
-                      <Badge variant="outline" className="bg-primary/10">
-                        {course.progress}% Complete
-                      </Badge>
-                    </div>
 
-                    <div className="space-y-4">
-                      <Progress
-                        value={course.progress}
-                        className="h-3 bg-muted"
-                      />
+                      <div className="space-y-4">
+                        <Progress
+                          value={course.progress}
+                          className="h-3 bg-muted"
+                        />
 
-                      <div className="flex items-center justify-between">
-                        <div className="space-y-1">
-                          <p className="font-medium text-sm">
-                            Next: {course.nextLesson}
-                          </p>
-                          <div className="flex items-center justify-start md:gap-3 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {course.time} remaining
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Star className="w-3 h-3 fill-current text-yellow-500" />
-                              4.8
-                            </span>
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-1">
+                            <p className="font-medium text-sm">
+                              Next: {course.next_lesson}
+                            </p>
+                            <div className="flex items-center justify-start md:gap-3 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {100 - course.progress}% remaining
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Star className="w-3 h-3 fill-current text-yellow-500" />
+                                4.8
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 flex-col sm:flex-row">
+                            <Button className="px-3 gap-1" variant="outline">
+                              <Target className="w-4 h-4 mr-1" />
+                              Goals
+                            </Button>
+                            <Button className="px-2 gap-1">
+                              <Play className="w-4 h-4 mr-1" />
+                              Continue
+                            </Button>
                           </div>
                         </div>
-                        <div className="flex gap-2 flex-col sm:flex-row">
-                          <Button className="px-3 gap-1" variant="outline">
-                            <Target className="w-4 h-4 mr-1" />
-                            Goals
-                          </Button>
-                          <Button
-                            className="px-2 gap-1"
-                          >
-                            <Play className="w-4 h-4 mr-1" />
-                            Continue
-                          </Button>
-                        </div>
                       </div>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  ))}
               </div>
 
               {/* Upcoming Live Sessions */}
-              <div className="  w-full -ml-2">
-                <div className="flex items-center justify-between mx-auto  my-5 w-[calc(100%-12px)] sm:w-[640px] md:w-[760px] lg:w-auto ">
+              <div className=" ">
+                <div className="flex items-center justify-between w-[calc(100%-32px)] sm:w-[640px] md:w-[760px] lg:w-auto mx-auto py-5">
                   <h2 className=" texl-lg sm:text-xl md:text-2xl font-bold">
                     Upcoming Live Sessions
                   </h2>
@@ -547,66 +740,74 @@ export default function Dashboard() {
                     View Calendar <ChevronRight className="w-4 h-4 ml-1" />
                   </Button>
                 </div>
-                <div className="space-y-6 ">
-                  {upcomingSessions.map((session) => (
-                    <Card
-                      key={session.id}
-                      className="glass-card p-2 mx-auto  hover-lift group border-x-4 border-x-orange-300 w-[calc(100%-12px)] sm:w-[640px] md:w-[760px] lg:w-auto shadow-md"
-                    >
-                      <div className="flex flex-col sm:flex-row items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <div className=" size-10 sm:size-10 md:size-14 bg-gradient- rounded-xl flex items-center justify-center">
-                            <Users className=" size-4 md:size-6 text-orange-400" />
-                          </div>
-                          <div className="space-y-2">
-                            <h3 className="font-semibold group-hover:text-orange-400 transition-colors">
-                              {session.title}
-                            </h3>
+                <div className="space-y-6  w-auto p-0 ">
+                  {upcomingSessions
+                    .filter((sess) => sess.status == "live")
+                    .map((session) => (
+                      <Card
+                        key={session.id}
+                        className="glass-card p-2 mx-auto  hover-lift group border-x-4 border-x-orange-300 w-[calc(100%-12px)] sm:w-[640px] md:w-[740px] lg:w-auto shadow-md"
+                      >
+                        <div className="flex flex-col sm:flex-row items-center justify-between">
+                          <div className="flex items-center space-x-4">
+                            <div className=" size-10 sm:size-10 md:size-14 bg-gradient- rounded-xl flex items-center justify-center">
+                              <Users className=" size-4 md:size-6 text-orange-400" />
+                            </div>
+                            <div className="space-y-2">
+                              <h3 className="font-semibold group-hover:text-orange-400 transition-colors">
+                                {session.title}
+                              </h3>
 
-                            <p className="text-sm text-muted-foreground">
-                              with {session.instructor}
-                            </p>
+                              <p className="text-sm text-muted-foreground">
+                                with {session.instructor}
+                              </p>
 
-                            <div className="flex items-center space-x-2 sm:space-x-4 text-xs">
-                              <span className="flex items-center gap-1 font-medium">
-                                <Calendar className="w-3 h-3" />
-                                {session.time}
-                              </span>
-                              <span className="flex items-center gap-1 text-muted-foreground">
-                                <Users className="w-3 h-3" />
-                                {session.participants} participants
-                              </span>
-                              <span className="flex items-center gap-1 text-muted-foreground">
-                                <Star className="w-3 h-3 fill-current text-yellow-500" />
-                                {session.rating}
-                              </span>
+                              <div className="flex items-center space-x-2 sm:space-x-4 text-xs">
+                                <span className="flex items-center gap-1 font-medium">
+                                  <Calendar className="w-3 h-3" />
+                                  {formatApiDate(session.start_time)},{" "}
+                                  {formatUTCTo12HourTime(session.start_time)}
+                                </span>
+                                <span className="flex items-center gap-1 text-muted-foreground">
+                                  <Users className="w-3 h-3" />
+                                  {session.participants} participants
+                                </span>
+                                <span className="flex items-center gap-1 text-muted-foreground">
+                                  <Star className="w-3 h-3 fill-current text-yellow-500" />
+                                  {session.rating}
+                                </span>
+                              </div>
                             </div>
                           </div>
+                          <div className="flex items-center justify-center sm:flex-col gap-2 my-4">
+                            <Badge
+                              variant="outline"
+                              className="bg-success/10 text-success border-success/20"
+                            >
+                              {session.status}
+                              {/* Live Soon */}
+                            </Badge>
+                            <Button
+                              onClick={() =>
+                                window.open(session.recording_url, "_blank")
+                              }
+                            >
+                              <Calendar className="w-4 h-4 mr-2" />
+                              Join Session
+                            </Button>
+                          </div>
                         </div>
-                        <div className="flex items-center justify-center sm:flex-col gap-2 my-4">
-                          <Badge
-                            variant="outline"
-                            className="bg-success/10 text-success border-success/20"
-                          >
-                            Live Soon
-                          </Badge>
-                          <Button onClick={() => startCall(session.instructor)}>
-                            <Calendar className="w-4 h-4 mr-2" />
-                            Join Session
-                          </Button>
-                        </div>
-                      </div>
-                    </Card>
-                  ))}
+                      </Card>
+                    ))}
                 </div>
               </div>
             </div>
 
             {/* Sidebar */}
-            <div className="space-y-6">
+            <div className="space-y-6 py-2   grid sm:grid-cols-2 lg:grid-cols-1 grid-cols-1 ">
               {/* AI Tutor Quick Access */}
-              <Card className="glass-card p-6 w-[calc(100%-32px)] shadow-md">
-                <div className="text-center space-y-4">
+              <Card className="glass-card p-6 w-[calc(100%-32px)] mx-auto shadow-md">
+                <div className="text-center space-y-2">
                   <div className="w-16 h-16 bg-gradient-learning rounded-2xl flex items-center justify-center mx-auto">
                     <Brain className="w-8 h-8 text-white" />
                   </div>
@@ -618,12 +819,19 @@ export default function Dashboard() {
                       Get instant help with any concept
                     </p>
                   </div>
-                  <Button className="w-full">Start Conversation</Button>
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      navigate("ai-tutor");
+                    }}
+                  >
+                    Start Conversation
+                  </Button>
                 </div>
               </Card>
 
               {/* Recent Achievements */}
-              <Card className="glass-card p-6 w-[calc(100%-32px)] shadow-md">
+              <Card className="glass-card p-4 w-[calc(100%-32px)] shadow-md mx-auto">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold">Recent Achievements</h3>
                   <Button variant="ghost" size="sm">
@@ -632,20 +840,27 @@ export default function Dashboard() {
                   </Button>
                 </div>
                 <div className="space-y-3">
-                  {achievements.map((achievement) => (
+                  {recentAchievements.slice(0, 3).map((achievement) => (
                     <div
                       key={achievement.id}
                       className="group flex items-center space-x-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all cursor-pointer"
                     >
                       <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg flex items-center justify-center">
-                        <span className="text-lg">{achievement.icon}</span>
+                        <span className="text-lg">
+                          {achievement.is_unlocked
+                            ? icons[achievement.title]
+                            : ""}
+                        </span>
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
-                          <p className="font-medium text-sm group-hover:text-primary transition-colors">
+                          <p className="font-medium text-sm group-hover:text-orange-400 transition-colors">
                             {achievement.title}
                           </p>
-                          <Badge variant="outline" className="text-xs">
+                          <Badge
+                            variant="outline"
+                            className="text-xs group-hover:bg-orange-400 group-hover:text-white"
+                          >
                             +{achievement.points}
                           </Badge>
                         </div>
@@ -662,48 +877,21 @@ export default function Dashboard() {
               </Card>
 
               {/* Live Notifications */}
-              <Card className="glass-card p-6 w-[calc(100%-32px)] shadow-md">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold">Live Updates</h3>
-                  <Badge variant="outline" className="bg-primary/10">
-                    {notifications.length}
-                  </Badge>
-                </div>
-                <div className="space-y-3 max-h-49 overflow-y-auto">
-                  {notifications.map((notification) => (
-                    <div
-                      key={notification.id}
-                      className="flex items-start space-x-3 p-2 rounded-lg hover:bg-muted/30 transition-colors cursor-pointer"
-                    >
-                      <div
-                        className={`w-2 h-2 rounded-full mt-2 ${
-                          notification.type === "assignment"
-                            ? "bg-primary"
-                            : notification.type === "achievement"
-                            ? "bg-success"
-                            : "bg-accent"
-                        }`}
-                      ></div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">
-                          {notification.message}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {notification.time}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+
+              <Card className="glass-card w-[calc(100%-32px)] shadow-md mx-auto">
+                <Notification notifications={notifications} />
               </Card>
 
               {/* Quick Stats */}
-              <Card className="glass-card p-6 w-[calc(100%-32px)] shadow-md">
+              <Card className="glass-card p-6 w-[calc(100%-32px)] shadow-md mx-auto">
                 <h3 className="text-lg font-semibold mb-4">This Week</h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Study Time</span>
-                    <span className="font-semibold">12h 30m</span>
+                    <span className="font-semibold">
+                      {" "}
+                      {avgLearnTime.average_learning_time}{" "}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Lessons Completed</span>
@@ -715,7 +903,9 @@ export default function Dashboard() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Streak</span>
-                    <span className="font-semibold">5 days 🔥</span>
+                    <span className="font-semibold">
+                      {lrnStreak.current_streak} days 🔥
+                    </span>
                   </div>
                 </div>
               </Card>
@@ -726,12 +916,12 @@ export default function Dashboard() {
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Personalized Study Plan */}
             <Card className="glass-card p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold">My Study Plan</h2>
-                <Button variant="outline" size="sm">
-                  <Settings className="w-4 h-4 mr-2" />
+              <div className="flex items-center justify-between gap-4 mb-6">
+                <h2 className="text-lg sm:text-2xl font-bold">My Study Plan</h2>
+                {/* <Button variant="outline" size="sm">
+                  <Settings className="w-4 h-4" />
                   Customize
-                </Button>
+                </Button> */}
               </div>
 
               <div className="space-y-4">
@@ -788,7 +978,7 @@ export default function Dashboard() {
                 ].map((plan, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors"
+                    className="flex items-center justify-between p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-all duration-800 hover:-translate-y-1"
                   >
                     <div className="flex items-center space-x-4">
                       <div
@@ -833,15 +1023,15 @@ export default function Dashboard() {
             <Card className="glass-card p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold">Learning Analytics</h2>
-                <Button variant="outline" size="sm">
+                {/* <Button variant="outline" size="sm">
                   <TrendingUp className="w-4 h-4 mr-2" />
                   View Report
-                </Button>
+                </Button> */}
               </div>
 
               <div className="space-y-6">
                 {/* Performance Chart */}
-                <div>
+                <div className="">
                   <h3 className="font-semibold mb-3">Weekly Performance</h3>
                   <div className="grid grid-cols-7 gap-2 mb-2">
                     {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
@@ -859,10 +1049,10 @@ export default function Dashboard() {
                     {[90, 85, 95, 78, 92, 88, 96].map((score, index) => (
                       <div
                         key={index}
-                        className="h-16 bg-muted/30 rounded flex items-end justify-center"
+                        className="h-16 bg-muted/30 rounded flex items-end justify-center  hover:scale-y-1 "
                       >
                         <div
-                          className="bg-orange-400 rounded-t w-full transition-all duration-300 hover:bg-orange-400/80"
+                          className="bg-orange-400 rounded-t w-full transition-all duration-300 hover:bg-orange-500"
                           style={{ height: `${score}%` }}
                         ></div>
                       </div>
@@ -916,7 +1106,11 @@ export default function Dashboard() {
               <h2 className="text-xl font-bold mb-4">Study Tools</h2>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { icon: Brain, label: "AI Flashcards", color: "bg-orange-500" },
+                  {
+                    icon: Brain,
+                    label: "AI Flashcards",
+                    color: "bg-orange-500",
+                  },
                   {
                     icon: Calculator,
                     label: "Calculator",
@@ -1085,18 +1279,6 @@ export default function Dashboard() {
           </Card>
         </div>
       )}
-      <ToastContainer
-              position="top-right"
-              autoClose={2000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick={false}
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              theme="light"
-              transition={Bounce}
-            />
     </>
   );
 }
