@@ -14,20 +14,20 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { SquarePen } from "lucide-react";
+import {useAuth}  from '../Context/AuthContext'
 
 type AchievementFormData = {
-  icon: FileList | null;
   user: string;
-  earned_on: string;
+  earned_on: string | null;
   title: string;
   description: string;
   category: string;
   points: number;
   rarity: string;
-  is_unlocked: string; // "true" | "false"
+  is_unlocked: boolean; // boolean instead of string
   progress: number;
   requirement: string;
-  unlocked_date: string;
+  unlocked_date: string | null;
 };
 
 const EditAchievements = () => {
@@ -39,41 +39,47 @@ const EditAchievements = () => {
     formState: { errors },
   } = useForm<AchievementFormData>({
     defaultValues: {
-      icon: null,
       user: "",
-      earned_on: "",
+      earned_on: null,
       title: "",
       description: "",
       category: "",
       points: 0,
       rarity: "",
-      is_unlocked: "false",
+      is_unlocked: false, // boolean default
       progress: 0,
       requirement: "",
-      unlocked_date: "",
+      unlocked_date: null,
     },
   });
 
   const [fileName, setFileName] = useState<string | null>(null);
-
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { id } = useParams();
+
   const url = `${
     import.meta.env.VITE_API_BACKEND_URL
   }/api/achievements/achievements/${id}/`;
 
   const formatDateForInput = (dateString?: string) => {
     if (!dateString) return "";
-    return new Date(dateString).toISOString().split("T")[0];
+    // Convert to datetime-local format (YYYY-MM-DDTHH:mm)
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 16);
   };
 
-  // get data
+  // Get data
   const getAchievementData = async () => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${user?.access}`,
+        },
+      });
       if (!response.ok) {
         throw new Error(
-          `Failed to fetch Achievement Status:${response.status}`
+          `Failed to fetch Achievement Status: ${response.status}`
         );
       }
       const result = await response.json();
@@ -88,51 +94,51 @@ const EditAchievements = () => {
     }
   };
 
-  const updateAchievement = async (data) => {
-    try {
-      // console.log(url)
-      const formData = new FormData();
+  const updateAchievement = async (data: AchievementFormData) => {
+    console.log("Form data:", data);
 
-      // Append text fields
-      formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("category", data.category);
-    formData.append("user", data.user);
-    formData.append("earned_on", data.earned_on || "");
-    formData.append("unlocked_date", data.unlocked_date || "");
-    formData.append("points", data.points.toString());
-    formData.append("progress", data.progress.toString());
-    formData.append("rarity", data.rarity);
-    formData.append("is_unlocked", data.is_unlocked);
-    formData.append("requirement", data.requirement);
-
-      // Append file (if selected)
-     if (data.icon && data.icon.length > 0) {
-      formData.append("icon", data.icon[0]); // match backend field name
+    // Convert datetime-local to ISO format if provided
+    if (data.unlocked_date) {
+      const date = new Date(data.unlocked_date);
+      data.unlocked_date = date.toISOString();
+    } else {
+      data.unlocked_date = null as any;
     }
 
+    if (data.earned_on) {
+      const date = new Date(data.earned_on);
+      data.earned_on = date.toISOString();
+    } else {
+      data.earned_on = null as any;
+    }
+
+    try {
       const response = await fetch(
-      `${import.meta.env.VITE_API_BACKEND_URL}/api/achievements/achievements/${id}/`,
-      {
-        method: "PATCH", // ✅ Use PATCH for partial update
-        body: formData,
-        // headers: { Authorization: `Bearer ${token}` }, // add if required
-      }
-    );
-      console.log(response)
+        `${import.meta.env.VITE_API_BACKEND_URL}/api/achievements/achievements/${id}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`,
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       const result = await response.json();
 
-    if (!response.ok) {
-      console.error("Update failed:", result);
-      return;
-    }
-      toast.success("Achievement Updated successfully", {
-        icon: <SquarePen className="text-green-600" />,
-        className: "text-green-600", // your custom icon here
-      });
-      // const result = await response.json();
+      if (!response.ok) {
+        console.error("Update failed:", result);
+        return;
+      }
+
       console.log("Updated Achievement:", result);
+      toast.success("Achievement Updated Successfully", {
+        icon: <SquarePen className="text-green-600" />,
+        className: "text-green-600",
+      });
+      reset();
+      setFileName(null);
       navigate("/dashboard/achievements");
     } catch (error) {
       console.error("Error in updating achievements:", error);
@@ -145,7 +151,7 @@ const EditAchievements = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-gradient-to-br from-orange-200/80 to-white rounded-2xl shadow-md">
-      <h2 className="text-xl font-bold mb-4">Create Achievement</h2>
+      <h2 className="text-xl font-bold mb-4">Edit Achievement</h2>
       <form onSubmit={handleSubmit(updateAchievement)} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Title */}
@@ -223,31 +229,12 @@ const EditAchievements = () => {
           />
         </div>
 
-        {/* Icon Upload , User */}
+        {/* User */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Icon Upload */}
-          <div>
-            <label className="block font-medium mb-1">Icon</label>
-            <Input
-              type="file"
-              accept="image/*"
-              {...register("icon")}
-              onChange={(e) => {
-                if (e.target.files?.[0]) setFileName(e.target.files[0].name);
-              }}
-            />
-            {fileName && (
-              <p className="text-sm text-gray-600 mt-1">📄 {fileName}</p>
-            )}
-          </div>
-
           {/* User */}
           <div>
             <label className="block font-medium mb-1">User</label>
-            <Input
-              {...register("user")}
-              placeholder="User ID"
-            />
+            <Input {...register("user")} placeholder="User ID" />
             {errors.user && (
               <p className="text-red-500 text-sm">User is required</p>
             )}
@@ -259,12 +246,12 @@ const EditAchievements = () => {
           {/* Earned On */}
           <div>
             <label className="block font-medium mb-1">Earned On</label>
-            <Input type="date" {...register("earned_on")} />
+            <Input type="datetime-local" {...register("earned_on")} />
           </div>
           {/* Unlocked Date */}
           <div>
             <label className="block font-medium mb-1">Unlocked Date</label>
-            <Input type="date" {...register("unlocked_date")} />
+            <Input type="datetime-local" {...register("unlocked_date")} />
           </div>
         </div>
 
@@ -277,7 +264,7 @@ const EditAchievements = () => {
           />
         </div>
 
-        {/* Points,Progress */}
+        {/* Points, Progress */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Points */}
           <div>
@@ -325,7 +312,10 @@ const EditAchievements = () => {
               name="is_unlocked"
               control={control}
               render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={field.value ? "true" : "false"}
+                  onValueChange={(val) => field.onChange(val === "true")}
+                >
                   <SelectTrigger className="cursor-pointer">
                     <SelectValue placeholder="Select Status" />
                   </SelectTrigger>
@@ -342,7 +332,7 @@ const EditAchievements = () => {
         {/* Submit Button */}
         <div className="flex justify-center">
           <Button type="submit" className="px-8 py-2 rounded">
-            Submit
+            Update
           </Button>
         </div>
       </form>

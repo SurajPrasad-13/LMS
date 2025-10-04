@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,12 +19,21 @@ import {
   Filter,
   Plus,
   Edit,
-  Trash2,
   Eye,
   Send,
   Paperclip,
   BarChart3,
+  Pencil,
+  Trash,
+  Trash2,
+  Star,
+  Users,
+  Play,
+  BookOpen,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Slide, toast, ToastContainer } from "react-toastify";
+import { useAuth } from "@/Context/AuthContext"; // Import useAuth
 
 export default function Assignments() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,181 +41,131 @@ export default function Assignments() {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [aiHelp, setAiHelp] = useState("");
 
-  const assignments = [
-    {
-      id: 1,
-      title: "React Component Architecture Analysis",
-      course: "Advanced React Development",
-      instructor: "Dr. Sarah Chen",
-      dueDate: "2024-02-15",
-      submittedDate: null,
-      status: "pending",
-      priority: "high",
-      points: 100,
-      earnedPoints: null,
-      type: "analysis",
-      description:
-        "Analyze and refactor a complex React component hierarchy, implementing best practices for component composition, state management, and performance optimization.",
-      requirements: [
-        "Identify component responsibilities and boundaries",
-        "Implement proper props interface design",
-        "Optimize render performance using memoization",
-        "Write comprehensive unit tests",
-        "Document architectural decisions",
-      ],
-      timeEstimate: "8-12 hours",
-      attachments: ["component-starter.zip", "requirements.pdf"],
-      aiHints: [
-        "Consider using React.memo for expensive components",
-        "Look for opportunities to lift state up",
-        "Use custom hooks to separate logic from presentation",
-      ],
-      feedback: null,
-      submissionFormat: "GitHub repository link + reflection document",
-    },
-    {
-      id: 2,
-      title: "Machine Learning Model Implementation",
-      course: "Machine Learning Fundamentals",
-      instructor: "Prof. Michael Torres",
-      dueDate: "2024-02-20",
-      submittedDate: "2024-02-18",
-      status: "submitted",
-      priority: "medium",
-      points: 150,
-      earnedPoints: null,
-      type: "implementation",
-      description:
-        "Implement and train a neural network model for image classification using TensorFlow, including data preprocessing, model architecture design, and performance evaluation.",
-      requirements: [
-        "Build CNN architecture from scratch",
-        "Implement data augmentation pipeline",
-        "Achieve minimum 85% accuracy on test set",
-        "Create visualization of training metrics",
-        "Compare with baseline models",
-      ],
-      timeEstimate: "15-20 hours",
-      attachments: [
-        "dataset.zip",
-        "baseline_model.py",
-        "evaluation_rubric.pdf",
-      ],
-      aiHints: [
-        "Start with a simple architecture and gradually add complexity",
-        "Use transfer learning for better initial weights",
-        "Monitor overfitting with validation curves",
-      ],
-      feedback: "Under review - initial submission looks promising!",
-      submissionFormat: "Jupyter notebook + trained model files",
-    },
-    {
-      id: 3,
-      title: "User Experience Research Report",
-      course: "UI/UX Design Principles",
-      instructor: "Emma Rodriguez",
-      dueDate: "2024-02-10",
-      submittedDate: "2024-02-09",
-      status: "graded",
-      priority: "low",
-      points: 75,
-      earnedPoints: 68,
-      type: "research",
-      description:
-        "Conduct comprehensive user research for a mobile app redesign, including user interviews, usability testing, and data-driven design recommendations.",
-      requirements: [
-        "Interview at least 5 target users",
-        "Conduct usability testing sessions",
-        "Create user personas and journey maps",
-        "Provide design recommendations with rationale",
-        "Present findings in professional format",
-      ],
-      timeEstimate: "12-15 hours",
-      attachments: ["interview_template.docx", "usability_checklist.pdf"],
-      aiHints: [
-        "Use empathy mapping to understand user emotions",
-        "Look for patterns across different user segments",
-        "Quantify usability issues with severity ratings",
-      ],
-      feedback:
-        "Excellent research methodology! The user personas are well-developed. Consider adding more quantitative metrics to support your qualitative findings.",
-      submissionFormat: "Research report + presentation slides",
-    },
-    {
-      id: 4,
-      title: "Cloud Infrastructure Design",
-      course: "Cloud Architecture with AWS",
-      instructor: "James Patterson",
-      dueDate: "2024-01-28",
-      submittedDate: "2024-01-30",
-      status: "late",
-      priority: "high",
-      points: 120,
-      earnedPoints: 95,
-      type: "design",
-      description:
-        "Design a scalable cloud architecture for a high-traffic e-commerce application, including load balancing, auto-scaling, database design, and disaster recovery.",
-      requirements: [
-        "Design multi-tier architecture diagram",
-        "Calculate cost estimates for different load scenarios",
-        "Implement basic infrastructure using Terraform",
-        "Document security considerations",
-        "Plan disaster recovery strategy",
-      ],
-      timeEstimate: "10-14 hours",
-      attachments: [
-        "architecture_template.drawio",
-        "aws_pricing_calculator.xlsx",
-      ],
-      aiHints: [
-        "Consider using CDN for static content delivery",
-        "Implement database read replicas for better performance",
-        "Use containerization for better scalability",
-      ],
-      feedback:
-        "Good architectural thinking, but submission was 2 days late. The security considerations section needs more detail about encryption at rest and in transit.",
-      submissionFormat: "Architecture diagram + Terraform code + documentation",
-    },
-    {
-      id: 5,
-      title: "Data Visualization Dashboard",
-      course: "Data Science with Python",
-      instructor: "Dr. Lisa Wang",
-      dueDate: "2024-02-25",
-      submittedDate: null,
-      status: "upcoming",
-      priority: "medium",
-      points: 100,
-      earnedPoints: null,
-      type: "project",
-      description:
-        "Create an interactive dashboard for analyzing e-commerce sales data using Python, Pandas, and Plotly. The dashboard should provide insights for business decision-making.",
-      requirements: [
-        "Clean and preprocess the provided dataset",
-        "Create at least 5 different visualization types",
-        "Implement interactive filtering and drill-down capabilities",
-        "Include statistical analysis and trend identification",
-        "Deploy dashboard using Streamlit or Dash",
-      ],
-      timeEstimate: "12-16 hours",
-      attachments: ["sales_data.csv", "dashboard_examples.pdf"],
-      aiHints: [
-        "Start with exploratory data analysis to understand patterns",
-        "Use color and layout strategically for better UX",
-        "Consider adding predictive analytics features",
-      ],
-      feedback: null,
-      submissionFormat: "Deployed dashboard + source code + analysis report",
-    },
-  ];
+  const [assignments, setassignments] = useState<any[]>([]);
+  const [subAssignment, setSubAssignment] = useState<any[]>([]);
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  // Get Assignment
+  const assignmentApiData = async () => {
+    try {
+      let response = await fetch(
+        `${import.meta.env.VITE_API_BACKEND_URL}/api/assignments/assignments/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`, // 🔑 attach token
+          },
+        }
+      );
+      const result = await response.json();
+      if (!response.ok) {
+        console.error(`Failed to fetch Assignment: ${result}`);
+        setassignments([]);
+      } else {
+        setassignments(Array.isArray(result) ? result : []);
+      }
+    } catch (err) {
+      console.error("Error fetching Assignments: ", err);
+      setassignments([]);
+    }
+  };
+
+  // update Assignment
+  const editAssignment = (id) => {
+    navigate("editAssignment/" + id);
+  };
+
+  // Delete Assignment
+  const deleteAssignment = async (id) => {
+    try {
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_BACKEND_URL
+        }/api/assignments/assignments/${id}/`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Failed to delete, Status: ${response.status}`);
+      }
+      toast.success("Assignment Deleted", {
+        hideProgressBar: true,
+        icon: <Trash2 className="text-2xl text-red-500 " />,
+        className: "text-red-500", // your custom icon here
+      });
+      console.log(`Assignment with id ${id} deleted successfully!`);
+      assignmentApiData();
+    } catch (error) {
+      console.error("Error while deleting data:", error);
+    }
+  };
+
+  // Submit Assignment
+  const submitAssignment = async () => {
+    let response = await fetch(
+      `${import.meta.env.VITE_API_BACKEND_URL}/api/assignments/submissions/`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.access}`, // 🔑 attach token
+        },
+      }
+    );
+    const result = await response.json();
+    console.log("Submitted Assignments", result);
+    setSubAssignment(result);
+  };
+
+  // Assignment Avg Score ( GET )
+  const [avgScore, setavgScore] = useState(String);
+  const AssignmentAvgScore = async () => {
+    try {
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_API_BACKEND_URL
+        }/api/assignments/average-score/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`, // 🔑 attach token
+          },
+        }
+      );
+
+      const result = await res.json();
+      if (!res.ok) {
+        console.error("Failed to fetch assignment Avg score: ", result);
+      }
+      console.log(result);
+      setavgScore(result);
+    } catch (err) {
+      console.error("Error in Assignment Avg Score: ", err);
+    }
+  };
+
+  useEffect(() => {
+    submitAssignment();
+    assignmentApiData();
+    AssignmentAvgScore();
+  }, []);
 
   const filteredAssignments = assignments.filter((assignment) => {
     const matchesSearch =
       assignment.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      assignment.course.toLowerCase().includes(searchTerm.toLowerCase());
+      assignment.status.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter =
       selectedFilter === "all" || assignment.status === selectedFilter;
     return matchesSearch && matchesFilter;
   });
+  // console.log(filteredAssignments);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -277,6 +236,11 @@ export default function Assignments() {
       name: "Upcoming",
       count: assignments.filter((a) => a.status === "upcoming").length,
     },
+    {
+      id: "late",
+      name: "Late",
+      count: assignments.filter((a) => a.status === "late").length,
+    },
   ];
 
   return (
@@ -292,10 +256,6 @@ export default function Assignments() {
               Track your assignments and get AI-powered assistance
             </p>
           </div>
-          <Button className=" text-[12px] md:text-[16px] bg-gradient-learning p-2 -gap-2">
-            <Plus className="w-4 h-4 mr-2" />
-            Create Assignment
-          </Button>
         </div>
 
         {/* Search and Filter */}
@@ -303,8 +263,8 @@ export default function Assignments() {
           <div className="relative flex-1">
             <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
             <Input
-            id="searchTerm"
-              placeholder="Search assignments, courses, or instructors..."
+              id="searchTerm"
+              placeholder="Search assignments title..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -336,49 +296,49 @@ export default function Assignments() {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="glass-card p-6">
+        <Card className="p-6 border  hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-orange-200/50 rounded-xl flex items-center justify-center">
               <Clock className="w-6 h-6 text-warning" />
             </div>
             <div>
-              <p className="text-2xl font-bold">3</p>
+              <p className="text-2xl font-bold">{filters[1].count}</p>
               <p className="text-muted-foreground">Pending</p>
             </div>
           </div>
         </Card>
 
-        <Card className="glass-card p-6">
+        <Card className="p-6 border  hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
               <FileText className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <p className="text-2xl font-bold">2</p>
+              <p className="text-2xl font-bold">{subAssignment.length}</p>
               <p className="text-muted-foreground">Submitted</p>
             </div>
           </div>
         </Card>
 
-        <Card className="glass-card p-6">
+        <Card className=" p-6 border  hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-success/20 rounded-xl flex items-center justify-center">
               <CheckCircle className="w-6 h-6 text-success" />
             </div>
             <div>
-              <p className="text-2xl font-bold">1</p>
+              <p className="text-2xl font-bold">{filters[3].count} </p>
               <p className="text-muted-foreground">Graded</p>
             </div>
           </div>
         </Card>
 
-        <Card className="glass-card p-6">
+        <Card className="p-6 border  hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
               <BarChart3 className="w-6 h-6 text-accent-foreground" />
             </div>
             <div>
-              <p className="text-2xl font-bold">91%</p>
+              <p className="text-2xl font-bold">{avgScore.average_score} </p>
               <p className="text-muted-foreground">Avg Score</p>
             </div>
           </div>
@@ -396,7 +356,7 @@ export default function Assignments() {
           >
             <div className="space-y-6">
               {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-4 ">
                 {/* Left Header */}
                 <div className="space-y-2 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
@@ -406,7 +366,7 @@ export default function Assignments() {
                         {assignment.status}
                       </span>
                     </Badge>
-                    <Badge variant="outline">{assignment.course}</Badge>
+                    {/* <Badge variant="outline">{assignment.course}</Badge> */}
                     <Badge variant="secondary" className="text-xs">
                       {assignment.priority} priority
                     </Badge>
@@ -424,15 +384,17 @@ export default function Assignments() {
                   <div>
                     <p className="text-muted-foreground">Points</p>
                     <p className="font-semibold">
-                      {assignment.earnedPoints
-                        ? `${assignment.earnedPoints}/`
+                      {assignment.earned_points
+                        ? `${assignment.earned_points}/`
                         : ""}
                       {assignment.points}
                     </p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Due Date</p>
-                    <p className="font-semibold">{assignment.dueDate}</p>
+                    <p className="font-semibold">
+                      {assignment.due_date.slice(0, 10)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -446,7 +408,7 @@ export default function Assignments() {
               <div className="space-y-2">
                 <h4 className="font-medium">Requirements:</h4>
                 <ul className="space-y-1">
-                  {assignment.requirements.map((req, index) => (
+                  {(assignment.requirements || []).map((req, index) => (
                     <li
                       key={index}
                       className="text-sm text-muted-foreground flex items-start gap-2"
@@ -459,17 +421,17 @@ export default function Assignments() {
               </div>
 
               {/* Assignment Details */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
                 <div className="space-y-1">
                   <p className="font-medium">Time Estimate</p>
                   <p className="text-muted-foreground">
-                    {assignment.timeEstimate}
+                    {assignment.time_estimate}
                   </p>
                 </div>
                 <div className="space-y-1">
                   <p className="font-medium">Submission Format</p>
                   <p className="text-muted-foreground">
-                    {assignment.submissionFormat}
+                    {assignment.submission_format}
                   </p>
                 </div>
                 <div className="space-y-1">
@@ -478,19 +440,39 @@ export default function Assignments() {
                     {assignment.type}
                   </Badge>
                 </div>
+                {user && user.role === "Admin" && (
+                  <div className="flex items-start justify-end gap-4 ">
+                    <Button
+                      onClick={() => {
+                        editAssignment(assignment.id);
+                      }}
+                      className="bg-blue-200 hover:bg-blue-500 px-2 h-8"
+                      title="Edit Course"
+                    >
+                      <Pencil />
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        deleteAssignment(assignment.id);
+                      }}
+                      className="bg-red-200 hover:bg-red-500 px-2 h-8"
+                      title="Delete Course"
+                    >
+                      <Trash />
+                    </Button>
+                  </div>
+                )}
               </div>
 
               {/* Attachments */}
-              {assignment.attachments.length > 0 && (
+              {assignment.attachment && assignment.attachment.length > 0 && (
                 <div className="space-y-2">
                   <p className="font-medium">Attachments:</p>
                   <div className="flex flex-wrap gap-2">
-                    {assignment.attachments.map((attachment, index) => (
-                      <Button key={index} variant="outline" size="sm">
-                        <Download className="w-3 h-3 mr-1" />
-                        {attachment}
-                      </Button>
-                    ))}
+                    <Button variant="outline" size="sm">
+                      <Download className="w-3 h-3 mr-1" />
+                      {assignment.attachment}
+                    </Button>
                   </div>
                 </div>
               )}
@@ -502,7 +484,7 @@ export default function Assignments() {
                   <span className="font-medium">AI Study Hints</span>
                 </div>
                 <ul className="space-y-1">
-                  {assignment.aiHints.map((hint, index) => (
+                  {(assignment.ai_hints || []).map((hint, index) => (
                     <li
                       key={index}
                       className="text-sm text-muted-foreground flex items-start gap-2"
@@ -613,6 +595,19 @@ export default function Assignments() {
           </div>
         </div>
       </Card>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Slide}
+      />
     </div>
   );
 }

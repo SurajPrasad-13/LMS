@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { Slide, toast, ToastContainer } from "react-toastify";
+import {useAuth} from '../Context/AuthContext'
 
 function EditCourseForm() {
   const {
@@ -39,6 +40,7 @@ function EditCourseForm() {
   };
 
   const { id } = useParams();
+  const {user} = useAuth()
 
   const url = `${
     import.meta.env.VITE_API_BACKEND_URL
@@ -48,7 +50,12 @@ function EditCourseForm() {
 
   const getUserData = async () => {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url,{
+        method:'GET',
+        headers: {
+          Authorization: `Bearer ${user?.access}`, // 🔑 attach access
+        },
+      });
       console.log(res)
       if (!res.ok) {
         throw new Error(`Failed to fetch data: ${res.status}`);
@@ -85,7 +92,8 @@ function EditCourseForm() {
         method: "PUT",
         body: JSON.stringify(processedData),
         headers: {
-          "content-Type": "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.access}`, // 🔑 attach access
         },
       });
 
@@ -112,7 +120,7 @@ function EditCourseForm() {
       <h2 className="text-2xl font-bold mb-4">AddCourse</h2>
       <form onSubmit={handleSubmit(updateCourse)} className="space-y-4">
         {/* Title, Instructor */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1  gap-4">
           {/* title */}
           <div>
             <label className="block font-medium">Title</label>
@@ -127,6 +135,10 @@ function EditCourseForm() {
             )}
           </div>
 
+        </div>
+
+        {/* Category, Instructor */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Instructor */}
           <div>
             <label className="block font-medium">Instructor</label>
@@ -142,10 +154,6 @@ function EditCourseForm() {
               </p>
             )}
           </div>
-        </div>
-
-        {/* Category, Thumbnail */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Category */}
           <div>
             <label className="block font-medium">Category</label>
@@ -156,21 +164,40 @@ function EditCourseForm() {
           </div>
           
 
-          {/* Thumbnail */}
-          <div>
-            <label className="block font-medium">Thumbnail</label>
-            <Input
-              type="file"
-              {...register("thumbnail")}
-              className="w-full p-2 border rounded"
-            />
-          </div>
+        
         </div>
           <div>
             <label className="block font-medium">Course Status</label>
-            <Input              
+            {/* <Input              
               {...register("status")}
               className="w-full p-2 border rounded"
+            /> */}
+
+
+            <Controller
+              name="status"
+              control={control}
+              rules={{
+                required: { value: true, message: "This Field is Required" },
+              }}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="cursor-pointer">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {["in progress", "wishlist", "completed"].map((duration) => (
+                      <SelectItem
+                        key={duration}
+                        value={duration}
+                        className="cursor-pointer"
+                      >
+                        {duration}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             />
           </div>
 
