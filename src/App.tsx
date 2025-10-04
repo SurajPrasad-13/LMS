@@ -1,4 +1,4 @@
-import MainLayout from "./MainComponents/MainLayout";
+import MainLayout from "./pages/MainLayout";
 
 const App = () => (
   <>
