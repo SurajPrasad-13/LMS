@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,112 +26,206 @@ import {
   Target,
   Repeat,
   AlertCircle,
+  Pencil,
+  Trash,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Slide, toast, ToastContainer } from "react-toastify";
+import { useAuth } from "@/Context/AuthContext"; // Import useAuth
 
 export default function Schedule() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<"month" | "week" | "day">("week");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const { user } = useAuth();
 
-  const events = [
-    {
-      id: 1,
-      title: "Advanced React Patterns",
-      type: "live-session",
-      course: "Advanced React Development",
-      instructor: "Dr. Sarah Chen",
-      startTime: "2024-02-15T14:00:00",
-      endTime: "2024-02-15T15:30:00",
-      location: "Virtual Room A",
-      participants: 24,
-      color: "bg-blue-500",
-      status: "confirmed",
-      description:
-        "Deep dive into advanced React patterns including render props and HOCs",
-      reminder: "15 minutes before",
-    },
-    {
-      id: 2,
-      title: "ML Assignment Due",
-      type: "assignment",
-      course: "Machine Learning Fundamentals",
-      instructor: "Prof. Michael Torres",
-      startTime: "2024-02-15T23:59:00",
-      endTime: "2024-02-15T23:59:00",
-      location: "Online Submission",
-      color: "bg-red-500",
-      status: "pending",
-      description: "Neural network implementation project submission deadline",
-      reminder: "1 day before",
-    },
-    {
-      id: 3,
-      title: "UI/UX Design Workshop",
-      type: "workshop",
-      course: "UI/UX Design Principles",
-      instructor: "Emma Rodriguez",
-      startTime: "2024-02-16T10:00:00",
-      endTime: "2024-02-16T12:00:00",
-      location: "Design Lab",
-      participants: 18,
-      color: "bg-purple-500",
-      status: "confirmed",
-      description:
-        "Hands-on workshop on modern design principles and prototyping",
-      reminder: "30 minutes before",
-    },
-    {
-      id: 4,
-      title: "Study Group - JavaScript",
-      type: "study-group",
-      course: "Full-Stack JavaScript",
-      instructor: "Student Led",
-      startTime: "2024-02-16T16:00:00",
-      endTime: "2024-02-16T18:00:00",
-      location: "Library Room 203",
-      participants: 8,
-      color: "bg-green-500",
-      status: "confirmed",
-      description: "Collaborative study session for upcoming JavaScript exam",
-      reminder: "10 minutes before",
-    },
-    {
-      id: 5,
-      title: "Data Science Project Review",
-      type: "meeting",
-      course: "Data Science with Python",
-      instructor: "Dr. Lisa Wang",
-      startTime: "2024-02-17T13:00:00",
-      endTime: "2024-02-17T14:00:00",
-      location: "Office Hours",
-      color: "bg-yellow-500",
-      status: "confirmed",
-      description: "One-on-one project review and feedback session",
-      reminder: "5 minutes before",
-    },
-    {
-      id: 6,
-      title: "Cloud Architecture Exam",
-      type: "exam",
-      course: "Cloud Architecture with AWS",
-      instructor: "James Patterson",
-      startTime: "2024-02-18T09:00:00",
-      endTime: "2024-02-18T11:00:00",
-      location: "Testing Center",
-      color: "bg-orange-500",
-      status: "confirmed",
-      description: "Final exam covering AWS services and architecture patterns",
-      reminder: "2 hours before",
-    },
-  ];
+  // const events = [
+  //   //   {
+  //   //     "reminder": "",
+  //   //     "start_time": null,✔️
+  //   //     "end_time": null,✔️
+  //   //     "reminder_time": null,
+  //   //     "type": "",✔️
+  //   //     "course": "",✔️
+  //   //     "instructor": "",✔️
+  //   //     "location": "",✔️
+  //   //     "participants": null,✔️
+  //   //     "color": "",✔️
+  //   //     "status": "",✔️
+  //   //     "title": "",✔️
+  //   //     "description": "",✔️
+  //   //     "user": null
+  //   // }
+  //   // {
+  //   //   id: 1,
+  //   //   "title": "Advanced React Patterns",✔️
+  //   //   "type": "live-session",✔️
+  //   //   "course": "Advanced React Development",✔️
+  //   //   "instructor": "Dr. Sarah Chen",✔️
+  //   //   "start_time": "2024-02-15T14:00:00",✔️
+  //   //   "end_time": "2024-02-15T15:30:00",✔️
+  //   //   "location": "Virtual Room A",✔️
+  //   //   "participants": 24,✔️
+  //   //   "color": "bg-blue-500",✔️
+  //   //   "status": "confirmed",✔️
+  //   //   "description":✔️
+  //   //     "Deep dive into advanced React patterns including render props and HOCs",
+  //   //   "reminder": "15 minutes before",
+  //   // },
+  //   {
+  //     id: 2,
+  //     title: "ML Assignment Due",
+  //     type: "assignment",
+  //     course: "Machine Learning Fundamentals",
+  //     instructor: "Prof. Michael Torres",
+  //     start_time: "2024-02-15T23:59:00",
+  //     end_time: "2024-02-15T23:59:00",
+  //     location: "Online Submission",
+  //     color: "bg-red-500",
+  //     status: "pending",
+  //     description: "Neural network implementation project submission deadline",
+  //     reminder: "1 day before",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "UI/UX Design Workshop",
+  //     type: "workshop",
+  //     course: "UI/UX Design Principles",
+  //     instructor: "Emma Rodriguez",
+  //     start_time: "2024-02-16T10:00:00",
+  //     end_time: "2024-02-16T12:00:00",
+  //     location: "Design Lab",
+  //     participants: 18,
+  //     color: "bg-purple-500",
+  //     status: "confirmed",
+  //     description:
+  //       "Hands-on workshop on modern design principles and prototyping",
+  //     reminder: "30 minutes before",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Study Group - JavaScript",
+  //     type: "study-group",
+  //     course: "Full-Stack JavaScript",
+  //     instructor: "Student Led",
+  //     start_time: "2024-02-16T16:00:00",
+  //     end_time: "2024-02-16T18:00:00",
+  //     location: "Library Room 203",
+  //     participants: 8,
+  //     color: "bg-green-500",
+  //     status: "confirmed",
+  //     description: "Collaborative study session for upcoming JavaScript exam",
+  //     reminder: "10 minutes before",
+  //   },
+  //   {
+  //     id: 5,
+  //     title: "Data Science Project Review",
+  //     type: "meeting",
+  //     course: "Data Science with Python",
+  //     instructor: "Dr. Lisa Wang",
+  //     start_time: "2024-02-17T13:00:00",
+  //     end_time: "2024-02-17T14:00:00",
+  //     location: "Office Hours",
+  //     color: "bg-yellow-500",
+  //     status: "confirmed",
+  //     description: "One-on-one project review and feedback session",
+  //     reminder: "5 minutes before",
+  //   },
+  //   {
+  //     id: 6,
+  //     title: "Cloud Architecture Exam",
+  //     type: "exam",
+  //     course: "Cloud Architecture with AWS",
+  //     instructor: "James Patterson",
+  //     start_time: "2024-02-18T09:00:00",
+  //     end_time: "2024-02-18T11:00:00",
+  //     location: "Testing Center",
+  //     color: "bg-orange-500",
+  //     status: "confirmed",
+  //     description: "Final exam covering AWS services and architecture patterns",
+  //     reminder: "2 hours before",
+  //   },
+  // ];
+
+  const [events, setevents] = useState<any[]>([]);
+  const navigate = useNavigate();
+
+  // get schedule Data
+  const scheduleApiData = async () => {
+    try {
+      let response = await fetch(
+        `${import.meta.env.VITE_API_BACKEND_URL}/api/schedule/schedules/`,{
+          method:'GET',
+          headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.access}`, // 🔑 attach access
+        },
+        }
+      );
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Registration failed:", errorData);
+        return;
+      }
+
+      const result = await response.json();
+      setevents(result);
+      console.log(result);
+    } catch (error) {
+      console.error("Failed to fetch Schedule Data: ", error);
+    }
+  };
+
+  // add schedule Data
+  const addSchedule = () => {
+    navigate("scheduleform");
+  };
+
+  // update schedule data
+  const updateSchedule = (id) => {
+    navigate(`editscheduleform/${id}`);
+  };
+
+  // delete schedule data
+  const deleteSchedule = async (id) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BACKEND_URL}/api/schedule/schedules/${id}/`,
+        {
+          method: "DELETE",
+          headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.access}`, // 🔑 attach access
+        },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Failed to Delete Schedule with id: ${id}  `);
+      }
+      toast.success("Schedule Deleted Successfully", {
+        hideProgressBar: true,
+        icon: <Trash2 className="text-2xl text-red-500 " />,
+        className: "text-red-500", // your custom icon here
+      });
+      console.log("Schedule with id ", id, "is deleted successfully");
+      scheduleApiData();
+    } catch (error) {
+      console.error("Failed to fetch Schedule with id: ", id);
+    }
+  };
+
+  useEffect(() => {
+    scheduleApiData();
+  }, []);
 
   const categories = [
     { id: "all", name: "All Events", count: events.length },
+   
     {
-      id: "live-session",
-      name: "Live Sessions",
-      count: events.filter((e) => e.type === "live-session").length,
+      id: "exam",
+      name: "Exams",
+      count: events.filter((e) => e.type === "exam").length,
     },
     {
       id: "assignment",
@@ -139,14 +233,19 @@ export default function Schedule() {
       count: events.filter((e) => e.type === "assignment").length,
     },
     {
-      id: "exam",
-      name: "Exams",
-      count: events.filter((e) => e.type === "exam").length,
+      id: "live-session",
+      name: "Live Sessions",
+      count: events.filter((e) => e.type === "live-session").length,
     },
     {
       id: "workshop",
       name: "Workshops",
       count: events.filter((e) => e.type === "workshop").length,
+    },
+     {
+      id: "meeting",
+      name: "Meating",
+      count: events.filter((e) => e.type === "meeting").length,
     },
     {
       id: "study-group",
@@ -156,15 +255,15 @@ export default function Schedule() {
   ];
 
   const upcomingEvents = events
-    .filter((event) => new Date(event.startTime) >= new Date())
+    .filter((event) => new Date(event.start_time) >= new Date())
     .sort(
       (a, b) =>
-        new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+        new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
     )
     .slice(0, 5);
 
   const todayEvents = events.filter((event) => {
-    const eventDate = new Date(event.startTime);
+    const eventDate = new Date(event.start_time);
     const today = new Date();
     return eventDate.toDateString() === today.toDateString();
   });
@@ -247,7 +346,7 @@ export default function Schedule() {
 
   const getEventsForDate = (date: Date) => {
     return events.filter((event) => {
-      const eventDate = new Date(event.startTime);
+      const eventDate = new Date(event.start_time);
       return eventDate.toDateString() === date.toDateString();
     });
   };
@@ -273,10 +372,14 @@ export default function Schedule() {
               Manage your learning schedule and never miss important deadlines
             </p>
           </div>
-          <Button className="bg-gradient-learning w-full sm:w-auto">
-            <Plus className="w-4 h-4 mr-2" />
+           {user && user.role === "Admin" && (
+          <Button
+            onClick={addSchedule}
+            className="bg-gradient-learning  w-auto sm:w-34 font-semibold"
+          >
+            <Plus className="w-4 h-4 " />
             Add Event
-          </Button>
+          </Button>)}
         </div>
 
         {/* Controls */}
@@ -317,7 +420,7 @@ export default function Schedule() {
               <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
 
               <Input
-              id="searchTerm"
+                id="searchTerm"
                 placeholder="Search events..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -332,16 +435,18 @@ export default function Schedule() {
         </div>
 
         {/* Category Filters */}
-        <div className="flex flex-wrap gap-2">
+        <div className="grid gap-2 grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7">
           {categories.map((category) => (
             <Button
               key={category.id}
               variant={selectedCategory === category.id ? "default" : "outline"}
               onClick={() => setSelectedCategory(category.id)}
-              className={selectedCategory === category.id ? "bg-orange-400" : ""}
+              className={ 
+                selectedCategory === category.id ? "bg-orange-400 flex justify-around" : " text-[12px]  flex justify-around px-2"
+              }
             >
               {category.name}
-              <Badge variant="outline" className="ml-2 bg-white ">
+              <Badge variant="outline" className="ml-1 sm:ml-2 bg-white ">
                 {category.count}
               </Badge>
             </Button>
@@ -431,6 +536,28 @@ export default function Schedule() {
                           {event.status === "pending" && (
                             <AlertCircle className="w-4 h-4 text-warning" />
                           )}
+                          {user && user.role === "Admin" && (
+                            <div className="flex items-center justify-end gap-2">
+                              <Button
+                                onClick={() => {
+                                  updateSchedule(event.id);
+                                }}
+                                className="bg-blue-200 hover:bg-blue-500 px-2 h-8"
+                                title="Edit Course"
+                              >
+                                <Pencil />
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  deleteSchedule(event.id);
+                                }}
+                                className="bg-red-200 hover:bg-red-500 px-2 h-8"
+                                title="Delete Course"
+                              >
+                                <Trash />
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -441,31 +568,35 @@ export default function Schedule() {
                       <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <CalendarDays className="w-4 h-4" />
-                          <span>{formatDate(event.startTime)}</span>
+                          <span>{formatDate(event.start_time)}</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
                           <span>
-                            {formatTime(event.startTime)} -{" "}
-                            {formatTime(event.endTime)}
+                            {formatTime(event.start_time)} -{" "}
+                            {formatTime(event.end_time)}
                           </span>
                         </div>
                         <div className="flex items-center gap-1">
                           <MapPin className="w-4 h-4" />
                           <span>{event.location}</span>
                         </div>
-                        {event.participants && (
+                        {/* {event.participants && ( */}
                           <div className="flex items-center gap-1">
                             <Users className="w-4 h-4" />
                             <span>{event.participants} participants</span>
                           </div>
-                        )}
+                        {/* )} */}
                       </div>
 
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-3">
-                        <Badge variant="outline">{event.course}</Badge>
+                        {/* <Badge variant="outline">{event.course}</Badge> */}
                         <div className="flex  gap-1 ">
-                          <Button className="text-sm" variant="outline" size="sm">
+                          <Button
+                            className="text-sm"
+                            variant="outline"
+                            size="sm"
+                          >
                             <Bell className="w-3 h-3 text-sm mr-1" />
                             {event.reminder}
                           </Button>
@@ -510,7 +641,7 @@ export default function Schedule() {
                       >
                         <div className="flex flex-col items-center">
                           <div className="text-sm font-medium">
-                            {formatTime(event.startTime)}
+                            {formatTime(event.start_time)}
                           </div>
                           <div className="w-px bg-border h-8 mt-2"></div>
                         </div>
@@ -558,26 +689,33 @@ export default function Schedule() {
             </Card>
           )}
         </div>
-
         {/* Sidebar */}
         <div className="space-y-4 sm:space-y-6">
           {/* Today's Summary */}
-          <Card className="glass-card p-4 sm:p-6">
+          <Card className=" shadow border-0 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 p-4 sm:p-6">
             <h3 className="font-semibold mb-4">Today's Summary</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm">Total Events</span>
-                <Badge variant="outline" className="bg-orange-400 text-white" >{todayEvents.length}</Badge>
+                <Badge variant="outline" className="hover:bg-orange-400 hover:text-white">
+                  {todayEvents.length}
+                </Badge>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm">Live Sessions</span>
-                <Badge variant="outline" className="hover:bg-orange-400 hover:text-white">
+                <Badge
+                  variant="outline"
+                  className="hover:bg-orange-400 animate-pulse bg-red-500 text-white hover:text-white"
+                >
                   {todayEvents.filter((e) => e.type === "live-session").length}
                 </Badge>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm">Assignments Due</span>
-                <Badge variant="outline" className="hover:bg-orange-400 hover:text-white">
+                <span className="text-sm">Today's Due Assignments </span>
+                <Badge
+                  variant="outline"
+                  className="hover:bg-orange-400 hover:text-white"
+                >
                   {todayEvents.filter((e) => e.type === "assignment").length}
                 </Badge>
               </div>
@@ -585,7 +723,7 @@ export default function Schedule() {
           </Card>
 
           {/* Upcoming Events */}
-          <Card className="glass-card p-4 sm:p-6">
+          <Card className=" shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border-0 p-4 sm:p-6">
             <h3 className="font-semibold mb-4">Upcoming Events</h3>
             <div className="space-y-3">
               {upcomingEvents.map((event) => (
@@ -594,15 +732,16 @@ export default function Schedule() {
                   className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg"
                 >
                   <div
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center ${event.color}`}
+                  // style={{ backgroundColor: event.color }}
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center  ${event.color}`}
                   >
                     {getEventTypeIcon(event.type)}
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-sm">{event.title}</p>
                     <p className="text-xs text-muted-foreground">
-                      {formatDate(event.startTime)} at{" "}
-                      {formatTime(event.startTime)}
+                      {formatDate(event.start_time)} at{" "}
+                      {formatTime(event.start_time)}
                     </p>
                   </div>
                 </div>
@@ -611,7 +750,7 @@ export default function Schedule() {
           </Card>
 
           {/* Quick Actions */}
-          <Card className="glass-card p-4 sm:p-6">
+          <Card className="hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border-0 shadow p-4 sm:p-6">
             <h3 className="font-semibold mb-4">Quick Actions</h3>
             <div className="space-y-2">
               <Button variant="outline" className="w-full justify-start">
@@ -634,6 +773,19 @@ export default function Schedule() {
           </Card>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Slide}
+      />
     </div>
   );
 }
