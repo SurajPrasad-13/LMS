@@ -29,7 +29,7 @@ const Notification = ({ notifications }) => {
         {notifications.map((notification) => (
           <div
             key={notification.id}
-            className="flex items-start space-x-3 p-2 rounded-lg hover:bg-muted/30 transition-colors cursor-pointer"
+            className="flex items-start space-x-3 p-2 rounded-lg bg-muted/60 hover:bg-muted transition-colors cursor-pointer"
           >
             <div
               className={`w-2 h-2 rounded-full mt-2 ${
