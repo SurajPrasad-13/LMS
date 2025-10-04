@@ -23,151 +23,131 @@ import {
   Video,
   Mic,
   MicOff,
+  X,
+  Pencil,
+  Trash,
+  Plus,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/Context/AuthContext"; // Import useAuth
+import { IoMdAdd } from "react-icons/io";
+import { Slide, toast, ToastContainer } from "react-toastify";
 
 export default function MyCourses() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
+  const { user } = useAuth(); // Get user from AuthContext
+  const [courses, setCourses] = useState<any[]>([]);
+  const [avgLearnTime, setAvgLearnTime] = useState<{
+    average_learning_time: string;
+  }>({
+    average_learning_time: "2h 0m", // default value
+  });
+  const [totalLearnTime, setTotalLearnTime] = useState<{
+    total_meeting_time: string;
+  }>({
+    total_meeting_time: "0h 0m", // default value
+  });
+
+  // Get Courses Data
+  const coursesApiData = async () => {
+    try {
+      let response = await fetch(
+        `${import.meta.env.VITE_API_BACKEND_URL}/api/courses/courses/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`, // 🔑 attach token
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        console.error(`Failed to fetch courses: ${result}`);
+        setCourses([]);
+      } else {
+        setCourses(Array.isArray(result) ? result : []);
+      }
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      setCourses([]);
+    }
+  };
+
+  // Average Learning Time ( GET )
+  const avgLearnTimeApiData = async () => {
+    try {
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_API_BACKEND_URL
+        }/api/courses/average-learning-time/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`,
+          },
+        }
+      );
+      const result = await res.json();
+      if (!res.ok) {
+        console.error("Failed to Fetch Average Learning Time", result);
+      }
+      setAvgLearnTime(result);
+      console.log("Average Learing Hours", result);
+    } catch (err) {
+      console.error("Error in Average Learning time", err);
+    }
+  };
+
+
+  // Total Learning Time ( GET )
+  const ttlLearnTimeApiData = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BACKEND_URL}/api/courses/total-hours/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`,
+          },
+        }
+      );
+      const result = await res.json();
+      if (!res.ok) {
+        console.error("Failed to Fetch Total Learning Time", result);
+      }
+      setTotalLearnTime(result);
+      console.log("Total Learing Hours", result);
+    } catch (err) {
+      console.error("Error in Total Learning time", err);
+    }
+  };
+
   const categories = [
-    { id: "all", name: "All Courses", count: 24 },
-    { id: "in-progress", name: "In Progress", count: 3 },
-    { id: "completed", name: "Completed", count: 8 },
-    { id: "wishlist", name: "Wishlist", count: 13 },
-  ];
-
-  const courses = [
+    { id: "all", name: "All Courses", count: courses.length },
     {
-      id: 1,
-      title: "Advanced React Development",
-      instructor: "Dr. Sarah Chen",
-      category: "Frontend Development",
-      level: "Advanced",
-      duration: "12 weeks",
-      students: 1247,
-      rating: 4.8,
-      progress: 75,
-      status: "in-progress",
-      price: "Free",
-      description:
-        "Master advanced React concepts including hooks, context, performance optimization, and modern patterns used in production applications.",
-      skills: ["React Hooks", "Performance", "Testing", "State Management"],
-      nextLesson: "Custom Hooks Patterns",
-      completedLessons: 28,
-      totalLessons: 35,
-      certificate: true,
-      aiAssisted: true,
+      id: "in progress",
+      name: "In Progress",
+      count: courses.filter((course) => course.status == "in progress").length,
     },
     {
-      id: 2,
-      title: "Machine Learning Fundamentals",
-      instructor: "Prof. Michael Torres",
-      category: "Artificial Intelligence",
-      level: "Intermediate",
-      duration: "16 weeks",
-      students: 892,
-      rating: 4.9,
-      progress: 45,
-      status: "in-progress",
-      price: "$99",
-      description:
-        "Comprehensive introduction to machine learning algorithms, from linear regression to neural networks, with hands-on Python projects.",
-      skills: ["Python", "TensorFlow", "Data Analysis", "Neural Networks"],
-      nextLesson: "Deep Learning Basics",
-      completedLessons: 18,
-      totalLessons: 40,
-      certificate: true,
-      aiAssisted: true,
+      id: "completed",
+      name: "Completed",
+      count: courses.filter((course) => course.status == "completed").length,
     },
     {
-      id: 3,
-      title: "UI/UX Design Principles",
-      instructor: "Emma Rodriguez",
-      category: "Design",
-      level: "Beginner",
-      duration: "8 weeks",
-      students: 2156,
-      rating: 4.7,
-      progress: 90,
-      status: "in-progress",
-      price: "$79",
-      description:
-        "Learn fundamental design principles, user research methods, and create beautiful, functional user interfaces that users love.",
-      skills: ["Figma", "User Research", "Prototyping", "Design Systems"],
-      nextLesson: "Advanced Prototyping",
-      completedLessons: 27,
-      totalLessons: 30,
-      certificate: true,
-      aiAssisted: true,
-    },
-    {
-      id: 4,
-      title: "Full-Stack JavaScript",
-      instructor: "Alex Kim",
-      category: "Web Development",
-      level: "Intermediate",
-      duration: "20 weeks",
-      students: 1543,
-      rating: 4.6,
-      progress: 0,
-      status: "wishlist",
-      price: "$149",
-      description:
-        "Complete full-stack development course covering Node.js, Express, MongoDB, React, and deployment strategies for modern web applications.",
-      skills: ["Node.js", "Express", "MongoDB", "React", "Deployment"],
-      nextLesson: "Node.js Fundamentals",
-      completedLessons: 0,
-      totalLessons: 60,
-      certificate: true,
-      aiAssisted: true,
-    },
-    {
-      id: 5,
-      title: "Data Science with Python",
-      instructor: "Dr. Lisa Wang",
-      category: "Data Science",
-      level: "Advanced",
-      duration: "14 weeks",
-      students: 756,
-      rating: 4.9,
-      progress: 100,
-      status: "completed",
-      price: "$129",
-      description:
-        "Master data science concepts with Python, including pandas, numpy, matplotlib, and advanced statistical analysis techniques.",
-      skills: ["Python", "Pandas", "Statistics", "Visualization"],
-      nextLesson: "Course Completed",
-      completedLessons: 42,
-      totalLessons: 42,
-      certificate: true,
-      aiAssisted: true,
-      completedDate: "2024-01-15",
-    },
-    {
-      id: 6,
-      title: "Cloud Architecture with AWS",
-      instructor: "James Patterson",
-      category: "Cloud Computing",
-      level: "Advanced",
-      duration: "12 weeks",
-      students: 634,
-      rating: 4.8,
-      progress: 100,
-      status: "completed",
-      price: "$179",
-      description:
-        "Design and implement scalable cloud solutions using AWS services including EC2, S3, Lambda, and advanced architectural patterns.",
-      skills: ["AWS", "Cloud Architecture", "DevOps", "Scalability"],
-      nextLesson: "Course Completed",
-      completedLessons: 36,
-      totalLessons: 36,
-      certificate: true,
-      aiAssisted: true,
-      completedDate: "2023-12-20",
+      id: "wishlist",
+      name: "Wishlist",
+      count: courses.filter((course) => course.status == "wishlist").length,
     },
   ];
-
   const filteredCourses = courses.filter((course) => {
     const matchesSearch =
       course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -177,12 +157,13 @@ export default function MyCourses() {
       selectedCategory === "all" || course.status === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+  // console.log(filteredCourses);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "completed":
-        return <CheckCircle className="w-4 h-4 text-success" />;
-      case "in-progress":
+        return <CheckCircle className="w-4 h-4  text-success" />;
+      case "in progress":
         return <Play className="size-5 text-orange-400" />;
       default:
         return <BookOpen className="w-4 h-4 text-muted-foreground" />;
@@ -193,7 +174,7 @@ export default function MyCourses() {
     switch (status) {
       case "completed":
         return "bg-success text-success-foreground";
-      case "in-progress":
+      case "in progress":
         return "bg-primary text-primary-foreground";
       default:
         return "bg-muted text-muted-foreground hover:text-white";
@@ -201,54 +182,103 @@ export default function MyCourses() {
   };
 
   const [isInCall, setIsInCall] = useState(false);
-   const [isMuted, setIsMuted] = useState(false);
-   const [isVideoOn, setIsVideoOn] = useState(true);
-   const [currentinstructor, setcurrentinstructor] = useState("");
-   const [secondsLeft, setSecondsLeft] = useState(65);
- 
-   const startCall = (instructorName) => {
-     setIsInCall(true);
-     setcurrentinstructor(instructorName);
-     setSecondsLeft(15);
-   };
- 
-   const endCall = () => {
-     setIsInCall(false);
-     setcurrentinstructor(null);
-     setIsMuted(false);
-     setIsVideoOn(true);
-   };
-   useEffect(() => {
-   if (!isInCall) return;
- 
-   const interval = setInterval(() => {
-     setSecondsLeft((prev) => {
-       if (prev === 0) {
-         clearInterval(interval);
-         setTimeout(() => {
-           endCall();
-         }, 2000);
-         return 0;
-       }
-       return prev - 1;
-     });
-   }, 1000);
- 
-   return () => clearInterval(interval);
- }, [isInCall]);
- 
- 
- 
-   // Format seconds into MM:SS
-   const formatTime = (totalSeconds) => {
-     const minutes = Math.floor(totalSeconds / 60);
-     const seconds = totalSeconds % 60;
- 
-     return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-       2,
-       "0"
-     )}`;
-   };
+  const [isMuted, setIsMuted] = useState(false);
+  const [isVideoOn, setIsVideoOn] = useState(true);
+  const [currentinstructor, setcurrentinstructor] = useState("");
+  const [secondsLeft, setSecondsLeft] = useState(65);
+
+  const startCall = (instructorName) => {
+    setIsInCall(true);
+    setcurrentinstructor(instructorName);
+    setSecondsLeft(15);
+  };
+
+  const endCall = () => {
+    setIsInCall(false);
+    setcurrentinstructor(null);
+    setIsMuted(false);
+    setIsVideoOn(true);
+  };
+  useEffect(() => {
+    if (!isInCall) return;
+
+    const interval = setInterval(() => {
+      setSecondsLeft((prev) => {
+        if (prev === 0) {
+          clearInterval(interval);
+          setTimeout(() => {
+            endCall();
+          }, 2000);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isInCall]);
+
+  // Format seconds into MM:SS
+  const formatTime = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
+  };
+
+  const navigate = useNavigate();
+  const addCourse = () => {
+    navigate("courseForm");
+  };
+
+  // Delete Course
+  const deleteCourse = async (id) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BACKEND_URL}/api/courses/courses/${id}/`,
+        {
+          method: "DELETE", // DELETE request
+          headers: {
+          Authorization: `Bearer ${user?.access}`, // 🔑 attach access
+        },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete, Status: ${response.status}`);
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log(`Course with id ${id} deleted successfully!`);
+      // get data from api after delete a course
+      coursesApiData();
+      toast.success("Course Deleted Successfully");
+    } catch (error) {
+      console.error("Error while deleting data:", error);
+    }
+  };
+
+  // Edit Course
+  const editCourse = (id) => {
+    navigate("editCourseForm/" + id);
+  };
+
+  function formatToDate(isoString: string): string {
+    if (!isoString) return "";
+    const date = new Date(isoString);
+    // ✅ Extract YYYY-MM-DD
+    return date.toISOString().split("T")[0];
+  }
+  //Add Assignment
+  const addAssignment = (courseId, coursetitle) => {
+    navigate("assignmentsForm", { state: { courseId, coursetitle } });
+  };
+  useEffect(() => {
+    coursesApiData();
+    avgLearnTimeApiData();
+    ttlLearnTimeApiData();
+  }, []);
 
   return (
     <>
@@ -260,7 +290,10 @@ export default function MyCourses() {
             <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
               <div className="text-center flex flex-col items-center justify-center gap-2 text-white">
                 <Avatar className="">
-                  <AvatarImage src="/placeholder.svg" className="h-32 rounded-full" />
+                  <AvatarImage
+                    src="/placeholder.svg"
+                    className="h-32 rounded-full"
+                  />
                 </Avatar>
                 <p className="text-gray-300 font-bold text-xl">
                   Connected • {formatTime(secondsLeft)}
@@ -270,11 +303,15 @@ export default function MyCourses() {
             </div>
 
             {/* Self video (picture-in-picture) */}
-           <div className="absolute top-4 right-4 w-48 h-32 bg-gray-800 rounded-lg overflow-hidden">
+            <div className="absolute top-4 right-4 w-48 h-32 bg-gray-800 rounded-lg overflow-hidden">
               <div className="w-full h-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
                 <div className="text-white flex items-center justify-center flex-col gap-2">
                   <Avatar className="">
-                    <AvatarImage src="/placeholder.svg" alt="Dr. Smith" className="h-16 rounded-full" />
+                    <AvatarImage
+                      src="/placeholder.svg"
+                      alt="Dr. Smith"
+                      className="h-16 rounded-full"
+                    />
                   </Avatar>
                   <p className="text-sm">{currentinstructor}</p>
                 </div>
@@ -282,7 +319,7 @@ export default function MyCourses() {
             </div>
 
             {/* Call controls */}
-           <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
               <div className="flex items-center gap-4 bg-black/50 backdrop-blur-sm rounded-full p-1 md:p-4">
                 <Button
                   variant={isMuted ? "destructive" : "secondary"}
@@ -344,15 +381,22 @@ export default function MyCourses() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-4xl font-bold">My Courses</h1>
-                <p className="text-muted-foreground text-lg">
+                <h1 className="text-2xl md:text-4xl font-bold">My Courses</h1>
+                <p className="text-muted-foreground md:text-lg">
                   Track your learning progress and discover new skills
                 </p>
               </div>
-              <Button className="bg-gradient-learning">
-                <BookOpen className="w-4 h-4 mr-2" />
-                Browse All Courses
-              </Button>
+              <div className=" flex flex-col md:flex-row  md:items-center justify-center gap-2">
+                {user && user.role === "Admin" && (
+                  <Button
+                    className="bg-gradient-learning text-sm md:text-[16px]"
+                    onClick={addCourse}
+                  >
+                    <IoMdAdd />
+                    Add a course
+                  </Button>
+                )}
+              </div>
             </div>
 
             {/* Search and Filter */}
@@ -360,7 +404,8 @@ export default function MyCourses() {
               <div className="relative flex-1">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
                 <Input
-                  placeholder="Search courses, instructors, or topics..."
+                id="search"
+                  placeholder="Search courses, instructors..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -382,11 +427,13 @@ export default function MyCourses() {
                   }
                   onClick={() => setSelectedCategory(category.id)}
                   className={
-                    selectedCategory === category.id ? "bg-orange-400" : ""
+                    selectedCategory === category.id
+                      ? "bg-orange-400 text-[12px] sm:text-[16px] h-8 sm:h-10"
+                      : "h-8 sm:h-10 text-[12px] sm:text-[16px]"
                   }
                 >
                   {category.name}
-                  <Badge variant="outline" className="ml-2  bg-white">
+                  <Badge variant="outline" className=" bg-white">
                     {category.count}
                   </Badge>
                 </Button>
@@ -402,7 +449,15 @@ export default function MyCourses() {
                   <BookOpen className="w-6 h-6 text-orange-400" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">3</p>
+                  <p className="text-2xl font-bold">
+                    {/* {categories.map((courses)=>(
+                      courses.filter((course) => course.name == "In Progress").length
+                    ))} */}
+                    {
+                      courses.filter((course) => course.status == "in progress")
+                        .length
+                    }
+                  </p>
                   <p className="text-muted-foreground">Courses in Progress</p>
                 </div>
               </div>
@@ -422,13 +477,22 @@ export default function MyCourses() {
                   <Award className="w-6 h-6 text-success" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">8</p>
+                  <p className="text-2xl font-bold">
+                    {
+                      courses.filter((course) => course.status == "completed")
+                        .length
+                    }
+                  </p>
                   <p className="text-muted-foreground">Courses Completed</p>
                 </div>
               </div>
               <div className="mt-4">
                 <p className="text-sm text-muted-foreground">
-                  8 certificates earned
+                  {
+                    courses.filter((course) => course.status == "completed")
+                      .length
+                  }{" "}
+                  certificates earned
                 </p>
               </div>
             </Card>
@@ -439,13 +503,15 @@ export default function MyCourses() {
                   <TrendingUp className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">156</p>
+                  <p className="text-2xl font-bold">
+                    {totalLearnTime.total_meeting_time}{" "}
+                  </p>
                   <p className="text-muted-foreground">Hours Learned</p>
                 </div>
               </div>
               <div className="mt-4">
                 <p className="text-sm text-muted-foreground">
-                  12 hours this week
+                  {avgLearnTime.average_learning_time} hours this week
                 </p>
               </div>
             </Card>
@@ -455,20 +521,20 @@ export default function MyCourses() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredCourses.map((course) => (
               <Card key={course.id} className="glass-card p-4 hover-lift">
-                <div className="space-y-4">
+                <div className="space-y-4 ">
                   {/* Header */}
                   <div className="flex items-start justify-between">
                     <div className="space-y-2 flex-1">
                       <div className="flex items-center gap-2">
                         {getStatusIcon(course.status)}
                         <Badge className={getStatusColor(course.status)}>
-                          {course.status === "in-progress"
+                          {course.status === "in progress"
                             ? "In Progress"
                             : course.status === "completed"
                             ? "Completed"
                             : "Wishlist"}
                         </Badge>
-                        {course.aiAssisted && (
+                        {course.ai_assisted && (
                           <Badge
                             variant="outline"
                             className="bg-gradient-learning text-white border-0"
@@ -500,39 +566,79 @@ export default function MyCourses() {
                     {course.description}
                   </p>
 
-                  {/* Skills */}
-                  <div className="flex flex-wrap gap-2">
-                    {course.skills.map((skill, index) => (
-                      <Badge
-                        key={index}
-                        variant="secondary"
-                        className="text-xs"
-                      >
-                        {skill}
-                      </Badge>
-                    ))}
+                  <div className="flex items-center justify-between">
+                    {/* Skills */}
+                    <div className="flex flex-wrap gap-2">
+                      {Array.isArray(course?.skills) &&
+                        course.skills.map((skill, index) => (
+                          <Badge
+                            key={index}
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {skill}
+                          </Badge>
+                        ))}
+                    </div>
+                    {user && user.role === "Admin" && (
+                      <div className="flex items-center justify-end gap-4">
+                        <Button
+                          onClick={() => {
+                            editCourse(course.id);
+                          }}
+                          className="bg-blue-200 hover:bg-blue-500 px-2 h-8"
+                          title="Edit Course"
+                        >
+                          <Pencil />
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            deleteCourse(course.id);
+                          }}
+                          className="bg-red-200 hover:bg-red-500 px-2 h-8"
+                          title="Delete Course"
+                        >
+                          <Trash />
+                        </Button>
+                      </div>
+                    )}
                   </div>
 
                   {/* Progress */}
-                  {course.status === "in-progress" && (
+                  {course.status === "in progress" && (
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-sm">
                         <span>
-                          Progress: {course.completedLessons}/
-                          {course.totalLessons} lessons
+                          Progress: {course.completed_lesson}/
+                          {course.total_lessons} lessons
                         </span>
                         <span className="font-semibold">
-                          {course.progress}%
+                          {course.completed_lesson == 0
+                            ? 0
+                            : String(
+                                (course.completed_lesson /
+                                  course.total_lessons) *
+                                  100
+                              ).slice(0, 4)}{" "}
+                          %
                         </span>
                       </div>
                       <div className="progress-bar">
                         <div
                           className="progress-fill"
-                          style={{ width: `${course.progress}%` }}
+                          style={{
+                            width: ` ${
+                              course.total_lessons == 0
+                                ? 0
+                                : (course.completed_lesson /
+                                    course.total_lessons) *
+                                  100
+                            }%`,
+                          }}
                         ></div>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        Next: {course.nextLesson}
+                        Next: {course.next_lesson}
                       </p>
                     </div>
                   )}
@@ -544,10 +650,10 @@ export default function MyCourses() {
                         <div className="flex items-center gap-2">
                           <CheckCircle className="w-4 h-4 text-success" />
                           <span className="text-sm font-medium">
-                            Completed on {course.completedDate}
+                            Completed on {formatToDate(course.completedDate)}
                           </span>
                         </div>
-                        {course.certificate && (
+                        {course.certificate_status && (
                           <Badge className="bg-accent hover:bg-white text-accent-foreground">
                             Certificate Earned
                           </Badge>
@@ -561,37 +667,88 @@ export default function MyCourses() {
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
-                        <span>{course.duration}</span>
+                        <span>{course.duration_minutes} weeks</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Users className="w-4 h-4" />
-                        <span>{course.students.toLocaleString()} students</span>
+                        <span>{course.students} students</span>
                       </div>
                       <Badge variant="outline">{course.level}</Badge>
                     </div>
                   </div>
 
                   {/* Actions */}
-                  <div className="flex gap-4 pt-2">
+                  <div className="flex  gap-2 md:gap-4 pt-2">
                     {course.status === "in-progress" ? (
-                      <Button onClick={()=>startCall(course.instructor)} className="">
-                        <Play className="w-4 h-4" />
-                        Continue Learning
-                      </Button>
+                      <div className="flex items-center justify-center gap-4 flex-wrap">
+                        {user && user.role !== "Admin" && (
+                          <Button
+                            onClick={() => startCall(course.instructor)}
+                            className=""
+                          >
+                            <Play className="w-4 h-4" />
+                            Continue Learning
+                          </Button>
+                        )}
+                        {user && user.role === "Admin" && (
+                          <div className="flex flex-col sm:flex-row gap-4 w-full">
+                            <Button
+                              onClick={() => {
+                                addAssignment(course.id, course.title);
+                              }}
+                            >
+                              <Plus /> Add Assignment
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                addAssignment(course.id, course.title);
+                              }}
+                            >
+                              <Plus /> Add Session
+                            </Button>
+                          </div>
+                        )}
+                      </div>
                     ) : course.status === "completed" ? (
                       <Button variant="outline" className="">
-                        <BookOpen className="w-4 h-4 mr-2" />
+                        <BookOpen className="w-4 h-4 " />
                         Review Course
                       </Button>
                     ) : (
-                      <Button onClick={()=>startCall(course.instructor)} className="flex-1">
-                        <BookOpen className="w-4 h-4 mr-2" />
-                        Start Course
-                      </Button>
+                      <div className="flex items-center justify-center gap-2 flex-wrap w-full">
+                        {user && user.role !== "Admin" && (
+                          <Button
+                            onClick={() => startCall(course.instructor)}
+                            className="flex-1 "
+                          >
+                            <BookOpen className="w-4 h-4 " />
+                            Start Course
+                          </Button>
+                        )}
+                        {user && user.role === "Admin" && (
+                          <div className="flex flex-col sm:flex-row gap-4 w-full">
+                            <Button
+                              className=""
+                              onClick={() => {
+                                addAssignment(course.id, course.title);
+                              }}
+                            >
+                              <Plus /> Add Assignment
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                addAssignment(course.id, course.title);
+                              }}
+                            >
+                              <Plus /> Add Session
+                            </Button>
+                          </div>
+                        )}
+                      </div>
                     )}
 
                     <Button variant="outline">
-                      <Calendar className="w-4 h-4 mr-2" />
+                      <Calendar className="w-4 h-4" />
                       Schedule
                     </Button>
                   </div>
@@ -612,6 +769,19 @@ export default function MyCourses() {
           )}
         </div>
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Slide}
+      />
     </>
   );
 }
