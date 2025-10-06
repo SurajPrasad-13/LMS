@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "react-toastify";
+import { useAuth } from "../Context/AuthContext";
 
 const EditSessionForm = () => {
   const {
@@ -39,6 +40,7 @@ const EditSessionForm = () => {
   });
 
   const { id } = useParams();
+  const { user } = useAuth();
 
   const url = `${
     import.meta.env.VITE_API_BACKEND_URL
@@ -54,7 +56,13 @@ const EditSessionForm = () => {
 
   const getUserData = async () => {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: user?.access ? `Bearer ${user?.access}` : "",
+        },
+      });
       if (!res.ok) {
         throw new Error(`Failed to fetch data: ${res.status}`);
       }
@@ -86,6 +94,7 @@ const EditSessionForm = () => {
         body: JSON.stringify(data),
         headers: {
           "content-Type": "application/json",
+          Authorization: user?.access ? `Bearer ${user?.access}` : "",
         },
       });
 
@@ -145,9 +154,6 @@ const EditSessionForm = () => {
               )}
             />
             {errors.topics && (
-              <p className="text-sm text-red-500">{errors.topics.message as string}</p>
-            )}
-            {errors.topics && (
               <p className="text-sm text-red-500">
                 {errors.topics.message as string}
               </p>
@@ -174,7 +180,7 @@ const EditSessionForm = () => {
               />
             </div>
           </div>
-          `{/* Instructor and Recording URL */}
+          {/* Instructor and Recording URL */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">
@@ -221,7 +227,6 @@ const EditSessionForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">Status</label>
-              
 
               <Controller
                 name="status"
@@ -235,7 +240,7 @@ const EditSessionForm = () => {
                       <SelectValue placeholder="Select Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      {["live", "scheduled", "starting-soon","recorded"].map(
+                      {["live", "scheduled", "starting-soon", "recorded"].map(
                         (duration) => (
                           <SelectItem
                             key={duration}
