@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { Slide, toast, ToastContainer } from "react-toastify";
-import {useAuth} from '../Context/AuthContext'
+import { useAuth } from "../Context/AuthContext";
 
 function EditCourseForm() {
   const {
@@ -40,7 +40,7 @@ function EditCourseForm() {
   };
 
   const { id } = useParams();
-  const {user} = useAuth()
+  const { user } = useAuth();
 
   const url = `${
     import.meta.env.VITE_API_BACKEND_URL
@@ -50,13 +50,13 @@ function EditCourseForm() {
 
   const getUserData = async () => {
     try {
-      const res = await fetch(url,{
-        method:'GET',
+      const res = await fetch(url, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${user?.access}`, // 🔑 attach access
         },
       });
-      console.log(res)
+      console.log(res);
       if (!res.ok) {
         throw new Error(`Failed to fetch data: ${res.status}`);
       }
@@ -65,7 +65,7 @@ function EditCourseForm() {
         setSkills(data.skills);
       }
       reset(data);
-      console.log(data)
+      console.log(data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -103,8 +103,8 @@ function EditCourseForm() {
         return;
       }
 
-     toast.success("Course Updated successfully", {
-        icon: <SquarePen className="text-green-600"  />  , 
+      toast.success("Course Updated successfully", {
+        icon: <SquarePen className="text-green-600" />,
       });
       // await new Promise((resolve) => setTimeout(resolve, 1500));
       const result = await res.json();
@@ -134,7 +134,6 @@ function EditCourseForm() {
               </p>
             )}
           </div>
-
         </div>
 
         {/* Category, Instructor */}
@@ -162,44 +161,36 @@ function EditCourseForm() {
               className="w-full p-2 border rounded"
             />
           </div>
-          
-
-        
         </div>
-          <div>
-            <label className="block font-medium">Course Status</label>
-            {/* <Input              
-              {...register("status")}
-              className="w-full p-2 border rounded"
-            /> */}
+        <div>
+          <label className="block font-medium">Course Status</label>
 
-
-            <Controller
-              name="status"
-              control={control}
-              rules={{
-                required: { value: true, message: "This Field is Required" },
-              }}
-              render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="cursor-pointer">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {["in progress", "wishlist", "completed"].map((duration) => (
-                      <SelectItem
-                        key={duration}
-                        value={duration}
-                        className="cursor-pointer"
-                      >
-                        {duration}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
-          </div>
+          <Controller
+            name="status"
+            control={control}
+            rules={{
+              required: { value: true, message: "This Field is Required" },
+            }}
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger className="cursor-pointer">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  {["in progress", "wishlist", "completed"].map((duration) => (
+                    <SelectItem
+                      key={duration}
+                      value={duration}
+                      className="cursor-pointer"
+                    >
+                      {duration}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </div>
 
         {/* Skills */}
         <div>
@@ -361,19 +352,6 @@ function EditCourseForm() {
           </Button>
         </div>
       </form>
-      {/* <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={Slide}
-      /> */}
     </div>
   );
 }
