@@ -57,7 +57,7 @@ export default function LiveSessions() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: user?.access ? `Bearer ${user?.access}` : "", 
+            Authorization: user?.access ? `Bearer ${user?.access}` : "",
           },
         }
       );
@@ -93,9 +93,6 @@ export default function LiveSessions() {
 
   // Delete Session Data
   const deleteSession = async (id) => {
-    console.log(
-      `${import.meta.env.VITE_API_BACKEND_URL}/api/sessions/sessions/${id}`
-    );
     try {
       let response = await fetch(
         `${import.meta.env.VITE_API_BACKEND_URL}/api/sessions/sessions/${id}/`,
@@ -103,6 +100,7 @@ export default function LiveSessions() {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            Authorization: user?.access ? `Bearer ${user?.access}` : "",
           },
         }
       );
@@ -556,7 +554,7 @@ export default function LiveSessions() {
                     className="glass-card p-4 sm:p-5 md:p-6 border-red-500/20 hover-lift w-full"
                   >
                     {/* Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
+                    <div className="flex flex-row sm:items-center justify-between mb-4 gap-3">
                       <div className="flex items-center flex-wrap gap-3">
                         <Badge
                           className={`${getStatusColor(
@@ -568,9 +566,9 @@ export default function LiveSessions() {
                         </Badge>
                         <Badge variant="outline">{session.course_title}</Badge>
                       </div>
-                      <Button variant="outline" size="sm">
+                      {/* <Button variant="outline" size="sm">
                         <MoreVertical className="w-4 h-4" />
-                      </Button>
+                      </Button> */}
                     </div>
 
                     {/* Main Content */}

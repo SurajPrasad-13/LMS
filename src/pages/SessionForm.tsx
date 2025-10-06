@@ -9,12 +9,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { Slide, toast, ToastContainer } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Slide, toast,  } from "react-toastify";
+import { useAuth } from "../Context/AuthContext";
 
 export default function SessionForm({ onSubmit }) {
+
+  const location = useLocation()
+  const {courseId,coursetitle} = location.state  || {};
+
   const {
     register,
     handleSubmit,
@@ -23,7 +27,7 @@ export default function SessionForm({ onSubmit }) {
     control,
   } = useForm({
     defaultValues: {
-      title: "",
+      title: coursetitle,
       content: "",
       start_time: "",
       end_time: "",
@@ -41,10 +45,12 @@ export default function SessionForm({ onSubmit }) {
       topics: [],
       meeting_list: [{ date: "", time: "", topic: "" }],
       description: "",
+      course: courseId
     },
   });
 
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const addSession = async (data) => {
     console.log(data);
@@ -55,6 +61,7 @@ export default function SessionForm({ onSubmit }) {
           method: "POST", // use POST for creating new session
           headers: {
             "Content-Type": "application/json",
+            Authorization: user?.access ? `Bearer ${user?.access}` : "",
           },
           body: JSON.stringify(data), // convert JS object to JSON string
         }
@@ -65,8 +72,8 @@ export default function SessionForm({ onSubmit }) {
       }
 
       toast.success("Session Added Successfully");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log("session response: ", response);
       let result = await response.json();
       console.log("Session created and the data is:", result);
 
@@ -90,9 +97,6 @@ export default function SessionForm({ onSubmit }) {
             {...register("title", { required: "Title required" })}
             className="w-full border rounded-md px-3 py-2"
           />
-          {errors.title && (
-            <p className="text-sm text-red-500">{errors.title.message}</p>
-          )}
         </div>
         {/* Topics */}
         <div>
@@ -139,7 +143,7 @@ export default function SessionForm({ onSubmit }) {
             />
           </div>
         </div>
-        `{/* Instructor and Avatar */}
+        {/* Instructor and Avatar */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium mb-1">Instructor</label>
@@ -176,7 +180,7 @@ export default function SessionForm({ onSubmit }) {
             </label>
             <Input
               type="number"
-              {...register("max_participants", { required: true , min: 1 })}
+              {...register("max_participants", { required: true, min: 1 })}
               className="w-full border rounded-md px-3 py-2"
             />
           </div>
@@ -185,7 +189,7 @@ export default function SessionForm({ onSubmit }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium mb-1">Status</label>
-           <Controller
+            <Controller
               name="status"
               control={control}
               rules={{
@@ -224,7 +228,7 @@ export default function SessionForm({ onSubmit }) {
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Difficulty</label>
-           <Controller
+            <Controller
               name="difficulty"
               control={control}
               rules={{
