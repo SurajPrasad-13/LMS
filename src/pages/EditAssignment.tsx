@@ -15,8 +15,10 @@ import { stringify } from "querystring";
 import { toast } from "react-toastify";
 import { SquarePen, ThumbsUp } from "lucide-react";
 import { FcDeleteDatabase } from "react-icons/fc";
+import { useAuth } from "../Context/AuthContext";
 
 export default function EditAssignment() {
+  const { user } = useAuth();
   type FormData = {
     title: string;
     instructor: string;
@@ -91,13 +93,18 @@ export default function EditAssignment() {
   // get Assignment Data
   const getAssignment = async () => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${user?.access}`,
+        },
+      });
       if (!response.ok) {
         throw new Error(`Failed to fetch Assignment Status:${response.status}`);
       }
       const result = await response.json();
-      result.due_date = result.due_date.slice(0,16)
-    result.sumbitted_date = result.sumbitted_date.slice(0,16)
+      result.due_date = result.due_date.slice(0, 16);
+      result.sumbitted_date = result.sumbitted_date.slice(0, 16);
       reset(result);
       console.log("Fetched assignment data:", result);
     } catch (error) {
@@ -126,7 +133,10 @@ export default function EditAssignment() {
 
       const response = await fetch(url, {
         method: "PATCH",
-        body: formData,        
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${user?.access}`,
+        },
       });
 
       const result = await response.json();

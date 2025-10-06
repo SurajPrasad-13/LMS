@@ -88,6 +88,7 @@ export default function Assignments() {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`
           },
         }
       );
@@ -264,7 +265,7 @@ export default function Assignments() {
             <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
             <Input
               id="searchTerm"
-              placeholder="Search assignments title..."
+              placeholder="Search assignments title, status..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -314,7 +315,8 @@ export default function Assignments() {
               <FileText className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <p className="text-2xl font-bold">{subAssignment.length}</p>
+              {/* <p className="text-2xl font-bold">{subAssignment.length}</p> */}
+              <p className="text-2xl font-bold">{assignments.filter((assignment)=> assignment.status == 'submitted').length}</p>
               <p className="text-muted-foreground">Submitted</p>
             </div>
           </div>

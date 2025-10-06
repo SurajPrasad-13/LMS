@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FilePlus2 } from "lucide-react";
+import {useAuth} from '../Context/AuthContext'
 
 
 
@@ -41,6 +42,7 @@ export default function AssignmentsForm() {
   const location = useLocation()
   const {courseId,coursetitle} = location.state  || {}; 
   // console.log(courseId,coursetitle)
+  const {user} = useAuth()
   const {
     register,
     handleSubmit,
@@ -161,6 +163,9 @@ export default function AssignmentsForm() {
       {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${user?.access}`,
+        },
       }
     );
 
