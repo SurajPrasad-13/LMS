@@ -107,6 +107,14 @@ export const router = createBrowserRouter([
         ),
       }, //add
       {
+        path: "my-courses/sessionForm",
+        element: (
+          <ProtectedRoute requiredRole="admin">
+            <SessionForm />
+          </ProtectedRoute>
+        ),
+      }, //add
+      {
         path: "sessions/editSessionForm/:id",
         element: (
           <ProtectedRoute requiredRole="admin">
@@ -124,14 +132,7 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       }, //get and delete
-      {
-        path: "assignments/assignmentsForm",
-        element: (
-          <ProtectedRoute requiredRole="admin">
-            <AssignmentsForm />
-          </ProtectedRoute>
-        ),
-      }, //add
+      
       {
         path: "my-courses/assignmentsForm",
         element: (
