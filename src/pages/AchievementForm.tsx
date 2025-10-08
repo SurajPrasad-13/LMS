@@ -228,10 +228,9 @@ export default function AchievementForm() {
         </div>
 
         {/* User */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           
 
-          {/* User */}
           <div>
             <label className="block font-medium mb-1">User</label>
             <Input {...register("user")} placeholder="User ID" />
@@ -239,7 +238,7 @@ export default function AchievementForm() {
               <p className="text-red-500 text-sm">User is required</p>
             )}
           </div>
-        </div>
+        </div> */}
 
         {/* Dates */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -65,10 +65,9 @@ export default function Achievements() {
   };
 
   const navigate = useNavigate();
+
   // api url
-  const url = `${
-    import.meta.env.VITE_API_BACKEND_URL
-  }/api/achievements/achievements/`;
+  const url = `${import.meta.env.ITE_API_BACKEND_URL}/api/achievements/achievements/`;
 
   // Get Achievements
   const achievementApiData = async () => {
@@ -204,7 +203,6 @@ export default function Achievements() {
       selectedCategory === "all" || achievement.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
-  // console.log(filteredAchievements)
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
