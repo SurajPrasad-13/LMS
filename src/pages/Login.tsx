@@ -27,7 +27,6 @@ import {
   UserPen,
 } from "lucide-react";
 import { Slide, toast, ToastContainer } from "react-toastify";
-// import { permission } from "process";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
