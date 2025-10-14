@@ -20,6 +20,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Slide, toast, ToastContainer } from "react-toastify";
 import { AnimatePresence, motion } from "motion/react";
 import Notification from "./ui/Notification";
+import logo from "../assets/Logo1.png";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: BookOpen },
@@ -36,25 +37,26 @@ export default function Layout() {
   const [notificationModel, setnotificationModel] = useState(false);
 
   const {
-      data: notifications = [], // rename + default value
-      }  = useQuery({
-      queryKey: ["notifications"],
-      queryFn: async () => {
-        const response = await fetch(
-          "http://localhost:8000/api/lms/notifications/",{
-            method:'GET',
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${user?.access}`,
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+    data: notifications = [], // rename + default value
+  } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => {
+      const response = await fetch(
+        "http://localhost:8000/api/lms/notifications/",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.access}`,
+          },
         }
-        return response.json();
-      },
-    });
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    },
+  });
   console.log(notifications);
 
   const { user, setUser } = useAuth();
@@ -90,44 +92,39 @@ export default function Layout() {
             <div className="flex justify-between items-center h-16 w-full">
               {/* Logo */}
               <div className="flex items-center space-x-1">
-                <div className="size-10 bg-gradient-learning rounded-md flex items-center justify-center">
-                  <BookOpen className="size-5 text-white" />
-                </div>
+                <img
+                  src={logo}
+                  alt="Sudo logo"
+                  className="h-12 lg:h-14 xl:h-16  "
+                />
                 <span className="text-lg font-bold bg-gradient-learning bg-clip-text text-transparent">
                   Sudo LMS AI
                 </span>
               </div>
 
               {/* Desktop Navigation */}
-              <nav className="hidden lg:flex space-x-1">
+              <nav className="hidden lg:flex space-x-1 ml-2">
                 {navigation.map((item) => (
                   <NavLink
                     key={item.name}
                     to={item.href}
                     end={item.href === "/dashboard"}
                     className={({ isActive }) =>
-                      `flex items-center space-x-2 px-2 py-2 rounded text-sm  font-medium transition-all duration-200 ${
+                      `flex items-center space-x-2 px-1 py-2 rounded text-sm lg:text-[16px]  font-medium transition-all duration-200 ${
                         isActive
-                          ? "bg-gradient-learning text-primary-foreground shadow-learning"
+                          ? "bg-gradient-learning px-2 text-primary-foreground shadow-learning"
                           : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                       }`
                     }
                   >
-                    <item.icon className="size-5" />
+                    <item.icon className="size-4 xl:size-5" />
                     <span>{item.name}</span>
                   </NavLink>
                 ))}
               </nav>
 
               {/* Right Side */}
-              <div className="flex items-center gap-1">
-                {/* <Button
-                  size="sm"
-                  className=" sm:flex p-2 bg-transparent hover:bg-gradient-learning text-black"
-                >
-                  <Search className="w-4 h-4" />
-                </Button> */}
-
+              <div className="flex items-center">
                 <Button
                   onClick={showNotifications}
                   size="sm"
@@ -152,7 +149,7 @@ export default function Layout() {
                       .classList.add("invisible", "opacity-0");
                   }}
                 >
-                  {/* Admin section */}
+                  {/* Profile section */}
                   <div className=" sm:flex items-center bg-white/10 rounded-lg py-2 cursor-pointer">
                     <Button
                       className="p-2 sm:px-3 bg-transparent text-black hover:bg-gradient-learning "
@@ -164,27 +161,14 @@ export default function Layout() {
 
                   {/* Dropdown */}
                   <div className="dropdown invisible opacity-0 transition-all duration-200 absolute right-0 top-full mt-2 bg-white text-black rounded-lg shadow-lg p-4 w-40 z-50">
-                    {user ? (
-                      <button
-                        onClick={logOut}
-                        className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100"
-                      >
-                        Logout
-                      </button>
-                    ) : (
-                      <button
-                        // onClick={login}
-                        className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100"
-                      >
-                        Login
-                      </button>
-                    )}
-
-                    <button  className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100">
-                      <NavLink to='profile'>
-
-                      Profile
-                      </NavLink>
+                    <button
+                      onClick={logOut}
+                      className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100"
+                    >
+                      Logout
+                    </button>
+                    <button className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100">
+                      <NavLink to="profile">Profile</NavLink>
                     </button>
                   </div>
                 </div>
@@ -237,32 +221,31 @@ export default function Layout() {
         </main>
       </div>
       <AnimatePresence>
-
-      {notificationModel && (
-        <motion.div
-          initial={{ opacity: 0, x:50 }}
-          animate={{ opacity: 1, x:0 }}
-          exit={{ x:50, opacity: 0 }}
-          transition={{ duration: 0.4 }}
-          className="fixed right-0 w-auto inset-0  flex justify-end items-start  z-50 max-h-[40vh] top-16"
-        >
+        {notificationModel && (
           <motion.div
-            initial={{ opacity: 0, x:50  }}
-            animate={{ opacity: 1, x:0  }}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
             exit={{ x: 50, opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="bg-white rounded-lg py-2 w-[calc(100%-6rem)] sm:w-1/2 md:w-[45vw] lg:w-1/3 max-h-[85vh] overflow-y-scroll [&::-webkit-scrollbar]:hidden relative top-2 mr-14 shadow-2xl "
+            className="fixed right-0 w-auto inset-0  flex justify-end items-start  z-50 max-h-[40vh] top-16"
           >
-            <button
-              onClick={() => setnotificationModel(false)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-black"
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ x: 50, opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="bg-white rounded-lg py-2 w-[calc(100%-6rem)] sm:w-1/2 md:w-[45vw] lg:w-1/3 max-h-[85vh] overflow-y-scroll [&::-webkit-scrollbar]:hidden relative top-2 mr-14 shadow-2xl "
             >
-              <X />
-            </button>
-            <Notification notifications={notifications} />
+              <button
+                onClick={() => setnotificationModel(false)}
+                className="absolute top-2 right-2 text-gray-400 hover:text-black"
+              >
+                <X />
+              </button>
+              <Notification notifications={notifications} />
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
       </AnimatePresence>
     </>
   );
